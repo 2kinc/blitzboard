@@ -13,6 +13,7 @@ function Site(ref) {
 };
 var app = firebase;
 var database = app.database();
+var auth = app.auth();
 var blitzboardRef = database.ref('blitzboard');
 var ref = blitzboardRef.child('2kofficial');
 var site = new Site();

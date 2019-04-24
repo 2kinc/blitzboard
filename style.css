@@ -2,4 +2,40 @@ body {
     --color-main: #ff8844;
     --color-secondary: black;
     --color-background: white;
+    font-family: neue-haas-unica, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+#topics {
+    width: 12em;
+    height: 100%;
+    background: #ffaa66;
+    margin: 0;
+    padding: 16px;
+    display: inline-flex;
+}
+
+#content-body {
+    width: 100vw;
+    height: 100vh;
+    margin-top: calc(3em + 10px);
+    padding: 0;
+}
+
+#main-content {
+    width: calc(100vw - 12em - 32px);
+    float: right;
+}
+
+#nothing-here {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: calc(1.5em + 10px);
+    left: 0;
+    text-align: center;
+    font-size: 2em;
+    background: #ffaa66;
+    padding: 100px 0;
 }
