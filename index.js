@@ -1,3 +1,3 @@
-function Site() {
+var site = new (function Site() {
   
-}
+})();
