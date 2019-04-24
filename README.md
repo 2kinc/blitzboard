@@ -1,4 +1,4 @@
-# Blitz Board
+# Blitzboard
 
   A team management site 
 
