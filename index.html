@@ -4,10 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="style.css" rel="stylesheet">
-    <title text-align:center>Blitz Board</title>
-    <h1 text-align:center>Brought to you by: 2kinc</h1>
+    <title>Blitz Board</title>
   </head>
   <body>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+    <script> //Firebase Initializing
+        var config = {
+            apiKey: "AIzaSyADD6YWKrzibRMwJNi1FwUR0jcR0GitZPI",
+            authDomain: "k-inc-232222.firebaseapp.com",
+            databaseURL: "https://k-inc-232222.firebaseio.com",
+            projectId: "k-inc-232222",
+            storageBucket: "k-inc-232222.appspot.com",
+            messagingSenderId: "827804821456"
+        };
+        firebase.initializeApp(config);
+    </script>
     <script src="index.js"></script>
   </body>
 </html>
