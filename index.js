@@ -34,18 +34,17 @@ var database = app.database();
 var auth = app.auth();
 var blitzboardRef = database.ref('blitzboard');
 
-function Blitzboard(id, structure) {
+function Blitzboard(id, name) {
     var that = this;
     this.id = id;
+    this.name = name;
     this.ref = database.ref('blitzboard/' + this.id);
-    this.structure = structure;
     this.ref.once('value').then(function (snap) {
         if (snap.val())
             return;
-        that.ref.set(structure);
+        that.ref.child('name').set(that.name);
+        that.ref.child('topics').child('general').set(true);
     });
 }
 
-var site = new Site(new Blitzboard('test', {
-    name: 'test.'
-}).ref);
+var site = new Site(new Blitzboard('test', 'test.').ref);
