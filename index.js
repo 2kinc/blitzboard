@@ -1,7 +1,7 @@
 function Site(ref) {
     var that = this;
     this.elements = {
-        topics: $('#topics'),
+        topics: $('#more-topics'),
         mainContent: $('#main-content'),
         posts: $('#posts'),
         chat: $('#chat'),
@@ -44,7 +44,6 @@ function Blitzboard(id, name) {
         if (snap.val())
             return;
         that.ref.child('name').set(that.name);
-        that.ref.child('topics').child('general').set(true);
     });
 }
 

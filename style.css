@@ -13,7 +13,7 @@ body {
     background: #ffaa66;
     margin: 0;
     padding: 16px;
-    display: inline-flex;
+    display: inline-block;
 }
 
 #content-body {
@@ -45,7 +45,6 @@ body {
     margin: 4px;
     cursor: pointer;
     height: calc(1em + 12px);
-    width: 100%;
     padding: 6px;
 }
 
@@ -57,4 +56,24 @@ body {
 .topic-item:hover {
     border: 2px var(--color-secondary) solid;
     transform: translate(-2px, -2px);
+    margin-bottom: -2px;
+}
+
+.topic-item.selected {
+    background: var(--color-secondary);
+    color: white;
+    border: 2px var(--color-secondary) solid;
+    transform: translate(-2px, -2px);
+    margin-bottom: -2px;
+}
+
+#more-topics::before {
+    content: 'Topics';
+    background: #ffffff99;
+    display: block;
+    margin: 10px;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 4px 0;
+    text-align: center;
 }
