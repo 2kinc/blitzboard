@@ -25,7 +25,13 @@ body {
 
 #main-content {
     width: calc(100vw - 12em - 32px);
+    height: calc(100vh - 3em - 10px);
     float: right;
+}
+
+#main-content > * {
+    height: calc(100vh - 3em - 10px);
+    display: inline-flex;
 }
 
 #nothing-here {
@@ -81,4 +87,25 @@ body {
 #blitzboard-title {
     position: relative;
     left: 8em;
+}
+
+#posts {
+    width: calc(70vw - 12em);
+    border-right: 2px var(--color-secondary) solid;
+}
+
+#chat {
+    width: calc(30vw - 12em);
+    padding: 0;
+    margin-left: -4px;
+}
+
+#chat-input {
+    height: 1em;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    background: #ffaa66;
+    color: black;
 }
