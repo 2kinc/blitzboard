@@ -1,6 +1,7 @@
 function Site(ref) {
     var that = this;
     this.elements = {
+        blitzboardTitle: $('#blitzboard-title'),
         topics: $('#more-topics'),
         mainContent: $('#main-content'),
         posts: $('#posts'),
@@ -12,14 +13,31 @@ function Site(ref) {
     if (!this.ref) {
         return;
     }
+    this.currentTopic = 'Home';
+    $('#home-topic').click(function () {
+        $('.topic-item').each(function () {
+            this.classList.remove('selected');
+        });
+        $('#home-topic').addClass('selected');
+        that.data.render();
+    })
     this.ref.once('value').then(function (snap) {
         that.data = snap.val();
         that.data.render = function () {
             that.elements.topics.text('');
+            that.elements.blitzboardTitle.text(':: ' + that.currentTopic + ' - ' + that.data.name);
             for (var topic in that.data.topics) {
                 var p = document.createElement('div');
                 p.className = 'topic-item';
                 p.innerText = topic;
+                p.addEventListener('click', function () {
+                    that.data.render();
+                    that.currentTopic = topic;
+                    $('.topic-item').each(function () {
+                        this.classList.remove('selected');
+                    });
+                    p.classList.add('selected');
+                });
                 that.elements.topics.append(p);
             }
             that.elements.nothingHere.hide();
