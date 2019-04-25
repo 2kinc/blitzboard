@@ -15,34 +15,34 @@ function Site(ref) {
     }
     this.currentTopic = 'Home';
     $('#home-topic').click(function () {
-        $('.topic-item').each(function () {
-            this.classList.remove('selected');
-        });
-        $('#home-topic').addClass('selected');
+        that.currentTopic = 'Home';
         that.data.render();
-    })
+        $('#home-topic').addClass('selected');
+    });
     this.ref.once('value').then(function (snap) {
         that.data = snap.val();
         that.data.render = function () {
             that.elements.topics.text('');
             that.elements.blitzboardTitle.text(':: ' + that.currentTopic + ' - ' + that.data.name);
+            $('.topic-item').each(function () {
+                this.classList.remove('selected');
+            });
             for (var topic in that.data.topics) {
                 var p = document.createElement('div');
                 p.className = 'topic-item';
+                if (topic == that.currentTopic)
+                    p.classList.add('selected');
                 p.innerText = topic;
                 p.addEventListener('click', function () {
-                    that.data.render();
                     that.currentTopic = topic;
-                    $('.topic-item').each(function () {
-                        this.classList.remove('selected');
-                    });
-                    p.classList.add('selected');
+                    that.data.render();
                 });
                 that.elements.topics.append(p);
             }
             that.elements.nothingHere.hide();
         };
         that.data.render();
+        $('#home-topic').addClass('selected');
     }).catch(function (err) {
         document.body.innerHTML = 'Sorry, a database error occured. (' + err + ').';
     });
