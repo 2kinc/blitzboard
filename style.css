@@ -39,3 +39,22 @@ body {
     background: #ffaa66;
     padding: 100px 0;
 }
+
+.topic-item {
+    border-radius: 4px;
+    margin: 4px;
+    cursor: pointer;
+    height: calc(1em + 12px);
+    width: 100%;
+    padding: 6px;
+}
+
+.topic-item::before {
+    content: ':: ';
+    opacity: 0.6;
+}
+
+.topic-item:hover {
+    border: 2px var(--color-secondary) solid;
+    transform: translate(-2px, -2px);
+}

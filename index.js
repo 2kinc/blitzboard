@@ -17,7 +17,8 @@ function Site(ref) {
         that.data.render = function () {
             that.elements.topics.text('');
             for (var topic in that.data.topics) {
-                var p = document.createElement('p');
+                var p = document.createElement('div');
+                p.className = 'topic-item';
                 p.innerText = topic;
                 that.elements.topics.append(p);
             }
