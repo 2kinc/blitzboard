@@ -7,7 +7,7 @@ function Site(ref) {
         posts: $('#posts'),
         chat: $('#chat'),
         chatInput: $('#chat-input'),
-        chatBody: $('#chat-body'),
+        chatBodies: $('#chat-bodies'),
         nothingHere: $('#nothing-here')
     }
     this.ref = ref;
@@ -67,36 +67,51 @@ function Site(ref) {
                 if (topic == that.currentTopic)
                     p.classList.add('selected');
                 p.innerText = topic;
-                p.addEventListener('click', function () {
-                    that.currentTopic = topic;
-                    that.elements.chatBody.text('');
-                    that.ref.child('topics').child(topic).child('chat').on('child_added', function (snap) {
-                        var el = that.getMessageElement(snap.val());
-                        that.elements.chatBody.append(el);
-                    });
-                    that.data.render();
-                });
+                p.id = 'topic-' + topic;
                 that.elements.topics.append(p);
             }
+            $('.chat-body').each(function () {
+                $(this).hide();
+            });
+            $('#chat-body-' + that.currentTopic).show();
+            $('.topic-item').each(function () {
+                this.addEventListener('click', function () {
+                    var topic = this.id.slice(6);
+                    that.currentTopic = topic;
+                    if (!document.querySelector('#chat-body-' + topic)) {
+                        var newChatBody = document.createElement('div');
+                        newChatBody.id = 'chat-body-' + topic;
+                        newChatBody.className = 'chat-body';
+                        that.ref.child('topics').child(topic).child('chat').on('child_added', function (snap) {
+                            var el = that.getMessageElement(snap.val());
+                            newChatBody.appendChild(el);
+                            that.elements.chatBodies.scrollTop(that.elements.chatBodies.height());
+                        });
+                        that.elements.chatBodies.append(newChatBody);
+                    }
+                    that.data.render();
+                });
+            });
+            that.elements.chatBodies.scrollTop(that.elements.chatBodies.height());
             that.elements.nothingHere.hide();
         };
         that.data.render();
         $('#home-topic').addClass('selected');
-        that.elements.chatInput.on('keyup', function (e) {
-            var key = e.key.toLowerCase();
-            if (key == 'enter' && that.elements.chatInput.val().length < 150 && auth.currentUser) {
-                var d = new Date();
-                var chat = {
-                    message: that.elements.chatInput.val(),
-                    user: auth.currentUser.uid,
-                    time: d.toLocaleTimeString() + ' ' + d.toLocaleDateString()
-                };
-                that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
-                that.elements.chatInput.val('');
-            }
-        });
     }).catch(function (err) {
         document.body.innerHTML = 'Sorry, a database error occured. (' + err + ').';
+    });
+    this.elements.chatInput.on('keyup', function (e) {
+        var key = e.key.toLowerCase();
+        if (key == 'enter' && that.elements.chatInput.val().length < 150 && auth.currentUser) {
+            var d = new Date();
+            var chat = {
+                message: that.elements.chatInput.val(),
+                user: auth.currentUser.uid,
+                time: d.toLocaleTimeString() + ' ' + d.toLocaleDateString()
+            };
+            that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
+            that.elements.chatInput.val('');
+        }
     });
 };
 

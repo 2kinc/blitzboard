@@ -104,9 +104,12 @@ body {
     margin-left: -4px;
 }
 
-#chat-body {
+#chat-bodies {
     width: 100%;
     padding: 16px;
+    height: calc(100vh - 7em - 8px);
+    max-height: calc(100vh - 7em - 8px);
+    overflow: auto;
 }
 
 #chat-input {
