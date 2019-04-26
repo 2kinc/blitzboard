@@ -34,13 +34,6 @@ function Site(ref) {
             var span = document.createElement('span');
             span.innerText = user.displayName;
             span.className = 'chat-username';
-            for (var trait in user.traits) {
-                if (user.traits[trait]) {
-                    var s = document.createElement('span');
-                    s.className = 'trait ' + '_' + trait;
-                    span.appendChild(s);
-                }
-            }
             var span2 = document.createElement('span');
             span2.innerText = ' at ' + m.time;
             messageinfo.appendChild(span);
@@ -76,6 +69,7 @@ function Site(ref) {
                 p.innerText = topic;
                 p.addEventListener('click', function () {
                     that.currentTopic = topic;
+                    that.elements.chatBody.text('');
                     that.ref.child('topics').child(topic).child('chat').on('child_added', function (snap) {
                         var el = that.getMessageElement(snap.val());
                         that.elements.chatBody.append(el);
@@ -100,7 +94,7 @@ function Site(ref) {
                 that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
                 that.elements.chatInput.val('');
             }
-        })
+        });
     }).catch(function (err) {
         document.body.innerHTML = 'Sorry, a database error occured. (' + err + ').';
     });

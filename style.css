@@ -8,12 +8,13 @@ body {
 }
 
 #topics {
-    width: 12em;
+    width: calc(12em - 2px);
     height: 100%;
     background: #ffaa66;
     margin: 0;
     padding: 16px;
     display: inline-block;
+    border-right: 2px var(--color-secondary) solid;
 }
 
 #content-body {
@@ -95,9 +96,17 @@ body {
 }
 
 #chat {
-    width: calc(30vw - 12em);
+    position: absolute;
+    right: 0;
+    top: calc(3em + 11px);
+    width: calc(30vw - 2em - 2px);
     padding: 0;
     margin-left: -4px;
+}
+
+#chat-body {
+    width: 100%;
+    padding: 16px;
 }
 
 #chat-input {
@@ -108,4 +117,29 @@ body {
     margin: 0;
     background: #ffaa66;
     color: black;
+}
+
+.message {
+    padding: 0.1em 0px;
+}
+
+.message-body {
+    border: 2px var(--color-secondary) solid;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 0;
+    display: inline-block;
+    transform: translateY(-16px);
+}
+
+.message-info {
+    margin: 2px;
+    margin-top: -16px;
+}
+
+.profile-picture {
+    display: inline-block;
+    border-radius: 500px;
+    border: 2px var(--color-secondary) solid;
+    margin-right: 4px;
 }
