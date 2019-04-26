@@ -99,7 +99,7 @@ body {
 
 #chat {
     position: absolute;
-    top: calc(3em + 11px);
+    top: calc(3em + 10.5px);
     width: calc(30vw - 2em - 2px);
     padding: 0;
     transition: all 0.3s;
