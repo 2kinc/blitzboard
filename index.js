@@ -16,10 +16,8 @@ function Site(ref) {
         return;
     }
     this.currentTopic = 'Home';
-    $('#home-topic').click(function () {
-        that.currentTopic = 'Home';
-        that.data.render();
-        $('#home-topic').addClass('selected');
+    $('#topic-home').click(function () {
+        that.elements.posts.addClass('expanded');
     });
     this.getMessageElement = function (m) {
         var p = document.createElement('p');
@@ -36,6 +34,7 @@ function Site(ref) {
             span.className = 'chat-username';
             var span2 = document.createElement('span');
             span2.innerText = ' at ' + m.time;
+            span2.className = 'message-info--time';
             messageinfo.appendChild(span);
             messageinfo.appendChild(span2);
             image.src = user.photoURL;
@@ -74,7 +73,7 @@ function Site(ref) {
                 $(this).hide();
             });
             $('#chat-body-' + that.currentTopic).show();
-            $('.topic-item').each(function () {
+            $('.topic-item').not('#topic-home').each(function () {
                 this.addEventListener('click', function () {
                     var topic = this.id.slice(6);
                     that.currentTopic = topic;
@@ -89,6 +88,7 @@ function Site(ref) {
                         });
                         that.elements.chatBodies.append(newChatBody);
                     }
+                    that.elements.posts.removeClass('expanded');
                     that.data.render();
                 });
             });
