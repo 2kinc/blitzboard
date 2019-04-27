@@ -65,6 +65,10 @@ function Site(ref) {
             that.elements.topics.text('');
             that.elements.blitzboardTitle.text(':: ' + that.currentTopic + ' - ' + that.data.name);
             that.elements.newPostTopics.text('');
+            var autofocus = document.createElement('option');
+            autofocus.innerText = 'Select a topic';
+            autofocus.setAttribute('autofocus', 'true');
+            that.elements.newPostTopics.append(autofocus);
             $('.topic-item').each(function () {
                 this.classList.remove('selected');
             });
@@ -77,6 +81,7 @@ function Site(ref) {
                 p.id = 'topic-' + topic;
                 var option = document.createElement('option');
                 option.innerText = ':: ' + topic;
+                option.id = 'option-' + topic;
                 that.elements.topics.append(p);
                 that.elements.newPostTopics.append(option);
             }
@@ -128,12 +133,15 @@ function Site(ref) {
         that.elements.newPostWrapper.toggleClass('shown');
         that.elements.newPostButton.toggleClass('k-rainbow');
     });
-    this.elements.newPostTopics.change(function () {
+    this.elements.newPostTopics.change(function (e) {
         var topic = that.elements.newPostTopics.val().slice(3);
-        var span = document.createElement('span');
-        span.innerText = topic;
-        span.className = 'new-post-topic k-capsule';
-        that.elements.newPostTopicsWrapper.append(span);
+        if (topic != 'ect a topic') {
+            var span = document.createElement('span');
+            span.innerText = topic;
+            span.className = 'new-post-topic k-capsule';
+            that.elements.newPostTopicsWrapper.append(span);
+            $('#option-' + topic).remove();
+        }
     });
 };
 
