@@ -180,6 +180,12 @@ body {
     border-bottom: 2px var(--color-secondary) solid;
     padding: 6px;
     padding-bottom: 14px;
+    margin-top: calc(-14em - 12px);
+    transition: margin-top 0.3s;
+}
+
+#new-post-wrapper.shown {
+    margin-top: 0;
 }
 
 #new-post-wrapper > input {
@@ -188,4 +194,8 @@ body {
 
 #new-post-name {
     width: 20em;
+}
+
+#new-post-topics {
+    margin-bottom: 6px;
 }

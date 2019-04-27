@@ -9,6 +9,8 @@ function Site(ref) {
         chatInput: $('#chat-input'),
         chatBodies: $('#chat-bodies'),
         nothingHere: $('#nothing-here'),
+        newPostWrapper: $('#new-post-wrapper'),
+        newPostButton: $('#new-post-button'),
         newPostName: $('#new-post-name'),
         newPostContent: $('#new-post-content'),
         newPostTopics: $('#new-post-topics')
@@ -121,6 +123,9 @@ function Site(ref) {
             that.elements.chatInput.val('');
         }
     });
+    this.elements.newPostButton.click(function () {
+        that.elements.newPostWrapper.toggleClass('shown');
+    })
 };
 
 var app = firebase;
