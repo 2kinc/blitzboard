@@ -20,10 +20,10 @@ function Site(ref) {
         that.elements.posts.addClass('expanded');
     });
     this.getMessageElement = function (m) {
-        var p = document.createElement('p');
+        var p = document.createElement('div');
         p.innerText = m.message;
         p.className = 'message-body enlargable';
-        var messageinfo = document.createElement('p');
+        var messageinfo = document.createElement('div');
         var user = {
             displayName: 'Unknown'
         };
@@ -44,11 +44,12 @@ function Site(ref) {
         messageinfo.className = 'message-info';
         var image = document.createElement('img');
         image.className = 'profile-picture enlargable';
-        image.height = 45;
         var wrapper = document.createElement('div');
         wrapper.className = 'message';
-        wrapper.appendChild(image);
-        wrapper.appendChild(p);
+        var imageAndMessageWrapper = document.createElement('div');
+        imageAndMessageWrapper.appendChild(image);
+        imageAndMessageWrapper.appendChild(p);
+        wrapper.appendChild(imageAndMessageWrapper);
         wrapper.appendChild(messageinfo);
         return wrapper;
     }

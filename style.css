@@ -141,8 +141,9 @@ body {
     padding: 4px 8px;
     margin: 0;
     margin-bottom: 4px;
-    display: inline-block;
+    display: inline-flex;
     transform: translateY(-10px);
+    max-width: calc(30vw - 8em - 18px);
 }
 
 .message-info {
