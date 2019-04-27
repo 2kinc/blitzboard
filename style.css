@@ -169,7 +169,7 @@ body {
 #posts.expanded, #chat.expanded {
     width: calc(100vw - 12em);
     position: absolute;
-    z-index: 1000;
+    z-index: 10;
 }
 
 #new-post-button {
