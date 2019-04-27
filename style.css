@@ -44,7 +44,7 @@ body {
     left: 0;
     text-align: center;
     font-size: 2em;
-    background: #ffaa66;
+    background: var(--color-light);
     padding: 100px 0;
 }
 
@@ -173,7 +173,7 @@ body {
 }
 
 #new-post-button {
-    --color-main: var(--color-light);
+    -color: white;
 }
 
 #new-post-wrapper {

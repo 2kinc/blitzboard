@@ -8,7 +8,10 @@ function Site(ref) {
         chat: $('#chat'),
         chatInput: $('#chat-input'),
         chatBodies: $('#chat-bodies'),
-        nothingHere: $('#nothing-here')
+        nothingHere: $('#nothing-here'),
+        newPostName: $('#new-post-name'),
+        newPostContent: $('#new-post-content'),
+        newPostTopics: $('#new-post-topics')
     }
     this.ref = ref;
     this.data = {};
@@ -58,6 +61,7 @@ function Site(ref) {
         that.data.render = function () {
             that.elements.topics.text('');
             that.elements.blitzboardTitle.text(':: ' + that.currentTopic + ' - ' + that.data.name);
+            that.elements.newPostTopics.text('');
             $('.topic-item').each(function () {
                 this.classList.remove('selected');
             });
@@ -68,7 +72,10 @@ function Site(ref) {
                     p.classList.add('selected');
                 p.innerText = topic;
                 p.id = 'topic-' + topic;
+                var option = document.createElement('option');
+                option.innerText = ':: ' + topic;
                 that.elements.topics.append(p);
+                that.elements.newPostTopics.append(option);
             }
             $('.chat-body').each(function () {
                 $(this).hide();
