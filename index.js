@@ -5,6 +5,7 @@ function Site(ref) {
         topics: $('#more-topics'),
         mainContent: $('#main-content'),
         posts: $('#posts'),
+        postsBodies: $('#posts-bodies'),
         chat: $('#chat'),
         chatInput: $('#chat-input'),
         chatBodies: $('#chat-bodies'),
@@ -59,6 +60,25 @@ function Site(ref) {
         wrapper.appendChild(messageinfo);
         return wrapper;
     }
+    this.getPostElement = function (p) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'post-wrapper k-card';
+        var title = document.createElement('div');
+        title.className = 'post-title k-card-title';
+        title.innerText = p.name;
+        var content = document.createElement('div');
+        content.className = 'post-content k-card-content';
+        content.innerText = p.content;
+        database.ref('users/' + p.user).once('value').then(function (snap) {
+            var user = snap.val();
+            title.innerText += ' - ' + user.displayName;
+        }).catch(function (err) {
+            console.log(err);
+        });
+        wrapper.appendChild(title);
+        wrapper.appendChild(content);
+        return wrapper;
+    }
     this.ref.once('value').then(function (snap) {
         that.data = snap.val();
         that.data.render = function () {
@@ -89,6 +109,10 @@ function Site(ref) {
                 $(this).hide();
             });
             $('#chat-body-' + that.currentTopic).show();
+            $('.posts-body').each(function () {
+                $(this).hide();
+            });
+            $('#posts-body-' + that.currentTopic).show();
             $('.topic-item').not('#topic-home').each(function () {
                 this.addEventListener('click', function () {
                     var topic = this.id.slice(6);
@@ -103,6 +127,19 @@ function Site(ref) {
                             that.elements.chatBodies.scrollTop(that.elements.chatBodies.height());
                         });
                         that.elements.chatBodies.append(newChatBody);
+                    }
+                    if (!document.querySelector('#posts-body-' + topic)) {
+                        var newPostsBody = document.createElement('div');
+                        newPostsBody.id = 'posts-body-' + topic;
+                        newPostsBody.className = 'posts-body';
+                        that.elements.postsBodies.append(newPostsBody);
+                        that.ref.child('posts').on('child_added', function (snap) {
+                            var post = snap.val();
+                            if (post.topics.includes(topic)) {
+                                var postEl = that.getPostElement(post);
+                                newPostsBody.appendChild(postEl);
+                            }
+                        });
                     }
                     that.elements.posts.removeClass('expanded');
                     that.data.render();
@@ -129,7 +166,41 @@ function Site(ref) {
             that.elements.chatInput.val('');
         }
     });
+    var topics = [];
     this.elements.newPostButton.click(function () {
+        if (that.elements.newPostWrapper.hasClass('shown')) {
+            if (that.elements.newPostName.val() == '')
+                that.elements.newPostName.val('[untitled post]')
+            var post = {
+                name: that.elements.newPostName.val(),
+                content: that.elements.newPostContent.val(),
+                topics: topics,
+                user: auth.currentUser.uid
+            };
+            that.ref.child('posts').push().set(post);
+            that.elements.newPostName.val('');
+            that.elements.newPostContent.val('');
+            that.elements.newPostTopicsWrapper.text('');
+            topics = [];
+            that.elements.newPostTopics.text('');
+            var autofocus = document.createElement('option');
+            autofocus.innerText = 'Select a topic';
+            autofocus.setAttribute('autofocus', 'true');
+            that.elements.newPostTopics.append(autofocus);
+            for (var topic in that.data.topics) {
+                var p = document.createElement('div');
+                p.className = 'topic-item';
+                if (topic == that.currentTopic)
+                    p.classList.add('selected');
+                p.innerText = topic;
+                p.id = 'topic-' + topic;
+                var option = document.createElement('option');
+                option.innerText = ':: ' + topic;
+                option.id = 'option-' + topic;
+                that.elements.topics.append(p);
+                that.elements.newPostTopics.append(option);
+            }
+        }
         that.elements.newPostWrapper.toggleClass('shown');
         that.elements.newPostButton.toggleClass('k-rainbow');
     });
@@ -140,6 +211,7 @@ function Site(ref) {
             span.innerText = topic;
             span.className = 'new-post-topic k-capsule';
             that.elements.newPostTopicsWrapper.append(span);
+            topics.push(topic);
             $('#option-' + topic).remove();
         }
     });
