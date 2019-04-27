@@ -199,3 +199,9 @@ body {
 #new-post-topics {
     margin-bottom: 6px;
 }
+
+.new-post-topic {
+    border: 2px var(--color-main) solid;
+    margin: 2px;
+    padding: 4px;
+}

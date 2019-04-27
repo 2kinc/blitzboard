@@ -13,6 +13,7 @@ function Site(ref) {
         newPostButton: $('#new-post-button'),
         newPostName: $('#new-post-name'),
         newPostContent: $('#new-post-content'),
+        newPostTopicsWrapper: $('#new-post-topics-wrapper'),
         newPostTopics: $('#new-post-topics')
     }
     this.ref = ref;
@@ -125,7 +126,15 @@ function Site(ref) {
     });
     this.elements.newPostButton.click(function () {
         that.elements.newPostWrapper.toggleClass('shown');
-    })
+        that.elements.newPostButton.toggleClass('k-rainbow');
+    });
+    this.elements.newPostTopics.change(function () {
+        var topic = that.elements.newPostTopics.val().slice(3);
+        var span = document.createElement('span');
+        span.innerText = topic;
+        span.className = 'new-post-topic k-capsule';
+        that.elements.newPostTopicsWrapper.append(span);
+    });
 };
 
 var app = firebase;
