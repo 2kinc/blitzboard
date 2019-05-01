@@ -298,7 +298,10 @@ var site = new Site(new Blitzboard('test', 'test.').ref);
 auth.onAuthStateChanged(function (user) {
     if (user) {
         //yeet
-        site.ref.child('users').child(auth.currentUser.uid).set(true);
+        site.ref.child('users').once('value').then(function (snap) {
+            if (snap.val() == null)
+                site.ref.child('users').child(auth.currentUser.uid).set(true);
+        })
     } else {
         auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     }
