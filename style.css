@@ -181,7 +181,7 @@ body {
     border-bottom: 2px var(--color-secondary) solid;
     padding: 6px 16px;
     padding-bottom: 14px;
-    margin-top: calc(-14em - 12px);
+    margin-top: calc(-14em - 20px);
     transition: margin-top 0.3s;
 }
 
@@ -210,4 +210,30 @@ body {
 .posts-body {
     height: 100%;
     background: var(--color-background);
+}
+
+.post-points {
+    padding: 3.5px;
+    border-top: 2px var(--color-secondary) solid;
+    border-bottom: 2px var(--color-secondary) solid;
+    position: relative;
+    top: 2.5px;
+}
+
+.plus-button, .minus-button {
+    padding: 8px;
+}
+
+.plus-button {
+    background: #5566ff;
+    border-radius: 8px 0 0 8px;
+}
+
+.minus-button {
+    background: #ff6655;
+    border-radius: 0 8px 8px 0;
+}
+
+button {
+    outline: none!important;
 }

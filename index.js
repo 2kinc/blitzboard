@@ -72,8 +72,14 @@ function Site(ref) {
         var bottom = document.createElement('div');
         bottom.className = 'post-bottom k-card-bottom';
         var plusButton = document.createElement('button');
-        plusButton.className = 'k-button k-button--elevated';
-        plusButton.innerText = '+1 (' + p.points + ' points)';
+        plusButton.className = 'k-button plus-button';
+        plusButton.innerText = '+1';
+        var minusButton = document.createElement('button');
+        minusButton.className = 'k-button minus-button';
+        minusButton.innerText = '-1';
+        var points = document.createElement('span');
+        points.className = 'post-points';
+        points.innerText = p.pluses - p.minuses;
         bottom.appendChild(plusButton);
         database.ref('users/' + p.user).once('value').then(function (snap) {
             var user = snap.val();
@@ -83,7 +89,10 @@ function Site(ref) {
         });
         wrapper.appendChild(title);
         wrapper.appendChild(content);
-        wrapper.appendChild(plusButton);
+        bottom.appendChild(plusButton);
+        bottom.appendChild(points);
+        bottom.appendChild(minusButton);
+        wrapper.appendChild(bottom);
         return wrapper;
     }
     this.ref.once('value').then(function (snap) {
@@ -182,7 +191,8 @@ function Site(ref) {
                 name: that.elements.newPostName.val(),
                 content: that.elements.newPostContent.val(),
                 topics: topics,
-                points: 0,
+                pluses: 0,
+                minuses: 0,
                 user: auth.currentUser.uid
             };
             that.ref.child('posts').push().set(post);
