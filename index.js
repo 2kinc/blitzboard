@@ -69,6 +69,12 @@ function Site(ref) {
         var content = document.createElement('div');
         content.className = 'post-content k-card-content';
         content.innerText = p.content;
+        var bottom = document.createElement('div');
+        bottom.className = 'post-bottom k-card-bottom';
+        var plusButton = document.createElement('button');
+        plusButton.className = 'k-button k-button--elevated';
+        plusButton.innerText = '+1 (' + p.points + ' points)';
+        bottom.appendChild(plusButton);
         database.ref('users/' + p.user).once('value').then(function (snap) {
             var user = snap.val();
             title.innerText += ' - ' + user.displayName;
@@ -77,6 +83,7 @@ function Site(ref) {
         });
         wrapper.appendChild(title);
         wrapper.appendChild(content);
+        wrapper.appendChild(plusButton);
         return wrapper;
     }
     this.ref.once('value').then(function (snap) {
@@ -124,7 +131,7 @@ function Site(ref) {
                         that.ref.child('topics').child(topic).child('chat').on('child_added', function (snap) {
                             var el = that.getMessageElement(snap.val());
                             newChatBody.appendChild(el);
-                            that.elements.chatBodies.scrollTop(that.elements.chatBodies.height());
+                            that.elements.chatBodies.scrollTop(1000000);
                         });
                         that.elements.chatBodies.append(newChatBody);
                     }
@@ -175,6 +182,7 @@ function Site(ref) {
                 name: that.elements.newPostName.val(),
                 content: that.elements.newPostContent.val(),
                 topics: topics,
+                points: 0,
                 user: auth.currentUser.uid
             };
             that.ref.child('posts').push().set(post);
