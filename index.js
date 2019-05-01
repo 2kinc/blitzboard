@@ -26,7 +26,8 @@ function Site(ref) {
     $('#topic-home').click(function () {
         that.elements.posts.addClass('expanded');
     });
-    this.getMessageElement = function (m) {
+    this.getMessageElement = function (ref) {
+        var m = ref.val();
         var p = document.createElement('div');
         p.innerText = m.message;
         p.className = 'message-body enlargable';
@@ -60,7 +61,15 @@ function Site(ref) {
         wrapper.appendChild(messageinfo);
         return wrapper;
     }
-    this.getPostElement = function (p) {
+    function addTo(ref) {
+        ref.once('value').then(function (snap) {
+            var d = snap.val();
+            ref.set(d + 1);
+            return d + 1;
+        });
+    }
+    this.getPostElement = function (ref) {
+        var p = ref.val();
         var wrapper = document.createElement('div');
         wrapper.className = 'post-wrapper k-card';
         var title = document.createElement('div');
@@ -74,9 +83,31 @@ function Site(ref) {
         var plusButton = document.createElement('button');
         plusButton.className = 'k-button plus-button';
         plusButton.innerText = '+1';
+        plusButton.onclick = function () {
+            //if (that.ref.ref('users/' + auth.currentUser.uid + '/pluses/' + ref.key) != true) //use this one for the basis
+                addTo(ref.ref.child('pluses'));
+        };
         var minusButton = document.createElement('button');
         minusButton.className = 'k-button minus-button';
         minusButton.innerText = '-1';
+        minusButton.onclick = function () {
+            //if (that.ref.child('users').child(auth.currentUser.uid) != true)
+                addTo(ref.ref.child('minuses'));
+        };
+        ref.ref.child('pluses').on('value', function (snap) {
+            var pluses = snap.val();
+            ref.ref.child('minuses').once('value').then(function (snap) {
+                var sum = pluses - snap.val();
+                points.innerText = sum;
+            })
+        });
+        ref.ref.child('minuses').on('value', function (snap) {
+            var minuses = snap.val();
+            ref.ref.child('pluses').once('value').then(function (snap) {
+                var sum = snap.val() - minuses;
+                points.innerText = sum;
+            })
+        });
         var points = document.createElement('span');
         points.className = 'post-points';
         points.innerText = p.pluses - p.minuses;
@@ -98,9 +129,9 @@ function Site(ref) {
     this.ref.once('value').then(function (snap) {
         that.data = snap.val();
         that.data.render = function () {
-            that.elements.topics.text('');
+            that.elements.topics.html('');
             that.elements.blitzboardTitle.text(':: ' + that.currentTopic + ' - ' + that.data.name);
-            that.elements.newPostTopics.text('');
+            that.elements.newPostTopics.html('');
             var autofocus = document.createElement('option');
             autofocus.innerText = 'Select a topic';
             autofocus.setAttribute('autofocus', 'true');
@@ -138,7 +169,7 @@ function Site(ref) {
                         newChatBody.id = 'chat-body-' + topic;
                         newChatBody.className = 'chat-body';
                         that.ref.child('topics').child(topic).child('chat').on('child_added', function (snap) {
-                            var el = that.getMessageElement(snap.val());
+                            var el = that.getMessageElement(snap);
                             newChatBody.appendChild(el);
                             that.elements.chatBodies.scrollTop(1000000);
                         });
@@ -152,7 +183,7 @@ function Site(ref) {
                         that.ref.child('posts').on('child_added', function (snap) {
                             var post = snap.val();
                             if (post.topics.includes(topic)) {
-                                var postEl = that.getPostElement(post);
+                                var postEl = that.getPostElement(snap);
                                 newPostsBody.appendChild(postEl);
                             }
                         });
@@ -257,6 +288,7 @@ var site = new Site(new Blitzboard('test', 'test.').ref);
 auth.onAuthStateChanged(function (user) {
     if (user) {
         //yeet
+        site.ref.child('users').child(auth.currentUser.uid).set(true);
     } else {
         auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     }
