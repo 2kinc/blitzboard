@@ -84,8 +84,10 @@ function Site(ref) {
         plusButton.className = 'k-button plus-button';
         plusButton.innerText = '+1';
         plusButton.onclick = function () {
-            //if (that.ref.ref('users/' + auth.currentUser.uid + '/pluses/' + ref.key) != true) //use this one for the basis
+            if (that.ref.child('users').child(auth.currentUser.uid).child('pluses').child(that.ref.key).child(ref.key) != true) {
                 addTo(ref.ref.child('pluses'));
+                that.ref.child('users').child(auth.currentUser.uid).child('pluses').child(that.ref.key).child(ref.key);
+            } //use this one for the basis weird it doesn't work
         };
         var minusButton = document.createElement('button');
         minusButton.className = 'k-button minus-button';
