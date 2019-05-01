@@ -84,17 +84,25 @@ function Site(ref) {
         plusButton.className = 'k-button plus-button';
         plusButton.innerText = '+1';
         plusButton.onclick = function () {
-            if (that.ref.child('users').child(auth.currentUser.uid).child('pluses').child(that.ref.key).child(ref.key) != true) {
-                addTo(ref.ref.child('pluses'));
-                that.ref.child('users').child(auth.currentUser.uid).child('pluses').child(that.ref.key).child(ref.key);
-            } //use this one for the basis weird it doesn't work
+            var votesRef = that.ref.child('users').child(auth.currentUser.uid).child('votes').child(that.ref.key).child(ref.key);
+            votesRef.once('value', function (snap) {
+                if (snap.val() != true) {
+                    addTo(ref.ref.child('pluses'));
+                    votesRef.set(true);
+                }
+            });
         };
         var minusButton = document.createElement('button');
         minusButton.className = 'k-button minus-button';
         minusButton.innerText = '-1';
         minusButton.onclick = function () {
-            //if (that.ref.child('users').child(auth.currentUser.uid) != true)
-                addTo(ref.ref.child('minuses'));
+            var votesRef = that.ref.child('users').child(auth.currentUser.uid).child('votes').child(that.ref.key).child(ref.key);
+            votesRef.once('value', function (snap) {
+                if (snap.val() != true) {
+                    addTo(ref.ref.child('minuses'));
+                    votesRef.set(true);
+                }
+            });
         };
         ref.ref.child('pluses').on('value', function (snap) {
             var pluses = snap.val();
