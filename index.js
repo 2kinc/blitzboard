@@ -190,11 +190,11 @@ function Site(ref) {
                         newPostsBody.id = 'posts-body-' + topic;
                         newPostsBody.className = 'posts-body';
                         that.elements.postsBodies.append(newPostsBody);
-                        that.ref.child('posts').on('child_added', function (snap) {
+                        that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
                             var post = snap.val();
                             if (post.topics.includes(topic)) {
                                 var postEl = that.getPostElement(snap);
-                                newPostsBody.appendChild(postEl);
+                                newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
                             }
                         });
                     }
