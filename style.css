@@ -181,7 +181,7 @@ body {
     border-bottom: 2px var(--color-secondary) solid;
     padding: 6px 16px;
     padding-bottom: 14px;
-    margin-top: calc(-14em - 12px);
+    margin-top: calc(-16em + 12px);
     transition: margin-top 0.3s;
 }
 
@@ -221,6 +221,14 @@ body {
     background: var(--color-background);
 }
 
+.post-wrapper {
+    background: #efefef;
+}
+
+.post-bottom {
+    background: white;
+}
+
 .post-points {
     padding: 3.5px;
     border-top: 2px var(--color-secondary) solid;
@@ -234,7 +242,7 @@ body {
 }
 
 .plus-button {
-    background: #5566ff;
+    background: #44ff77;
     border-radius: 8px 0 0 8px;
 }
 
