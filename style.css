@@ -254,3 +254,11 @@ body {
 button {
     outline: none!important;
 }
+
+.post-img {
+    display: block;
+    width: 100%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height: 100%;
+}

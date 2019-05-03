@@ -80,6 +80,18 @@ function Site(ref) {
         var content = document.createElement('div');
         content.className = 'post-content k-card-content';
         content.innerText = p.content;
+        if (p.content.indexOf("https://firebasestorage.googleapis.com/") == 0
+            || p.content.indexOf("https://lh3.googleusercontent.com/") == 0
+            || p.content.indexOf("http://pbs.twimg.com/") == 0
+            || p.content.indexOf("data:image/") == 0) {
+            //var imgElm = document.createElement("img");
+            //imgElm.className = 'post-img';
+            //imgElm.src = p.content;
+            var imgElm = document.createElement("div");
+            imgElm.className = 'post-img';
+            imgElm.style.backgroundImage = 'url(' + p.content + ')';
+            content.appendChild(imgElm);
+        }
         var bottom = document.createElement('div');
         bottom.className = 'post-bottom k-card-bottom';
         var plusButton = document.createElement('button');
