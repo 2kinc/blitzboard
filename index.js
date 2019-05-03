@@ -15,7 +15,9 @@ function Site(ref) {
         newPostName: $('#new-post-name'),
         newPostContent: $('#new-post-content'),
         newPostTopicsWrapper: $('#new-post-topics-wrapper'),
-        newPostTopics: $('#new-post-topics')
+        newPostTopics: $('#new-post-topics'),
+        newPostUpload: document.querySelector('#new-post-upload'),
+        newPostUploadLabel: $('#new-post-upload-label')
     }
     this.ref = ref;
     this.data = {};
@@ -279,6 +281,7 @@ function Site(ref) {
 var app = firebase;
 var database = app.database();
 var auth = app.auth();
+var storage = app.storage();
 var blitzboardRef = database.ref('blitzboard');
 
 function Blitzboard(id, name) {
@@ -307,23 +310,43 @@ auth.onAuthStateChanged(function (user) {
     }
 });
 
-var inputs = document.querySelectorAll( '.inputfile' );
-Array.prototype.forEach.call( inputs, function( input )
-{
-	var label	 = input.nextElementSibling,
-		labelVal = label.innerHTML;
+var inputs = document.querySelectorAll('.inputfile');
+Array.prototype.forEach.call(inputs, function (input) {
+    var label = input.nextElementSibling,
+        labelVal = label.innerHTML;
 
-	input.addEventListener( 'change', function( e )
-	{
-		var fileName = '';
-		if( this.files && this.files.length > 1 )
-			fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
-		else
-			fileName = e.target.value.split( '\\' ).pop();
+    input.addEventListener('change', function (e) {
+        var fileName = '';
+        if (this.files && this.files.length > 1)
+            fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+        else
+            fileName = e.target.value.split('\\').pop();
 
-		if( fileName )
-			label.innerHTML = fileName;
-		else
-			label.innerHTML = labelVal;
-	});
+        if (fileName)
+            label.innerHTML = fileName;
+        else
+            label.innerHTML = labelVal;
+    });
 });
+
+function handleFileForNewPost(e) {
+    var file = site.elements.newPostUpload.files[0]; //the file
+    var storageRef = storage.ref('blitzboard_uploads'); //where the files live
+    var uploadRef = storageRef.child(file.name); //the file that we are uploading
+    var uploadTask = uploadRef.put(file)
+        .then(snapshot => {
+            return snapshot.ref.getDownloadURL();   // Will return a promise with the download link
+        })
+
+        .then(downloadURL => {
+            site.elements.newPostContent.val(downloadURL);
+            return downloadURL;
+        })
+
+        .catch(error => {
+            // Use to signal error if something goes wrong.
+            console.log(`Failed to upload file and get link - ${error}`);
+        });
+}
+
+site.elements.newPostUpload.addEventListener('input', handleFileForNewPost);
