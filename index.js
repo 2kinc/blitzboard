@@ -84,13 +84,15 @@ function Site(ref) {
             || p.content.indexOf("https://lh3.googleusercontent.com/") == 0
             || p.content.indexOf("http://pbs.twimg.com/") == 0
             || p.content.indexOf("data:image/") == 0) {
-            //var imgElm = document.createElement("img");
-            //imgElm.className = 'post-img';
-            //imgElm.src = p.content;
-            var imgElm = document.createElement("div");
+            var imgElm = document.createElement("img");
             imgElm.className = 'post-img';
-            imgElm.style.backgroundImage = 'url(' + p.content + ')';
-            content.appendChild(imgElm);
+            imgElm.src = p.content;
+            // var outer = document.createElement("div");
+            // outer.className = 'post-img-container';
+            // outer.appendChild(imgElm);
+            // content.appendChild(outer);
+            content.insertBefore(imgElm, content.firstChild);
+            content.style.fontSize = '0.6em';
         }
         var bottom = document.createElement('div');
         bottom.className = 'post-bottom k-card-bottom';
