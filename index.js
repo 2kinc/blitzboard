@@ -17,7 +17,8 @@ function Site(ref) {
         newPostTopicsWrapper: $('#new-post-topics-wrapper'),
         newPostTopics: $('#new-post-topics'),
         newPostUpload: document.querySelector('#new-post-upload'),
-        newPostUploadLabel: $('#new-post-upload-label')
+        newPostUploadLabel: $('#new-post-upload-label'),
+        newPostMain: $('#new-post-main')
     }
     this.ref = ref;
     this.data = {};
@@ -132,7 +133,7 @@ function Site(ref) {
             ref.ref.child('pluses').once('value').then(function (snap) {
                 var sum = snap.val() - minuses;
                 points.innerText = sum;
-            })
+            });
         });
         var points = document.createElement('span');
         points.className = 'post-points';
@@ -144,11 +145,17 @@ function Site(ref) {
         }).catch(function (err) {
             console.log(err);
         });
+        var comments = document.createElement('div');
+        ref.ref.child('comments').on('child_added', function (snap) {
+            var comment = that.getMessageElement(snap);
+            comments.appendChild(comment);
+        });
         wrapper.appendChild(title);
         wrapper.appendChild(content);
         bottom.appendChild(plusButton);
         bottom.appendChild(points);
         bottom.appendChild(minusButton);
+        bottom.appendChild(comments);
         wrapper.appendChild(bottom);
         return wrapper;
     }
@@ -241,7 +248,7 @@ function Site(ref) {
     });
     var topics = [];
     this.elements.newPostButton.click(function () {
-        if (that.elements.newPostWrapper.hasClass('shown')) {
+        if (that.elements.newPostMain.hasClass('shown')) {
             if (that.elements.newPostName.val() == '')
                 that.elements.newPostName.val('[untitled post]')
             var post = {
@@ -276,7 +283,7 @@ function Site(ref) {
                 that.elements.newPostTopics.append(option);
             }
         }
-        that.elements.newPostWrapper.toggleClass('shown');
+        that.elements.newPostMain.toggleClass('shown');
         that.elements.newPostButton.toggleClass('k-rainbow');
     });
     this.elements.newPostTopics.change(function (e) {

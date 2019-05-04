@@ -181,11 +181,15 @@ body {
     border-bottom: 2px var(--color-secondary) solid;
     padding: 6px 16px;
     padding-bottom: 14px;
-    margin-top: calc(-16em + 12px);
+}
+
+#new-post-main {
+    height: 100%;
+    margin-top: -40%;
     transition: margin-top 0.3s;
 }
 
-#new-post-wrapper.shown {
+#new-post-main.shown {
     margin-top: 0;
 }
 
