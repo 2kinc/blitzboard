@@ -74,9 +74,20 @@ function Site(ref) {
             return document.createElement('div');
         var wrapper = document.createElement('div');
         wrapper.className = 'post-wrapper k-card';
-        var title = document.createElement('div');
+        var title = document.createElement('span');
         title.className = 'post-title k-card-title';
         title.innerText = p.name;
+        var topWrapper = document.createElement('div');
+        var topicsWrapper = document.createElement('span');
+        topicsWrapper.className = 'float-right post-topics-wrapper';
+        for (var topic in p.topics) {
+            var span = document.createElement('span');
+            span.className = 'post-topic-item';
+            span.innerText = '::' + p.topics[topic];
+            topicsWrapper.appendChild(span);
+        }
+        topWrapper.appendChild(title);
+        topWrapper.appendChild(topicsWrapper);
         var content = document.createElement('div');
         content.className = 'post-content k-card-content';
         content.innerText = p.content;
@@ -149,7 +160,7 @@ function Site(ref) {
             var comment = that.getMessageElement(snap);
             comments.appendChild(comment);
         });
-        wrapper.appendChild(title);
+        wrapper.appendChild(topWrapper);
         wrapper.appendChild(content);
         bottom.appendChild(plusButton);
         bottom.appendChild(points);
