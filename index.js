@@ -9,7 +9,7 @@ function Site(ref) {
         chat: $('#chat'),
         chatInput: $('#chat-input'),
         chatBodies: $('#chat-bodies'),
-        nothingHere: $('#nothing-here'),
+        loading: $('#loading'),
         newPostWrapper: $('#new-post-wrapper'),
         newPostButton: $('#new-post-button'),
         newPostName: $('#new-post-name'),
@@ -25,10 +25,7 @@ function Site(ref) {
     if (!this.ref) {
         return;
     }
-    this.currentTopic = 'Home';
-    $('#topic-home').click(function () {
-        that.elements.posts.addClass('expanded');
-    });
+    this.currentTopic = 'home';
     this.getMessageElement = function (ref) {
         var m = ref.val();
         var p = document.createElement('div');
@@ -73,6 +70,8 @@ function Site(ref) {
     }
     this.getPostElement = function (ref) {
         var p = ref.val();
+        if (!p.content || !p.user)
+            return document.createElement('div');
         var wrapper = document.createElement('div');
         wrapper.className = 'post-wrapper k-card';
         var title = document.createElement('div');
@@ -185,6 +184,20 @@ function Site(ref) {
                 that.elements.topics.append(p);
                 that.elements.newPostTopics.append(option);
             }
+            if (that.currentTopic == 'home') {
+                $('#topic-home').addClass('selected');
+                if (!document.querySelector('#posts-body-home')) {
+                    var newPostsBody = document.createElement('div');
+                    newPostsBody.id = 'posts-body-home';
+                    newPostsBody.className = 'posts-body';
+                    that.elements.postsBodies.append(newPostsBody);
+                    that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
+                        var postEl = that.getPostElement(snap);
+                        newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
+                    });
+                }
+                that.elements.posts.addClass('expanded');
+            }
             $('.chat-body').each(function () {
                 $(this).hide();
             });
@@ -215,7 +228,7 @@ function Site(ref) {
                         that.elements.postsBodies.append(newPostsBody);
                         that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
                             var post = snap.val();
-                            if (post.topics.includes(topic)) {
+                            if (post.topics && post.topics.includes(topic)) {
                                 var postEl = that.getPostElement(snap);
                                 newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
                             }
@@ -225,8 +238,23 @@ function Site(ref) {
                     that.data.render();
                 });
             });
+            $('#topic-home').click(function () {
+                if (!document.querySelector('#posts-body-home')) {
+                    var newPostsBody = document.createElement('div');
+                    newPostsBody.id = 'posts-body-home';
+                    newPostsBody.className = 'posts-body';
+                    that.elements.postsBodies.append(newPostsBody);
+                    that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
+                        var postEl = that.getPostElement(snap);
+                        newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
+                    });
+                }
+                that.elements.posts.addClass('expanded');
+                that.currentTopic = 'home';
+                that.data.render();
+            })
             that.elements.chatBodies.scrollTop(that.elements.chatBodies.height());
-            that.elements.nothingHere.hide();
+            that.elements.loading.hide();
         };
         that.data.render();
         $('#home-topic').addClass('selected');

@@ -36,7 +36,7 @@ body {
     display: inline-block;
 }
 
-#nothing-here {
+#loading {
     width: 100vw;
     height: 100vh;
     position: absolute;
@@ -184,13 +184,13 @@ body {
 }
 
 #new-post-main {
-    height: 100%;
-    margin-top: -40%;
-    transition: margin-top 0.3s;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 0.3s;
 }
 
 #new-post-main.shown {
-    margin-top: 0;
+    max-height: 100%;
 }
 
 #new-post-wrapper > input {
