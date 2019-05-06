@@ -222,14 +222,10 @@ function Site(ref) {
                     var topic = this.id.slice(6);
                     that.currentTopic = topic;
                     if (!document.querySelector('#chat-body-' + topic)) {
-                        var newChatBody = document.createElement('div');
+                        var newChatBody = document.createElement('chat-body');
                         newChatBody.id = 'chat-body-' + topic;
-                        newChatBody.className = 'chat-body';
-                        that.ref.child('topics').child(topic).child('chat').on('child_added', function (snap) {
-                            var el = that.getMessageElement(snap);
-                            newChatBody.appendChild(el);
-                            that.elements.chatBodies.scrollTop(1000000);
-                        });
+                        newChatBody.setAttribute(':topic', topic);
+                        newChatBody.getMessages();
                         that.elements.chatBodies.append(newChatBody);
                     }
                     if (!document.querySelector('#posts-body-' + topic)) {
@@ -357,13 +353,13 @@ function Blitzboard(id, name) {
 }
 
 var site = new Site(new Blitzboard('test', 'test.').ref);
-var app = new Vue({
+var vue = new Vue({
     el: '#app',
     data: {
-        firebase: null
+        users: {}
     },
     mounted: function(){
-        this.firebase = firebase;
+        this.firebase = app;
     }
 });
 
@@ -371,7 +367,8 @@ Vue.component("chat-body", {
     template: '#chat-body-template',
     data: () => ({
         messages: [],
-        users: []
+        users: [],
+        topic: ''
     }),
 
     mounted() {
@@ -380,18 +377,27 @@ Vue.component("chat-body", {
 
     methods: {
         getMessages() {
-            site.ref.child('topics').child(topic).child('chat').on('child_added', function (snap) {
+            site.ref.child('topics').child(this.topic).child('chat').on('child_added', function (snap) {
                 var s = snap.val();
-                if(!this.users.contains(s.userId))
+                if(!vue.users.contains(s.user))
                 {
-                    this.users.push(fetchUser(s.userId));
+                    vue.users[s.user] = this.fetchUser(s.user);
                 }
-                var mm = this.composeMessageObject(s, this.users[s.userId])
+                var mm = this.composeMessageObject(s, vue.users[s.user]);
                 this.messages.push(mm);
             });
         },
-        fetchUser: function(userId){
-            return null;
+        fetchUser(uid){
+            database.ref('users/' + uid).on('value', function (snap) {
+                return snap.val();
+            });
+        },
+        composeMessageObject(s, user) {
+            var object = Object.assign(s, {
+                username: user.displayName,
+                photoURL: user.photoURL
+            });
+            return object;
         }
     }
 });
