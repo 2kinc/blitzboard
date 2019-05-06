@@ -217,7 +217,7 @@ function Site(ref) {
                 $(this).hide();
             });
             $('#posts-body-' + that.currentTopic).show();
-            var chatBody = Vue.extend(chatBodyComponent);
+            var ChatBody = Vue.extend(chatBodyComponent);
             $('.topic-item').not('#topic-home').each(function () {
                 this.addEventListener('click', function () {
                     var topic = this.id.slice(6);
@@ -226,7 +226,7 @@ function Site(ref) {
                         var newChatBody = document.createElement('div');
                         newChatBody.id = 'chat-body-' + topic;
                         that.elements.chatBodies.append(newChatBody);
-                        var component = new chatBody();
+                        var component = new ChatBody();
                         component.topic = topic;
                         component.$mount('#' + newChatBody.id);
                     }
