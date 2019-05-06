@@ -51,7 +51,7 @@ function Site(ref) {
         });
         messageinfo.className = 'message-info';
         var image = document.createElement('img');
-        image.className = 'profile-picture enlargable';
+        image.className = 'profile-picture';
         var wrapper = document.createElement('div');
         wrapper.className = 'message';
         var imageAndMessageWrapper = document.createElement('div');
@@ -357,6 +357,44 @@ function Blitzboard(id, name) {
 }
 
 var site = new Site(new Blitzboard('test', 'test.').ref);
+var app = new Vue({
+    el: '#app',
+    data: {
+        firebase: null
+    },
+    mounted: function(){
+        this.firebase = firebase;
+    }
+});
+
+Vue.component("chat-body", {
+    template: '#chat-body-template',
+    data: () => ({
+        messages: [],
+        users: []
+    }),
+
+    mounted() {
+        this.getMessages();
+    },
+
+    methods: {
+        getMessages() {
+            site.ref.child('topics').child(topic).child('chat').on('child_added', function (snap) {
+                var s = snap.val();
+                if(!this.users.contains(s.userId))
+                {
+                    this.users.push(fetchUser(s.userId));
+                }
+                var mm = this.composeMessageObject(s, this.users[s.userId])
+                this.messages.push(mm);
+            });
+        },
+        fetchUser: function(userId){
+            return null;
+        }
+    }
+});
 
 auth.onAuthStateChanged(function (user) {
     if (user) {
