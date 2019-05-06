@@ -14,46 +14,63 @@
 </head>
 
 <body>
-    <div class="k-navbar" style="z-index: 11;">
-        <h1 class="k-navbar-title" style="margin: inherit;">
-            BlitzBoard <span id="blitzboard-title"></span>
-        </h1>
-    </div>
-
-    <div id="content-body">
-        <div id="topics">
-            <div id="topic-home" class="topic-item selected">home</div>
-            <div id="more-topics"></div>
+    <div id="app">
+        <div class="k-navbar" style="z-index: 11;">
+            <h1 class="k-navbar-title" style="margin: inherit;">
+                BlitzBoard <span id="blitzboard-title"></span>
+            </h1>
         </div>
 
-        <div id="main-content">
-            <div id="posts">
-                <div id="new-post-wrapper">
-                    <div id="new-post-main">
-                        <input name="Post title" type="text" class="k-input" id="new-post-name"
-                            placeholder="What are you going to talk about?"> <br>
-                        <textarea name="Post content" id="new-post-content" cols="60" rows="6" class="k-input"
-                            placeholder="What do you want to say in this post?"></textarea> <br>
-                        <input type="file" name="Upload an image" class="inputfile" id="new-post-upload"
-                            accept=".jpg,.png,.bmp" />
-                        <label for="new-post-upload" class="k-button" id="new-post-upload-label">Upload an image
-                            instead?</label> <br>
-                        Add topics for your post: <span id="new-post-topics-wrapper"></span>
-                        <select id="new-post-topics" class="k-input"></select> <br>
+        <div id="content-body">
+            <div id="topics">
+                <div id="topic-home" class="topic-item selected">home</div>
+                <div id="more-topics"></div>
+            </div>
+
+            <div id="main-content">
+                <div id="posts">
+                    <div id="new-post-wrapper">
+                        <div id="new-post-main">
+                            <input name="Post title" type="text" class="k-input" id="new-post-name"
+                                placeholder="What are you going to talk about?"> <br>
+                            <textarea name="Post content" id="new-post-content" cols="60" rows="6" class="k-input"
+                                placeholder="What do you want to say in this post?"></textarea> <br>
+                            <input type="file" name="Upload an image" class="inputfile" id="new-post-upload"
+                                accept=".jpg,.png,.bmp" />
+                            <label for="new-post-upload" class="k-button" id="new-post-upload-label">Upload an image
+                                instead?</label> <br>
+                            Add topics for your post: <span id="new-post-topics-wrapper"></span>
+                            <select id="new-post-topics" class="k-input"></select> <br>
+                        </div>
+                        <button class="k-button k-button--elevated" id="new-post-button">+ New Post</button>
                     </div>
-                    <button class="k-button k-button--elevated" id="new-post-button">+ New Post</button>
+                    <div id="posts-bodies"></div>
                 </div>
-                <div id="posts-bodies"></div>
+                <div id="chat">
+                    <div id="chat-bodies"></div>
+                    <input type="text" id="chat-input" maxlength="150" class="k-input"
+                        placeholder="Send a message to the chat...">
+                </div>
             </div>
-            <div id="chat">
-                <div id="chat-bodies"></div>
-                <input type="text" id="chat-input" maxlength="150" class="k-input"
-                    placeholder="Send a message to the chat...">
+
+            <div id="loading">Loading...</div>
+        </div>
+    </div>
+
+    <template id="chat-body-template">
+        <div class="chat-body">
+            <div class="message" v-for="message in messages">
+                <div>
+                    <img v-attr="src: message.profilePicture" alt="Profile Picture">
+                    <div class="message-body">{{message.message}}</div>
+                </div>
+                <div class="message-info">
+                    <span class="chat-username">{{message.username}}</span>
+                    <span class="message-info--time"> at {{message.time}}</span>
+                </div>
             </div>
         </div>
-
-        <div id="loading">Loading...</div>
-    </div>
+    </template>
 
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script> //Firebase Initializing
@@ -68,6 +85,7 @@
         firebase.initializeApp(config);
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="notifications.js"></script>
     <script src="index.js"></script>
 </body>
