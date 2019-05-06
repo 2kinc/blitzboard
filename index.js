@@ -217,16 +217,18 @@ function Site(ref) {
                 $(this).hide();
             });
             $('#posts-body-' + that.currentTopic).show();
+            var chatBody = Vue.extend(chatBodyComponent);
             $('.topic-item').not('#topic-home').each(function () {
                 this.addEventListener('click', function () {
                     var topic = this.id.slice(6);
                     that.currentTopic = topic;
                     if (!document.querySelector('#chat-body-' + topic)) {
-                        var newChatBody = document.createElement('chat-body');
+                        var newChatBody = document.createElement('div');
                         newChatBody.id = 'chat-body-' + topic;
-                        newChatBody.setAttribute(':topic', topic);
-                        newChatBody.getMessages();
                         that.elements.chatBodies.append(newChatBody);
+                        var component = new chatBody();
+                        component.topic = topic;
+                        component.$mount('#' + newChatBody.id);
                     }
                     if (!document.querySelector('#posts-body-' + topic)) {
                         var newPostsBody = document.createElement('div');
@@ -352,22 +354,20 @@ function Blitzboard(id, name) {
     });
 }
 
-var site = new Site(new Blitzboard('test', 'test.').ref);
 var vue = new Vue({
     el: '#app',
     data: {
         users: {}
     },
-    mounted: function(){
+    mounted: function () {
         this.firebase = app;
     }
 });
 
-Vue.component("chat-body", {
+var chatBodyComponent = Vue.component("chat-body", {
     template: '#chat-body-template',
     data: () => ({
         messages: [],
-        users: [],
         topic: ''
     }),
 
@@ -376,31 +376,36 @@ Vue.component("chat-body", {
     },
 
     methods: {
-        getMessages() {
+        getMessages: function () {
+            var vueThis = this;
             site.ref.child('topics').child(this.topic).child('chat').on('child_added', function (snap) {
                 var s = snap.val();
-                if(!vue.users.contains(s.user))
-                {
-                    vue.users[s.user] = this.fetchUser(s.user);
+
+                if (!vue.users[s.user]) {
+                    vueThis.fetchUserAndPushMessage(s, s.user);
+                    return;
                 }
-                var mm = this.composeMessageObject(s, vue.users[s.user]);
-                this.messages.push(mm);
+                var mm = vueThis.composeMessageObject(s, vue.users[s.user]);
+                vueThis.messages.push(mm);
             });
         },
-        fetchUser(uid){
-            database.ref('users/' + uid).on('value', function (snap) {
-                return snap.val();
+        fetchUserAndPushMessage: function (message, uid) {
+            var vueThis = this;
+            database.ref('users/' + uid).once('value').then(function (snap) {
+                var mm = vueThis.composeMessageObject(message, snap.val());
+                vueThis.messages.push(mm);
             });
         },
-        composeMessageObject(s, user) {
+        composeMessageObject: function (s, u) {
             var object = Object.assign(s, {
-                username: user.displayName,
-                photoURL: user.photoURL
+                displayName: u.displayName,
+                photoURL: u.photoURL
             });
             return object;
         }
     }
 });
+var site = new Site(new Blitzboard('test', 'test.').ref);
 
 auth.onAuthStateChanged(function (user) {
     if (user) {
