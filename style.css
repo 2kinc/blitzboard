@@ -1,6 +1,6 @@
 body {
     --color-main: #4444ff;
-    --color-secondary: #4444ff;
+    --color-secondary: black;
     --color-background: white;
     --color-light: #6666ff;
     font-family: neue-haas-unica, sans-serif;
@@ -9,9 +9,9 @@ body {
 }
 
 #topics {
+    color: var(--color-main);
     width: calc(12em - 2px);
     height: 100%;
-    background: var(--color-light);
     margin: 0;
     padding: 16px;
     display: inline-block;
@@ -38,7 +38,6 @@ body {
 
 k-navbar, .k-navbar {
     color: var(--color-background);
-    --color-secondary: var(--color-background);
 }
 
 #loading {
@@ -73,7 +72,7 @@ k-navbar, .k-navbar {
 }
 
 .topic-item.selected {
-    background: var(--color-secondary);
+    background: var(--color-main);
     color: white;
     border: 2px var(--color-secondary) solid;
     transform: translate(-2px, -2px);
@@ -154,6 +153,7 @@ k-navbar, .k-navbar {
 }
 
 .message-info {
+    color: var(--color-main);
     margin: 2px;
     margin-top: -16px;
     font-size: 0.8em;
@@ -176,11 +176,6 @@ k-navbar, .k-navbar {
     width: calc(100vw - 14em);
     position: absolute;
     z-index: 10;
-}
-
-#new-post-button {
-    --color-main: white;
-    --color-secondary: #4444ff;
 }
 
 #new-post-wrapper {
@@ -228,6 +223,7 @@ k-navbar, .k-navbar {
 
 .post-wrapper {
     background: var(--color-background);
+    --color-secondary: black;
 }
 
 .post-bottom {
@@ -289,6 +285,7 @@ button {
     padding: 4px;
     position: relative;
     top: -2.4em;
+    color: var(--color-main);
 }
 
 .post-topics-wrapper {

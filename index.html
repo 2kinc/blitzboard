@@ -60,7 +60,7 @@
     <template id="chat-body-template">
         <div class="chat-body" v-bind:id="'chat-body-' + topic">
             <div class="message" v-for="message in messages">
-                <div>
+                <div style="--color-secondary: black; color: black;">
                     <img v-bind:src="message.photoURL" class="profile-picture" alt="Profile Picture">
                     <div class="message-body">{{message.message}}</div>
                 </div>
