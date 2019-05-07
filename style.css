@@ -1,6 +1,6 @@
 body {
     --color-main: #4444ff;
-    --color-secondary: black;
+    --color-secondary: #111;
     --color-background: white;
     --color-light: #6666ff;
     font-family: neue-haas-unica, sans-serif;
@@ -16,6 +16,7 @@ body {
     padding: 16px;
     display: inline-block;
     border-right: 2px var(--color-secondary) solid;
+    box-shadow: 4px 0 10px #00000099;
 }
 
 #content-body {
@@ -34,10 +35,6 @@ body {
 #main-content > * {
     height: calc(100vh - 3em - 10px);
     display: inline-block;
-}
-
-k-navbar, .k-navbar {
-    color: var(--color-background);
 }
 
 #loading {
@@ -61,7 +58,7 @@ k-navbar, .k-navbar {
 }
 
 .topic-item::before {
-    content: ':: ';
+    content: '::';
     opacity: 0.6;
 }
 
@@ -81,7 +78,6 @@ k-navbar, .k-navbar {
 
 #more-topics::before {
     content: 'Topics';
-    background: #ffffff99;
     display: block;
     margin: 10px;
     margin-left: -16px;
@@ -222,12 +218,7 @@ k-navbar, .k-navbar {
 }
 
 .post-wrapper {
-    background: var(--color-background);
-    --color-secondary: black;
-}
-
-.post-bottom {
-    background: var(--color-background);
+    background: #ffffff11;
 }
 
 .posts-body {
@@ -290,4 +281,21 @@ button {
 
 .post-topics-wrapper {
     margin-right: 0.4em;
+}
+
+::-webkit-scrollbar {
+    width: 16px;
+    background: #4444ff33;
+    border-radius: 1000px;
+    border: 4px var(--color-background) solid;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 1000px;
+    background: #4444ff66;
+    border: 4px var(--color-background) solid;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4444ff;
 }

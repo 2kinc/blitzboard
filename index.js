@@ -173,7 +173,7 @@ function Site(ref) {
         that.data = snap.val();
         that.data.render = function () {
             that.elements.topics.html('');
-            that.elements.blitzboardTitle.text(':: ' + that.currentTopic + ' - ' + that.data.name);
+            that.elements.blitzboardTitle.text('::' + that.currentTopic + ' - ' + that.data.name);
             that.elements.newPostTopics.html('');
             var autofocus = document.createElement('option');
             autofocus.innerText = 'Select a topic';
@@ -190,7 +190,7 @@ function Site(ref) {
                 p.innerText = topic;
                 p.id = 'topic-' + topic;
                 var option = document.createElement('option');
-                option.innerText = ':: ' + topic;
+                option.innerText = '::' + topic;
                 option.id = 'option-' + topic;
                 that.elements.topics.append(p);
                 that.elements.newPostTopics.append(option);
@@ -314,7 +314,7 @@ function Site(ref) {
                 p.innerText = topic;
                 p.id = 'topic-' + topic;
                 var option = document.createElement('option');
-                option.innerText = ':: ' + topic;
+                option.innerText = '::' + topic;
                 option.id = 'option-' + topic;
                 that.elements.topics.append(p);
                 that.elements.newPostTopics.append(option);
@@ -324,8 +324,8 @@ function Site(ref) {
         that.elements.newPostButton.toggleClass('k-rainbow');
     });
     this.elements.newPostTopics.change(function (e) {
-        var topic = that.elements.newPostTopics.val().slice(3);
-        if (topic != 'ect a topic') {
+        var topic = that.elements.newPostTopics.val().slice(2);
+        if (topic != 'lect a topic') {
             var span = document.createElement('span');
             span.innerText = topic;
             span.className = 'new-post-topic k-capsule';
