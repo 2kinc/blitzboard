@@ -16,7 +16,11 @@ body {
     padding: 16px;
     display: inline-block;
     border-right: 2px var(--color-secondary) solid;
-    box-shadow: 4px 0 10px #00000099;
+    border: none;
+    position: absolute;
+    top: calc(3em + 8px);
+    box-shadow: 10px 0 6px 0 #00000033;
+    z-index: 100;
 }
 
 #content-body {
@@ -27,7 +31,7 @@ body {
 }
 
 #main-content {
-    width: calc(100vw - 12em - 32px);
+    width: calc(100vw - 12em - 30px);
     height: calc(100vh - 3em - 10px);
     float: right;
 }
@@ -63,17 +67,14 @@ body {
 }
 
 .topic-item:hover {
-    border: 2px var(--color-secondary) solid;
-    transform: translate(-2px, -2px);
-    margin-bottom: -2px;
+    background: var(--color-main);
+    color: white;
+    border: none;
 }
 
 .topic-item.selected {
     background: var(--color-main);
     color: white;
-    border: 2px var(--color-secondary) solid;
-    transform: translate(-2px, -2px);
-    margin-bottom: -2px;
 }
 
 #more-topics::before {
@@ -84,6 +85,14 @@ body {
     margin-right: -16px;
     padding: 4px 0;
     text-align: center;
+}
+
+k-navbar, .k-navbar {
+    border: none;
+    box-shadow: 0 6px 50px #00000066;
+    background: white;
+    color: var(--color-main);
+    z-index: 100000000 !important;
 }
 
 #blitzboard-title {
@@ -122,10 +131,12 @@ body {
     bottom: 0;
     width: 100%;
     margin: 0;
-    background: var(--color-light);
     color: black;
     border-top: 2px var(--color-secondary) solid;
     border-radius: 0!important;
+    box-shadow: 0 -4px 14px 0 #00000066;
+    background: var(--color-background);
+    color: var(--color-main);
 }
 
 #chat-input::placeholder {
@@ -174,8 +185,14 @@ body {
     z-index: 10;
 }
 
+#new-post-button {
+    --color-main: white;
+    --color-secondary: #4444ff;
+}
+
 #new-post-wrapper {
-    border-bottom: 2px var(--color-secondary) solid;
+    border-bottom: 2px var(--color-main) solid;
+    box-shadow: 10px 0 8px 0 #00000088;
     padding: 6px 16px;
     padding-bottom: 14px;
 }
@@ -218,7 +235,13 @@ body {
 }
 
 .post-wrapper {
-    background: #ffffff11;
+    background: white;
+    box-shadow: 10px 6px 14px 0 #00000044, -6px -4px 14px #00000022;
+    border: none;
+}
+
+.post-bottom {
+    border-color: var(--color-main);
 }
 
 .posts-body {
