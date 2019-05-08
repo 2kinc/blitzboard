@@ -406,6 +406,50 @@ var chatBodyComponent = Vue.component("chat-body", {
         }
     }
 });
+
+/*var postsBodyComponent = Vue.component("posts-body", {
+    template: '#posts-body-template',
+    data: () => ({
+        messages: [],
+        topic: ''
+    }),
+
+    mounted() {
+        this.getMessages();
+    },
+
+    methods: {
+        getMessages: function () {
+            var vueThis = this;
+            site.ref.child('topics').child(this.topic).child('chat').on('child_added', function (snap) {
+                var s = snap.val();
+
+                if (!vue.users[s.user]) {
+                    vueThis.fetchUserAndPushMessage(s, s.user);
+                } else {
+                    var mm = vueThis.composeMessageObject(s, vue.users[s.user]);
+                    vueThis.posts.push(mm);
+                }
+            });
+        },
+        fetchUserAndPushMessage: function (message, uid) {
+            var vueThis = this;
+            database.ref('users/' + uid).once('value').then(function (snap) {
+                var mm = vueThis.composeMessageObject(message, snap.val());
+                vue.users[uid] = snap.val();
+                vueThis.posts.push(mm);
+            });
+        },
+        composeMessageObject: function (s, u) {
+            var object = Object.assign(s, {
+                displayName: u.displayName,
+                photoURL: u.photoURL
+            });
+            return object;
+        }
+    }
+});*/
+
 var site = new Site(new Blitzboard('test', 'test.').ref);
 
 auth.onAuthStateChanged(function (user) {
