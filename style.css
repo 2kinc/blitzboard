@@ -19,7 +19,7 @@ body {
     border: none;
     position: absolute;
     top: calc(3em + 8px);
-    box-shadow: 10px 0 6px 0 #00000033;
+    box-shadow: 0 0 10px 0 #00000066;
     z-index: 100;
 }
 
@@ -49,8 +49,9 @@ body {
     left: 0;
     text-align: center;
     font-size: 2em;
-    background: var(--color-light);
+    background: var(--color-background);
     padding: 100px 0;
+    z-index: 100000000;
 }
 
 .topic-item {
@@ -89,7 +90,7 @@ body {
 
 k-navbar, .k-navbar {
     border: none;
-    box-shadow: 0 6px 50px #00000066;
+    box-shadow: 0 4px 50px #00000066;
     background: white;
     color: var(--color-main);
     z-index: 100000000 !important;
@@ -186,8 +187,12 @@ k-navbar, .k-navbar {
 }
 
 #new-post-button {
-    --color-main: white;
+    --color-main: #4444ff;
     --color-secondary: #4444ff;
+    background: var(--color-main);
+    color: white!important;
+    margin-bottom: -100px;
+    box-shadow: 2px 2px 4px 0 #00000066;
 }
 
 #new-post-wrapper {
