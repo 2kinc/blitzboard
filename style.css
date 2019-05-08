@@ -327,3 +327,8 @@ button {
 ::-webkit-scrollbar-thumb:hover {
     background: #4444ff;
 }
+
+::selection {
+    background: #4444ff66;
+    border-radius: 4px;
+}

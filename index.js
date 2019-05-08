@@ -383,16 +383,17 @@ var chatBodyComponent = Vue.component("chat-body", {
 
                 if (!vue.users[s.user]) {
                     vueThis.fetchUserAndPushMessage(s, s.user);
-                    return;
+                } else {
+                    var mm = vueThis.composeMessageObject(s, vue.users[s.user]);
+                    vueThis.messages.push(mm);
                 }
-                var mm = vueThis.composeMessageObject(s, vue.users[s.user]);
-                vueThis.messages.push(mm);
             });
         },
         fetchUserAndPushMessage: function (message, uid) {
             var vueThis = this;
             database.ref('users/' + uid).once('value').then(function (snap) {
                 var mm = vueThis.composeMessageObject(message, snap.val());
+                vue.users[uid] = snap.val();
                 vueThis.messages.push(mm);
             });
         },
