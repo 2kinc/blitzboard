@@ -410,43 +410,49 @@ var chatBodyComponent = Vue.component("chat-body", {
 /*var postsBodyComponent = Vue.component("posts-body", {
     template: '#posts-body-template',
     data: () => ({
-        messages: [],
+        posts: [],
         topic: ''
     }),
 
     mounted() {
-        this.getMessages();
+        this.getPosts();
     },
 
     methods: {
-        getMessages: function () {
+        getPosts: function () {
             var vueThis = this;
-            site.ref.child('topics').child(this.topic).child('chat').on('child_added', function (snap) {
+            site.ref.child('posts').orderByChild('topic').equalTo(this.topic).on('child_added', function (snap) {
                 var s = snap.val();
 
                 if (!vue.users[s.user]) {
-                    vueThis.fetchUserAndPushMessage(s, s.user);
+                    vueThis.fetchUserAndPushPost(s, s.user);
                 } else {
-                    var mm = vueThis.composeMessageObject(s, vue.users[s.user]);
+                    var mm = vueThis.composePostObject(s, vue.users[s.user]);
                     vueThis.posts.push(mm);
                 }
             });
         },
-        fetchUserAndPushMessage: function (message, uid) {
+        fetchUserAndPushPost: function (post, uid) {
             var vueThis = this;
             database.ref('users/' + uid).once('value').then(function (snap) {
-                var mm = vueThis.composeMessageObject(message, snap.val());
+                var mm = vueThis.composePostObject(post, snap.val());
                 vue.users[uid] = snap.val();
                 vueThis.posts.push(mm);
             });
         },
-        composeMessageObject: function (s, u) {
+        composePostObject: function (s, user, pluses, minuses) {
             var object = Object.assign(s, {
-                displayName: u.displayName,
-                photoURL: u.photoURL
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                pluses: pluses,
+                minuses: minuses
             });
             return object;
         }
+    },
+
+    computed: {
+
     }
 });*/
 

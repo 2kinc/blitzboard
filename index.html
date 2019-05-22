@@ -59,7 +59,7 @@
 
     <template id="chat-body-template">
         <div class="chat-body" v-bind:id="'chat-body-' + topic">
-            <template class="message" v-for="message of messages">
+            <template v-for="message of messages">
                 <div style="--color-secondary: black; color: black;">
                     <img v-bind:src="message.photoURL" class="profile-picture" alt="Profile Picture">
                     <div class="message-body">{{message.message}}</div>
@@ -67,6 +67,29 @@
                 <div class="message-info">
                     <span class="chat-username">{{message.displayName}}</span>
                     <span class="message-info--time"> at {{message.time}}</span>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <template id="posts-body-template">
+        <div class="posts-body" v-bind:id="posts-body- + topic">
+            <template v-for="post of posts">
+                <div class="post-wrapper">
+                    <div>
+                        <span class="post-title k-card-title">{{post.title}}</span>
+                        <span class="float-right post-topics-wrapper">
+                            <template v-for="postTopic of post.topics">
+                                <span class="post-topic-item">{{postTopic}}</span>
+                            </template>
+                        </span>
+                    </div>
+                    <div class="post-content k-card-content">{{post.content}}</div>
+                    <div class="post-bottom k-card-bottom">
+                        <button class="k-button plus-button">+1</button>
+                        <span class="post-points">{{post.pluses + post.minuses}}</span>
+                        <button class="k-button minus-button">-1</button>
+                    </div>
                 </div>
             </template>
         </div>
