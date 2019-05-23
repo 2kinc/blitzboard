@@ -206,6 +206,7 @@ function Site(ref) {
                     that.elements.postsBodies.append(newPostsBody);
                     var component = new PostsBody();
                     component.topic = topic;
+                    component.ref = that.ref.child('posts').orderByChild('pluses');
                     component.$mount('#' + newPostsBody.id);
                     /*that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
                         var post = snap.val();
@@ -439,8 +440,7 @@ var postsBodyComponent = Vue.component("posts-body", {
     methods: {
         getPosts: function () {
             var vueThis = this;
-            this.ref = site.ref.child('posts').orderByChild('topic').equalTo(this.topic);
-            this.ref.ref.on('child_added', function (snap) {
+            this.ref.on('child_added', function (snap) {
                 var s = snap.val();
                 s.id = snap.key;
 
@@ -460,12 +460,10 @@ var postsBodyComponent = Vue.component("posts-body", {
                 vueThis.posts.push(mm);
             });
         },
-        composePostObject: function (s, user, pluses, minuses) {
+        composePostObject: function (s, user) {
             var object = Object.assign(s, {
                 displayName: user.displayName,
-                photoURL: user.photoURL,
-                pluses: pluses,
-                minuses: minuses
+                photoURL: user.photoURL
             });
             return object;
         }
@@ -480,7 +478,7 @@ var postWrapperComponent = Vue.component('post-wrapper', {
         minuses: 0,
         content: 'Loading...',
         title: 'Loading...',
-        displayName: 'Loading...'
+        displayName: 'Loading...',
     }),
 
     mounted() {
@@ -490,10 +488,10 @@ var postWrapperComponent = Vue.component('post-wrapper', {
     methods: {
         getPoints: function () {
             var vueThis = this;
-            ref.child('pluses').on('value', function (snap) {
+            this.ref.child('pluses').on('value', function (snap) {
                 vueThis.pluses = snap.val();
             });
-            ref.child('minuses').on('value', function (snap) {
+            this.ref.child('minuses').on('value', function (snap) {
                 vueThis.minuses = snap.val();
             });
         }

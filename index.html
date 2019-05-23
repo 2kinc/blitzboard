@@ -74,7 +74,7 @@
 
     <template id="posts-body-template">
         <div class="posts-body" v-bind:id="'posts-body-' + topic">
-            <post-wrapper v-for="post in posts" v-bind:ref="ref.child(post.key)" v-bind:key="post.key"></post-wrapper>
+            <post-wrapper v-for="post in posts" v-bind:ref="ref.ref.child(post.key)" v-bind:key="post.key"></post-wrapper>
         </div>
     </template>
 
