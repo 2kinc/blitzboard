@@ -182,6 +182,8 @@ function Site(ref) {
             $('.topic-item').each(function () {
                 this.classList.remove('selected');
             });
+            var ChatBody = Vue.extend(chatBodyComponent);
+            var PostsBody = Vue.extend(postsBodyComponent);
             for (var topic in that.data.topics) {
                 var p = document.createElement('div');
                 p.className = 'topic-item';
@@ -199,13 +201,19 @@ function Site(ref) {
                 $('#topic-home').addClass('selected');
                 if (!document.querySelector('#posts-body-home')) {
                     var newPostsBody = document.createElement('div');
-                    newPostsBody.id = 'posts-body-home';
-                    newPostsBody.className = 'posts-body';
+                    newPostsBody.id = 'posts-body-' + topic;
+                    //newPostsBody.className = 'posts-body';
                     that.elements.postsBodies.append(newPostsBody);
-                    that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
-                        var postEl = that.getPostElement(snap);
-                        newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
-                    });
+                    var component = new PostsBody();
+                    component.topic = topic;
+                    component.$mount('#' + newPostsBody.id);
+                    /*that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
+                        var post = snap.val();
+                        if (post.topics && post.topics.includes(topic)) {
+                            var postEl = that.getPostElement(snap);
+                            newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
+                        }
+                    });*/
                 }
                 that.elements.posts.addClass('expanded');
             }
@@ -217,7 +225,6 @@ function Site(ref) {
                 $(this).hide();
             });
             $('#posts-body-' + that.currentTopic).show();
-            var ChatBody = Vue.extend(chatBodyComponent);
             $('.topic-item').not('#topic-home').each(function () {
                 this.addEventListener('click', function () {
                     var topic = this.id.slice(6);
@@ -233,15 +240,18 @@ function Site(ref) {
                     if (!document.querySelector('#posts-body-' + topic)) {
                         var newPostsBody = document.createElement('div');
                         newPostsBody.id = 'posts-body-' + topic;
-                        newPostsBody.className = 'posts-body';
+                        //newPostsBody.className = 'posts-body';
                         that.elements.postsBodies.append(newPostsBody);
-                        that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
+                        var component = new PostsBody();
+                        component.topic = topic;
+                        component.$mount('#' + newPostsBody.id);
+                        /*that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
                             var post = snap.val();
                             if (post.topics && post.topics.includes(topic)) {
                                 var postEl = that.getPostElement(snap);
                                 newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
                             }
-                        });
+                        });*/
                     }
                     that.elements.posts.removeClass('expanded');
                     that.data.render();
@@ -250,13 +260,19 @@ function Site(ref) {
             $('#topic-home').click(function () {
                 if (!document.querySelector('#posts-body-home')) {
                     var newPostsBody = document.createElement('div');
-                    newPostsBody.id = 'posts-body-home';
-                    newPostsBody.className = 'posts-body';
+                    newPostsBody.id = 'posts-body-' + topic;
+                    //newPostsBody.className = 'posts-body';
                     that.elements.postsBodies.append(newPostsBody);
-                    that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
-                        var postEl = that.getPostElement(snap);
-                        newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
-                    });
+                    var component = new PostsBody();
+                    component.topic = topic;
+                    component.$mount('#' + newPostsBody.id);
+                    /*that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
+                        var post = snap.val();
+                        if (post.topics && post.topics.includes(topic)) {
+                            var postEl = that.getPostElement(snap);
+                            newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
+                        }
+                    });*/
                 }
                 that.elements.posts.addClass('expanded');
                 that.currentTopic = 'home';
@@ -407,12 +423,14 @@ var chatBodyComponent = Vue.component("chat-body", {
     }
 });
 
-/*var postsBodyComponent = Vue.component("posts-body", {
+var postsBodyComponent = Vue.component("posts-body", {
     template: '#posts-body-template',
-    data: () => ({
-        posts: [],
-        topic: ''
-    }),
+    data: function () {
+        return {
+            posts: [],
+            topic: ''
+        };
+    },
 
     mounted() {
         this.getPosts();
@@ -421,8 +439,10 @@ var chatBodyComponent = Vue.component("chat-body", {
     methods: {
         getPosts: function () {
             var vueThis = this;
-            site.ref.child('posts').orderByChild('topic').equalTo(this.topic).on('child_added', function (snap) {
+            this.ref = site.ref.child('posts').orderByChild('topic').equalTo(this.topic);
+            this.ref.ref.on('child_added', function (snap) {
                 var s = snap.val();
+                s.id = snap.key;
 
                 if (!vue.users[s.user]) {
                     vueThis.fetchUserAndPushPost(s, s.user);
@@ -450,11 +470,35 @@ var chatBodyComponent = Vue.component("chat-body", {
             return object;
         }
     },
+});
 
-    computed: {
+var postWrapperComponent = Vue.component('post-wrapper', {
+    template: '#post-wrapper-template',
+    props: ['ref'],
+    data: () => ({
+        pluses: 0,
+        minuses: 0,
+        content: 'Loading...',
+        title: 'Loading...',
+        displayName: 'Loading...'
+    }),
 
+    mounted() {
+        this.getPoints();
+    },
+
+    methods: {
+        getPoints: function () {
+            var vueThis = this;
+            ref.child('pluses').on('value', function (snap) {
+                vueThis.pluses = snap.val();
+            });
+            ref.child('minuses').on('value', function (snap) {
+                vueThis.minuses = snap.val();
+            });
+        }
     }
-});*/
+});
 
 var site = new Site(new Blitzboard('test', 'test.').ref);
 
