@@ -240,13 +240,16 @@ k-navbar, .k-navbar {
 }
 
 .post-wrapper {
-    background: white;
-    box-shadow: 10px 6px 14px 0 #00000044, -6px -4px 14px #00000022;
-    border: none;
+    border-radius: 10px;
+    display: block;
+    border: 2px black solid;
+    padding: 16px;
+    margin: 16px;
+    padding-bottom: calc(16px + 2em);
 }
 
 .post-bottom {
-    border-color: var(--color-main);
+    float: right;
 }
 
 .posts-body {
@@ -263,23 +266,22 @@ k-navbar, .k-navbar {
 
 .post-points {
     padding: 3.5px;
-    border-top: 2px var(--color-secondary) solid;
-    border-bottom: 2px var(--color-secondary) solid;
     position: relative;
     top: 2.5px;
 }
 
 .plus-button, .minus-button {
     padding: 8px;
+    background: transparent;
+    border: none;
+    color: var(--color-main);
 }
 
 .plus-button {
-    background: #44ff77;
     border-radius: 8px 0 0 8px;
 }
 
 .minus-button {
-    background: #ff6655;
     border-radius: 0 8px 8px 0;
 }
 
@@ -302,13 +304,12 @@ button {
     border-radius: 4px;
     margin: 4px;
     padding: 4px;
-    position: relative;
     top: -2.4em;
     color: var(--color-main);
 }
 
 .post-topics-wrapper {
-    margin-right: 0.4em;
+    margin-right: -10px;
 }
 
 ::-webkit-scrollbar {

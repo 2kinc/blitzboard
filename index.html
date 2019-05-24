@@ -74,25 +74,26 @@
 
     <template id="posts-body-template">
         <div class="posts-body" v-bind:id="'posts-body-' + topic">
-            <post-wrapper v-for="post of posts" v-bind:post="post" v-bind:dbref="dbref.ref.child(post.id)" v-bind:key="post.key"></post-wrapper>
+            <post-wrapper v-for="post of posts" v-bind:post="post" v-bind:dbref="dbref.ref.child(post.id)"
+                v-bind:key="post.key"></post-wrapper>
         </div>
     </template>
 
     <template id="post-wrapper-template">
         <div class="post-wrapper">
             <div>
-                <span class="post-title k-card-title">{{post.name}}</span>
+                <span class="post-title">{{post.name}}</span>
                 <span class="float-right post-topics-wrapper">
                     <template v-for="topic of post.topics">
                         <span class="post-topic-item">{{topic}}</span>
                     </template>
                 </span>
             </div>
-            <div class="post-content k-card-content">{{post.content}}</div>
-            <div class="post-bottom k-card-bottom">
-                <button class="k-button plus-button">+1</button>
+            <div class="post-content">{{post.content}}</div>
+            <div class="post-bottom">
+                <button class="plus-button">+1</button>
                 <span class="post-points">{{post.pluses + post.minuses}}</span>
-                <button class="k-button minus-button">-1</button>
+                <button class="minus-button">-1</button>
             </div>
         </div>
     </template>
