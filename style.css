@@ -90,7 +90,7 @@ body {
 
 k-navbar, .k-navbar {
     border: none;
-    box-shadow: 0 4px 50px #00000066;
+    box-shadow: 0 2px 8px #00000066;
     background: white;
     color: var(--color-main);
     z-index: 100000000 !important;
@@ -247,10 +247,48 @@ k-navbar, .k-navbar {
     margin: 16px;
     padding-bottom: calc(16px + 2em);
     background-color: white;
+    background-size: cover;
+}
+
+.post-wrapper.has-image{
+    position: relative;
+    padding-top: 0;
+    background-size: calc(100% + 100px) !important;
+    background-position: top !important;
+}
+
+.post-wrapper.has-image .post-content, .post-wrapper.has-image .post-top {
+    background: white;
+    border-radius: 4px;
+}
+
+.post-wrapper.has-image .post-top {
+    padding: 6px;
+    margin-left: -6px;
+    margin-top: -6px;
+}
+
+.post-wrapper.has-image .post-bottom {
+    background: white;
+    padding: 4px;
+    border-radius: 4px;
+    margin-bottom: -4px;
+    margin-left: -4px;
 }
 
 .post-bottom {
-    float: right;
+    margin-top: 12px;
+    margin-bottom: -32px;
+}
+
+.post-user {
+    color: #00000066;
+    margin-left: 4px;
+}
+
+.post-wrapper.has-image .post-bottom {
+    position: absolute;
+    bottom: 32px;
 }
 
 .posts-body {
@@ -264,6 +302,7 @@ k-navbar, .k-navbar {
     text-overflow: ellipsis;
     overflow: hidden;
     font-size: 1.6em;
+    font-weight: bold;
 }
 
 .post-points {
@@ -299,9 +338,20 @@ button {
 }
 
 .post-img {
+    vertical-align: top;
     width: 100%;
+    opacity: 0;
+}
+
+.post-wrapper.has-image > div {
+    position: absolute;
+    top: 10px;
+    width: calc(100% - 32px);
     height: 100%;
-    object-fit: contain;
+}
+
+.post-wrapper.has-image .post-topics-wrapper {
+    margin-top: 6px;
 }
 
 .float-right {

@@ -82,18 +82,23 @@
     <template id="post-wrapper-template">
         <div class="post-wrapper">
             <div>
-                <span class="post-title">{{post.name}}</span>
-                <span class="float-right post-topics-wrapper">
-                    <template v-for="topic of post.topics">
-                        <span class="post-topic-item">{{topic}}</span>
-                    </template>
-                </span>
-            </div>
-            <div class="post-content">{{post.content}}</div>
-            <div class="post-bottom">
-                <span class="plus-button">+1</span>
-                <span class="post-points">{{post.pluses + post.minuses}}</span>
-                <span class="minus-button">-1</span>
+                <div>
+                    <span class="post-top">
+                        <span class="post-title">{{post.name}}</span>
+                        <span class="post-user">{{post.displayName}}</span>
+                    </span>
+                    <span class="float-right post-topics-wrapper">
+                        <template v-for="topic of post.topics">
+                            <span class="post-topic-item">{{topic}}</span>
+                        </template>
+                    </span> <br>
+                </div>
+                <div class="post-content">{{post.content}}</div>
+                <div class="post-bottom">
+                    <span class="plus-button">+1</span>
+                    <span class="post-points">{{post.pluses + post.minuses}}</span>
+                    <span class="minus-button">-1</span>
+                </div>
             </div>
         </div>
     </template>

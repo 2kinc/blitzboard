@@ -444,13 +444,15 @@ var postsBodyComponent = Vue.component("posts-body", {
             var vueThis = this;
             this.dbref.on('child_added', function (snap) {
                 var s = snap.val();
-                s.id = snap.key;
+                if (s.topics && s.topics.includes(vueThis.topic)) {
+                    s.id = snap.key;
 
-                if (!vue.users[s.user]) {
-                    vueThis.fetchUserAndPushPost(s, s.user);
-                } else {
-                    var mm = vueThis.composePostObject(s, vue.users[s.user]);
-                    vueThis.posts.push(mm);
+                    if (!vue.users[s.user]) {
+                        vueThis.fetchUserAndPushPost(s, s.user);
+                    } else {
+                        var mm = vueThis.composePostObject(s, vue.users[s.user]);
+                        vueThis.posts.push(mm);
+                    }
                 }
             });
         },
@@ -475,7 +477,7 @@ var postsBodyComponent = Vue.component("posts-body", {
 var postWrapperComponent = Vue.component('post-wrapper', {
     template: '#post-wrapper-template',
     props: {
-        dbref: Object, 
+        dbref: Object,
         post: {
             type: Object,
             default: {
@@ -489,7 +491,7 @@ var postWrapperComponent = Vue.component('post-wrapper', {
         }
     },
     data: () => ({
-        
+
     }),
 
     mounted() {
@@ -508,16 +510,21 @@ var postWrapperComponent = Vue.component('post-wrapper', {
             var urlRegex = /(https?:\/\/[^\s]+)/g;
             this.post.content = this.post.content.replace(urlRegex, function (url) {
                 if (url.indexOf("https://firebasestorage.googleapis.com/") == 0
-                || url.indexOf("https://lh3.googleusercontent.com/") == 0
-                || url.indexOf("http://pbs.twimg.com/") == 0
-                || url.indexOf("data:image/") == 0) {
-                    vueThis.$el.style.backgroundImage = "url('" + url + ')';
+                    || url.indexOf("https://lh3.googleusercontent.com/") == 0
+                    || url.indexOf("http://pbs.twimg.com/") == 0
+                    || url.indexOf("data:image/") == 0) {
+                    var img = document.createElement('img');
+                    img.src = url;
+                    img.className = 'post-img';
+                    vueThis.$el.insertBefore(img, vueThis.$el.firstChild);
+                    vueThis.$el.style.background = 'no-repeat url(' + url + ') 50% / 100%';
+                    vueThis.$el.classList.add('has-image');
                     return '';
                 }
                 return url;
             });
         },
-        
+
     }
 });
 
