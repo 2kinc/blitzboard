@@ -524,7 +524,40 @@ var postWrapperComponent = Vue.component('post-wrapper', {
                 return url;
             });
         },
-
+        addPlus: function () {
+            var vueThis = this;
+            var votesRef = site.ref.child('users').child(auth.currentUser.uid).child('votes').child(site.ref.key).child(vueThis.dbref.key);
+            votesRef.once('value', function (snap) {
+                if (!snap.val() || snap.val() === true) {
+                    vueThis.post.pluses++;
+                    vueThis.dbref.child('pluses').set(vueThis.post.pluses);
+                    votesRef.set(1);
+                } else if (snap.val() === -1) {
+                    vueThis.post.pluses++;
+                    vueThis.dbref.child('pluses').set(vueThis.post.pluses);
+                    vueThis.post.minuses--;
+                    vueThis.dbref.child('minuses').set(vueThis.post.minuses);
+                    votesRef.set(1);
+                }
+            });
+        },
+        addMinus: function () {
+            var vueThis = this;
+            var votesRef = site.ref.child('users').child(auth.currentUser.uid).child('votes').child(site.ref.key).child(vueThis.dbref.key);
+            votesRef.once('value', function (snap) {
+                if (!snap.val() || snap.val() === true) {
+                    vueThis.post.minuses++;
+                    vueThis.dbref.child('pluses').set(vueThis.post.minuses);
+                    votesRef.set(-1);
+                } else if (snap.val() === 1) {
+                    vueThis.post.minuses++;
+                    vueThis.dbref.child('minuses').set(vueThis.post.minuses);
+                    vueThis.post.pluses--;
+                    vueThis.dbref.child('pluses').set(vueThis.post.pluses);
+                    votesRef.set(-1);
+                }
+            });
+        }
     }
 });
 

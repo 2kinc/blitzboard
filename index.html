@@ -87,17 +87,15 @@
                         <span class="post-title">{{post.name}}</span>
                         <span class="post-user">{{post.displayName}}</span>
                     </span>
-                    <span class="float-right post-topics-wrapper">
-                        <template v-for="topic of post.topics">
-                            <span class="post-topic-item">{{topic}}</span>
-                        </template>
-                    </span> <br>
                 </div>
                 <div class="post-content">{{post.content}}</div>
                 <div class="post-bottom">
-                    <span class="plus-button">+1</span>
+                    <span class="plus-button" v-on:click="addPlus()">+1</span>
                     <span class="post-points">{{post.pluses + post.minuses}}</span>
-                    <span class="minus-button">-1</span>
+                    <span class="minus-button" v-on:click="addMinus()">-1</span>
+                    <span class="post-topics-wrapper">
+                        <span v-for="topic of post.topics" class="post-topic-item">{{topic}}</span>
+                    </span>
                 </div>
             </div>
         </div>

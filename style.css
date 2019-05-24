@@ -241,13 +241,15 @@ k-navbar, .k-navbar {
 
 .post-wrapper {
     border-radius: 10px;
-    display: block;
+    display: inline-block;
     border: 2px black solid;
     padding: 16px;
     margin: 16px;
     padding-bottom: calc(16px + 2em);
     background-color: white;
     background-size: cover;
+    width: calc(50% - 68px);
+    min-width: 200px;
 }
 
 .post-wrapper.has-image{
@@ -279,6 +281,11 @@ k-navbar, .k-navbar {
 .post-bottom {
     margin-top: 12px;
     margin-bottom: -32px;
+    width: 1000px;
+    max-width: 100%;
+    max-height: calc(1em + 18px);
+    text-overflow: clip;
+    overflow: hidden;
 }
 
 .post-user {
@@ -359,11 +366,13 @@ button {
 }
 
 .post-topic-item {
-    border: 2px var(--color-main) solid;
-    border-radius: 4px;
-    margin: 4px;
-    padding: 4px;
-    color: var(--color-main);
+    padding: 2px 4px;
+    padding-top: 2px;
+    background: var(--color-main);
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+    margin: 0 4px 0 4px;
 }
 
 .post-topics-wrapper {
