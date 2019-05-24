@@ -474,14 +474,22 @@ var postsBodyComponent = Vue.component("posts-body", {
 
 var postWrapperComponent = Vue.component('post-wrapper', {
     template: '#post-wrapper-template',
-    props: ['dbref'],
+    props: {
+        dbref: Object, 
+        post: {
+            type: Object,
+            default: {
+                pluses: 0,
+                minuses: 0,
+                content: 'Loading...',
+                name: 'Loading...',
+                displayName: 'Loading...',
+                topics: []
+            }
+        }
+    },
     data: () => ({
-        pluses: 0,
-        minuses: 0,
-        content: 'Loading...',
-        title: 'Loading...',
-        displayName: 'Loading...',
-        topics: []
+        
     }),
 
     mounted() {
