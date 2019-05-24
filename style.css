@@ -246,6 +246,7 @@ k-navbar, .k-navbar {
     padding: 16px;
     margin: 16px;
     padding-bottom: calc(16px + 2em);
+    background-color: white;
 }
 
 .post-bottom {
@@ -285,6 +286,7 @@ k-navbar, .k-navbar {
     display: inline-block;
     min-width: 1.6em;
     text-align: center;
+    font-weight: bold;
 }
 
 .plus-button:hover, .minus-button:hover {
@@ -311,7 +313,6 @@ button {
     border-radius: 4px;
     margin: 4px;
     padding: 4px;
-    top: -2.4em;
     color: var(--color-main);
 }
 

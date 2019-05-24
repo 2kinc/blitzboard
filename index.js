@@ -493,19 +493,31 @@ var postWrapperComponent = Vue.component('post-wrapper', {
     }),
 
     mounted() {
-        this.getPoints();
+        this.getContent();
     },
 
     methods: {
-        getPoints: function () {
+        getContent: function () {
             var vueThis = this;
             this.dbref.child('pluses').on('value', function (snap) {
-                vueThis.pluses = snap.val();
+                vueThis.post.pluses = snap.val();
             });
             this.dbref.child('minuses').on('value', function (snap) {
-                vueThis.minuses = snap.val();
+                vueThis.post.minuses = snap.val();
             });
-        }
+            var urlRegex = /(https?:\/\/[^\s]+)/g;
+            this.post.content = this.post.content.replace(urlRegex, function (url) {
+                if (url.indexOf("https://firebasestorage.googleapis.com/") == 0
+                || url.indexOf("https://lh3.googleusercontent.com/") == 0
+                || url.indexOf("http://pbs.twimg.com/") == 0
+                || url.indexOf("data:image/") == 0) {
+                    vueThis.$el.style.backgroundImage = "url('" + url + ')';
+                    return '';
+                }
+                return url;
+            });
+        },
+        
     }
 });
 
