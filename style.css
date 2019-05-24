@@ -259,9 +259,13 @@ k-navbar, .k-navbar {
     background-position: top !important;
 }
 
-.post-wrapper.has-image .post-content, .post-wrapper.has-image .post-top {
+.post-wrapper.has-image .post-content-span, .post-wrapper.has-image .post-top {
     background: white;
     border-radius: 4px;
+}
+
+.post-wrapper.has-image .post-content {
+    margin-top: 16px;
 }
 
 .post-wrapper.has-image .post-top {

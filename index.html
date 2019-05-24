@@ -88,7 +88,9 @@
                         <span class="post-user">{{post.displayName}}</span>
                     </span>
                 </div>
-                <div class="post-content">{{post.content}}</div>
+                <div class="post-content">
+                    <span class="post-content-span">{{post.content}}</span>
+                </div>
                 <div class="post-bottom">
                     <span class="plus-button" v-on:click="addPlus()">+1</span>
                     <span class="post-points">{{post.pluses + post.minuses}}</span>
