@@ -206,7 +206,7 @@ function Site(ref) {
                     that.elements.postsBodies.append(newPostsBody);
                     var component = new PostsBody();
                     component.topic = topic;
-                    component.ref = that.ref.child('posts').orderByChild('pluses');
+                    component.dbref = that.ref.child('posts').orderByChild('pluses');
                     component.$mount('#' + newPostsBody.id);
                     /*that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
                         var post = snap.val();
@@ -245,6 +245,7 @@ function Site(ref) {
                         that.elements.postsBodies.append(newPostsBody);
                         var component = new PostsBody();
                         component.topic = topic;
+                        component.dbref = that.ref.child('posts').orderByChild('pluses');
                         component.$mount('#' + newPostsBody.id);
                         /*that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
                             var post = snap.val();
@@ -266,6 +267,7 @@ function Site(ref) {
                     that.elements.postsBodies.append(newPostsBody);
                     var component = new PostsBody();
                     component.topic = topic;
+                    component.dbref = that.ref.child('posts').orderByChild('pluses');
                     component.$mount('#' + newPostsBody.id);
                     /*that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
                         var post = snap.val();
@@ -395,7 +397,7 @@ var chatBodyComponent = Vue.component("chat-body", {
     methods: {
         getMessages: function () {
             var vueThis = this;
-            site.ref.child('topics').child(this.topic).child('chat').on('child_added', function (snap) {
+            site.ref.child('topics').child(vueThis.topic).child('chat').on('child_added', function (snap) {
                 var s = snap.val();
 
                 if (!vue.users[s.user]) {
@@ -440,7 +442,7 @@ var postsBodyComponent = Vue.component("posts-body", {
     methods: {
         getPosts: function () {
             var vueThis = this;
-            this.ref.on('child_added', function (snap) {
+            this.dbref.on('child_added', function (snap) {
                 var s = snap.val();
                 s.id = snap.key;
 
@@ -472,13 +474,14 @@ var postsBodyComponent = Vue.component("posts-body", {
 
 var postWrapperComponent = Vue.component('post-wrapper', {
     template: '#post-wrapper-template',
-    props: ['ref'],
+    props: ['dbref'],
     data: () => ({
         pluses: 0,
         minuses: 0,
         content: 'Loading...',
         title: 'Loading...',
         displayName: 'Loading...',
+        topics: []
     }),
 
     mounted() {
@@ -488,10 +491,10 @@ var postWrapperComponent = Vue.component('post-wrapper', {
     methods: {
         getPoints: function () {
             var vueThis = this;
-            this.ref.child('pluses').on('value', function (snap) {
+            this.dbref.child('pluses').on('value', function (snap) {
                 vueThis.pluses = snap.val();
             });
-            this.ref.child('minuses').on('value', function (snap) {
+            this.dbref.child('minuses').on('value', function (snap) {
                 vueThis.minuses = snap.val();
             });
         }
