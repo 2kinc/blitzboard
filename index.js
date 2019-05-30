@@ -96,9 +96,6 @@ function Site(ref) {
             || p.content.indexOf("http://pbs.twimg.com/") == 0
             || p.content.indexOf("data:image/") == 0) {
             var imgElm = document.createElement("img");
-            imgElm.className = 'post-img';
-            imgElm.src = p.content;
-            // var outer = document.createElement("div");
             // outer.className = 'post-img-container';
             // outer.appendChild(imgElm);
             // content.appendChild(outer);
@@ -496,6 +493,7 @@ var postWrapperComponent = Vue.component('post-wrapper', {
 
     mounted() {
         this.getContent();
+        this.attachMDCStyles();
     },
 
     methods: {
@@ -513,10 +511,6 @@ var postWrapperComponent = Vue.component('post-wrapper', {
                     || url.indexOf("https://lh3.googleusercontent.com/") == 0
                     || url.indexOf("http://pbs.twimg.com/") == 0
                     || url.indexOf("data:image/") == 0) {
-                    var img = document.createElement('img');
-                    img.src = url;
-                    img.className = 'post-img';
-                    vueThis.$el.insertBefore(img, vueThis.$el.firstChild);
                     vueThis.$el.style.background = 'no-repeat url(' + url + ') 50% / 100%';
                     vueThis.$el.classList.add('has-image');
                     return '';
@@ -556,6 +550,12 @@ var postWrapperComponent = Vue.component('post-wrapper', {
                     vueThis.dbref.child('pluses').set(vueThis.post.pluses);
                     votesRef.set(-1);
                 }
+            });
+        },
+        attachMDCStyles: function () {
+            var mdcbuttons = [this.$refs.plusButton, this.$refs.minusButton];
+            mdcbuttons.forEach(function (mdcbutton) {
+                mdc.ripple.MDCRipple.attachTo(mdcbutton);
             });
         }
     }

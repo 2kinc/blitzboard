@@ -3,6 +3,8 @@ body {
     --color-secondary: #111;
     --color-background: white;
     --color-light: #6666ff;
+    --mdc-theme-primary: #4444ff;
+    --mdc-theme-primary-bg: #cccccc;
     font-family: neue-haas-unica, sans-serif;
     padding: 0;
     margin: 0;
@@ -253,10 +255,7 @@ k-navbar, .k-navbar {
 }
 
 .post-wrapper.has-image{
-    position: relative;
-    padding-top: 0;
-    background-size: calc(100% + 100px) !important;
-    background-position: top !important;
+    background-size: cover !important;
 }
 
 .post-wrapper.has-image .post-content-span, .post-wrapper.has-image .post-top {
@@ -264,42 +263,12 @@ k-navbar, .k-navbar {
     border-radius: 4px;
 }
 
-.post-wrapper.has-image .post-content {
-    margin-top: 16px;
-}
-
-.post-wrapper.has-image .post-top {
-    padding: 6px;
-    margin-left: -6px;
-    margin-top: -6px;
-}
-
-.post-wrapper.has-image .post-bottom {
-    background: white;
-    padding: 4px;
-    border-radius: 4px;
-    margin-bottom: -4px;
-    margin-left: -4px;
-}
-
 .post-bottom {
-    margin-top: 12px;
-    margin-bottom: -32px;
-    width: 1000px;
-    max-width: 100%;
-    max-height: calc(1em + 18px);
-    text-overflow: clip;
-    overflow: hidden;
 }
 
 .post-user {
     color: #00000066;
     margin-left: 4px;
-}
-
-.post-wrapper.has-image .post-bottom {
-    position: absolute;
-    bottom: 32px;
 }
 
 .posts-body {
@@ -317,52 +286,29 @@ k-navbar, .k-navbar {
 }
 
 .post-points {
-    padding: 3.5px;
-    padding-top: 2px;
+    padding: 6px;
     background: var(--color-main);
     border-radius: 8px;
     color: white;
-    display: inline-block;
-    min-width: 1.6em;
+    min-width: 1.4em;
+    margin: 4px;
     text-align: center;
 }
 
 .plus-button, .minus-button {
     padding: 3.5px;
     padding-top: 2px;
-    background: transparent;
     border-radius: 8px;
     color: black;
-    display: inline-block;
     min-width: 1.6em;
     text-align: center;
     font-weight: bold;
-}
-
-.plus-button:hover, .minus-button:hover {
-    background: #4444ff33;
-    color: var(--color-main);
-}
-
-button {
-    outline: none!important;
 }
 
 .post-img {
     vertical-align: top;
     width: 100%;
     opacity: 0;
-}
-
-.post-wrapper.has-image > div {
-    position: absolute;
-    top: 10px;
-    width: calc(100% - 32px);
-    height: 100%;
-}
-
-.post-wrapper.has-image .post-topics-wrapper {
-    margin-top: 6px;
 }
 
 .float-right {
