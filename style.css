@@ -244,13 +244,11 @@ k-navbar, .k-navbar {
 .post-wrapper {
     border-radius: 10px;
     display: inline-block;
-    border: 2px black solid;
     padding: 16px;
     margin: 16px;
     padding-bottom: calc(16px + 2em);
     background-color: white;
     background-size: cover;
-    width: calc(50% - 68px);
     min-width: 200px;
 }
 
@@ -261,9 +259,6 @@ k-navbar, .k-navbar {
 .post-wrapper.has-image .post-content-span, .post-wrapper.has-image .post-top {
     background: white;
     border-radius: 4px;
-}
-
-.post-bottom {
 }
 
 .post-user {
