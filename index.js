@@ -579,7 +579,7 @@ var postWrapperComponent = Vue.component('post-wrapper', {
 });
 
 /** Initialize MDC Web components. */
-const buttons = document.querySelectorAll('.mdc-button, mdc-icon-button, #chat-input-button, .mdc-ripple-surface');
+const buttons = document.querySelectorAll('.mdc-button, mdc-icon-button, #chat-input-button');
 for (const button of buttons) {
     mdc.ripple.MDCRipple.attachTo(button);
 }
