@@ -137,13 +137,13 @@ k-navbar, .k-navbar {
     width: 100%;
 }
 
-#chat-input-button {
+/*#chat-input-button {
     border-radius: 500px;
     pointer-events: all;
     padding: 8px;
     top: 6px;
     right: 6px;
-}
+}*/
 
 #chat-input-container {
     position: absolute;
