@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://use.typekit.net/lku7gbz.css">
     <!-- Required styles for MDC Web -->
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
@@ -17,11 +17,16 @@
 
 <body>
     <div id="app">
-        <div class="k-navbar" style="z-index: 11;">
-            <h1 class="k-navbar-title" style="margin: inherit;">
-                BlitzBoard <span id="blitzboard-title"></span>
-            </h1>
-        </div>
+        <header class=" mdc-top-app-bar mdc-top-app-bar--fixed">
+            <div class="mdc-top-app-bar__row">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                    <button class="material-icons mdc-top-app-bar__navigation-icon">menu</button>
+                    <span class="mdc-top-app-bar__title">
+                        Blitzboard <span id="blitzboard-title"></span>
+                    </span>
+                </section>
+            </div>
+        </header>
 
         <div id="content-body">
             <div id="topics">
@@ -50,8 +55,19 @@
                 </div>
                 <div id="chat">
                     <div id="chat-bodies"></div>
-                    <input type="text" id="chat-input" maxlength="150" class="k-input"
-                        placeholder="Send a message to the chat...">
+                    <div id="chat-input-container" class="mdc-elevation--z2">
+                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon" style="width: calc(100% - 18px);">
+                            <i class="material-icons mdc-text-field__icon mdc-ripple-surface mdc-ripple-surface--primary" id="chat-input-button">message</i>
+                            <input class="mdc-text-field__input" id="chat-input">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label class="mdc-floating-label">Send a message</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -95,9 +111,11 @@
                 <span class="post-content-span">{{post.content}}</span>
             </div>
             <div class="post-bottom mdc-card__actions">
-                <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus()" ref="plusButton">+1</button>
+                <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus()"
+                    ref="plusButton">+1</button>
                 <span class="post-points">{{post.pluses + post.minuses}}</span>
-                <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus()" ref="minusButton">-1</button>
+                <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus()"
+                    ref="minusButton">-1</button>
                 <span class="post-topics-wrapper">
                     <span v-for="topic of post.topics" class="post-topic-item">{{topic}}</span>
                 </span>

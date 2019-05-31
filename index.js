@@ -8,6 +8,7 @@ function Site(ref) {
         postsBodies: $('#posts-bodies'),
         chat: $('#chat'),
         chatInput: $('#chat-input'),
+        chatInputButton: $('#chat-input-button'),
         chatBodies: $('#chat-bodies'),
         loading: $('#loading'),
         newPostWrapper: $('#new-post-wrapper'),
@@ -288,7 +289,19 @@ function Site(ref) {
     });
     this.elements.chatInput.on('keyup', function (e) {
         var key = e.key.toLowerCase();
-        if (key == 'enter' && that.elements.chatInput.val().length < 150 && auth.currentUser) {
+        if (key == 'enter' && that.elements.chatInput.val().length < 150 && auth.currentUser && that.elements.chatInput.val() != '') {
+            var d = new Date();
+            var chat = {
+                message: that.elements.chatInput.val(),
+                user: auth.currentUser.uid,
+                time: d.toLocaleTimeString() + ' ' + d.toLocaleDateString()
+            };
+            that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
+            that.elements.chatInput.val('');
+        }
+    });
+    this.elements.chatInputButton.click(function (e) {
+        if (that.elements.chatInput.val().length < 150 && auth.currentUser && that.elements.chatInput.val() != '') {
             var d = new Date();
             var chat = {
                 message: that.elements.chatInput.val(),
@@ -560,6 +573,17 @@ var postWrapperComponent = Vue.component('post-wrapper', {
         }
     }
 });
+
+/** Initialize MDC Web components. */
+const buttons = document.querySelectorAll('.mdc-button, mdc-icon-button, #chat-input-button');
+for (const button of buttons) {
+  mdc.ripple.MDCRipple.attachTo(button);
+}
+
+const textFields = document.querySelectorAll('.mdc-text-field');
+for (const textField of textFields) {
+  mdc.textField.MDCTextField.attachTo(textField);
+}
 
 var site = new Site(new Blitzboard('test', 'test.').ref);
 

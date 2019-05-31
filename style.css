@@ -4,7 +4,11 @@ body {
     --color-background: white;
     --color-light: #6666ff;
     --mdc-theme-primary: #4444ff;
-    --mdc-theme-primary-bg: #cccccc;
+    --mdc-theme-secondary: black;
+    --mdc-theme-surface: #4444ff;
+    --mdc-theme-background: #cccccc;
+    --mdc-theme-on-primary: #4444ff;
+    --mdc-theme-on-surface: white;
     font-family: neue-haas-unica, sans-serif;
     padding: 0;
     margin: 0;
@@ -23,13 +27,6 @@ body {
     top: calc(3em + 8px);
     box-shadow: 0 0 10px 0 #00000066;
     z-index: 100;
-}
-
-#content-body {
-    width: 100vw;
-    height: 100vh;
-    margin-top: calc(3em + 10px);
-    padding: 0;
 }
 
 #main-content {
@@ -129,17 +126,23 @@ k-navbar, .k-navbar {
 }
 
 #chat-input {
-    height: 1em;
+    width: 100%;
+}
+
+#chat-input-button {
+    border-radius: 500px;
+    pointer-events: all;
+    padding: 8px;
+    top: 6px;
+    right: 6px;
+}
+
+#chat-input-container {
     position: absolute;
     bottom: 0;
+    background: white;
     width: 100%;
-    margin: 0;
-    color: black;
-    border-top: 2px var(--color-secondary) solid;
-    border-radius: 0!important;
-    box-shadow: 0 -4px 14px 0 #00000066;
-    background: var(--color-background);
-    color: var(--color-main);
+    padding: 10px;
 }
 
 #chat-input::placeholder {
@@ -293,8 +296,6 @@ k-navbar, .k-navbar {
 .plus-button, .minus-button {
     padding: 3.5px;
     padding-top: 2px;
-    border-radius: 8px;
-    color: black;
     min-width: 1.6em;
     text-align: center;
     font-weight: bold;
