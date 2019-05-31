@@ -82,10 +82,12 @@ function Site(ref) {
         var topicsWrapper = document.createElement('span');
         topicsWrapper.className = 'float-right post-topics-wrapper';
         for (var topic in p.topics) {
-            var span = document.createElement('span');
-            span.className = 'post-topic-item';
-            span.innerText = '::' + p.topics[topic];
-            topicsWrapper.appendChild(span);
+            if (topic != 'home') {
+                var span = document.createElement('span');
+                span.className = 'post-topic-item';
+                span.innerText = p.topics[topic];
+                topicsWrapper.appendChild(span);
+            }
         }
         topWrapper.appendChild(title);
         topWrapper.appendChild(topicsWrapper);
@@ -183,17 +185,19 @@ function Site(ref) {
             var ChatBody = Vue.extend(chatBodyComponent);
             var PostsBody = Vue.extend(postsBodyComponent);
             for (var topic in that.data.topics) {
-                var p = document.createElement('div');
-                p.className = 'topic-item';
-                if (topic == that.currentTopic)
-                    p.classList.add('selected');
-                p.innerText = topic;
-                p.id = 'topic-' + topic;
-                var option = document.createElement('option');
-                option.innerText = '::' + topic;
-                option.id = 'option-' + topic;
-                that.elements.topics.append(p);
-                that.elements.newPostTopics.append(option);
+                if (topic != 'home') {
+                    var p = document.createElement('div');
+                    p.className = 'topic-item';
+                    if (topic == that.currentTopic)
+                        p.classList.add('selected');
+                    p.innerText = topic;
+                    p.id = 'topic-' + topic;
+                    var option = document.createElement('option');
+                    option.innerText = '::' + topic;
+                    option.id = 'option-' + topic;
+                    that.elements.topics.append(p);
+                    that.elements.newPostTopics.append(option);
+                }
             }
             if (that.currentTopic == 'home') {
                 $('#topic-home').addClass('selected');
@@ -577,12 +581,12 @@ var postWrapperComponent = Vue.component('post-wrapper', {
 /** Initialize MDC Web components. */
 const buttons = document.querySelectorAll('.mdc-button, mdc-icon-button, #chat-input-button');
 for (const button of buttons) {
-  mdc.ripple.MDCRipple.attachTo(button);
+    mdc.ripple.MDCRipple.attachTo(button);
 }
 
 const textFields = document.querySelectorAll('.mdc-text-field');
 for (const textField of textFields) {
-  mdc.textField.MDCTextField.attachTo(textField);
+    mdc.textField.MDCTextField.attachTo(textField);
 }
 
 var site = new Site(new Blitzboard('test', 'test.').ref);
