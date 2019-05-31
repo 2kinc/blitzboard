@@ -7,8 +7,8 @@ body {
     --mdc-theme-secondary: black;
     --mdc-theme-surface: #4444ff;
     --mdc-theme-background: #cccccc;
-    --mdc-theme-on-primary: #4444ff;
-    --mdc-theme-on-surface: white;
+    --mdc-theme-on-primary: white;
+    --mdc-theme-on-surface: black;
     font-family: neue-haas-unica, sans-serif;
     padding: 0;
     margin: 0;
