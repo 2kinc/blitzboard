@@ -199,15 +199,6 @@ k-navbar, .k-navbar {
     z-index: 10;
 }
 
-#new-post-button {
-    --color-main: #4444ff;
-    --color-secondary: #4444ff;
-    background: var(--color-main);
-    color: white!important;
-    margin-bottom: -100px;
-    box-shadow: 2px 2px 4px 0 #00000066;
-}
-
 #new-post-wrapper {
     border-bottom: 2px var(--color-main) solid;
     box-shadow: 10px 0 8px 0 #00000088;
