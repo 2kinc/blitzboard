@@ -16,17 +16,25 @@ body {
 
 #topics {
     color: var(--color-main);
-    width: calc(12em - 2px);
+    width: calc(12em - 6px);
     height: 100%;
     margin: 0;
     padding: 16px;
     display: inline-block;
     border-right: 2px var(--color-secondary) solid;
     border: none;
-    position: absolute;
-    top: calc(3em + 8px);
     box-shadow: 0 0 10px 0 #00000066;
+}
+
+#navbar {
+    position: absolute;
+    top: 0;
+}
+
+#content-body {
     z-index: 100;
+    margin-top: calc(3em + 16px);
+    border: 2px black solid;
 }
 
 #main-content {

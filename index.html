@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://use.typekit.net/lku7gbz.css">
-    <!-- Required styles for MDC Web -->
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
     <link rel="stylesheet" href="https://2kinc.me/2kcomponents.css">
     <link rel="stylesheet" href="style.css">
@@ -17,7 +16,7 @@
 
 <body>
     <div id="app">
-        <header class=" mdc-top-app-bar mdc-top-app-bar--fixed">
+        <header class="mdc-top-app-bar" id="navbar">
             <div class="mdc-top-app-bar__row">
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                     <button class="material-icons mdc-top-app-bar__navigation-icon">menu</button>
@@ -28,7 +27,7 @@
             </div>
         </header>
 
-        <div id="content-body">
+        <div id="content-body" class="mdc-elevation--z1">
             <div id="topics">
                 <div id="topic-home" class="topic-item selected">home</div>
                 <div id="more-topics"></div>
