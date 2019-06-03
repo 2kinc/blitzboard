@@ -29,12 +29,16 @@ body {
 #navbar {
     position: absolute;
     top: 0;
+    padding-bottom: 40px;
 }
 
 #content-body {
-    z-index: 100;
+    position: absolute;
+    z-index: 1000000;
     margin-top: calc(3em + 16px);
     border: 2px black solid;
+    border-radius: 16px;
+    background: white;
 }
 
 #main-content {
@@ -104,8 +108,8 @@ k-navbar, .k-navbar {
 }
 
 #blitzboard-title {
-    position: relative;
-    left: 8em;
+    position: absolute;
+    left: 12em;
 }
 
 #posts {
