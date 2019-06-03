@@ -394,6 +394,18 @@ var vue = new Vue({
     },
     mounted: function () {
         this.firebase = app;
+    },
+    methods: {
+        attachMDCStyles: function () {
+            const rippleElements = document.querySelectorAll('.mdc-button, mdc-icon-button, #chat-input-button, .mdc-ripple-surface');
+            for (var rippleElement of rippleElements) {
+                mdc.ripple.MDCRipple.attachTo(rippleElement);
+            }
+            const textFields = document.querySelectorAll('.mdc-text-field');
+            for (const textField of textFields) {
+                mdc.textField.MDCTextField.attachTo(textField);
+            }
+        }
     }
 });
 
@@ -420,6 +432,9 @@ var chatBodyComponent = Vue.component("chat-body", {
                     var mm = vueThis.composeMessageObject(s, vue.users[s.user]);
                     vueThis.messages.push(mm);
                 }
+            });
+            site.ref.child('topics').child(vueThis.topic).child('chat').limitToLast(1).on('child_added', function () {
+                vue.attachMDCStyles();
             });
         },
         fetchUserAndPushMessage: function (message, uid) {
@@ -579,15 +594,6 @@ var postWrapperComponent = Vue.component('post-wrapper', {
 });
 
 /** Initialize MDC Web components. */
-const buttons = document.querySelectorAll('.mdc-button, mdc-icon-button, #chat-input-button');
-for (const button of buttons) {
-    mdc.ripple.MDCRipple.attachTo(button);
-}
-
-const textFields = document.querySelectorAll('.mdc-text-field');
-for (const textField of textFields) {
-    mdc.textField.MDCTextField.attachTo(textField);
-}
 
 var site = new Site(new Blitzboard('test', 'test.').ref);
 
@@ -643,3 +649,5 @@ function handleFileForNewPost(e) {
 }
 
 site.elements.newPostUpload.addEventListener('input', handleFileForNewPost);
+
+vue.attachMDCStyles();

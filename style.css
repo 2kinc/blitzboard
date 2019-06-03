@@ -133,8 +133,9 @@ k-navbar, .k-navbar {
 #chat-bodies {
     width: 100%;
     padding: 16px;
-    height: calc(100vh - 7em - 8px);
-    max-height: calc(100vh - 7em - 8px);
+    margin-top: calc(-3em - 11px);
+    height: calc(100vh - 10em - 14px);
+    max-height: calc(100vh - 10em - 14px);
     overflow: auto;
 }
 
@@ -151,7 +152,6 @@ k-navbar, .k-navbar {
 }*/
 
 #chat-input-container {
-    position: absolute;
     bottom: 0;
     background: white;
     width: 100%;
@@ -164,18 +164,18 @@ k-navbar, .k-navbar {
 }
 
 .message {
-    padding: 0.1em 0px;
+    padding: 4px 0px;
 }
 
 .message-body {
-    border: 2px var(--color-secondary) solid;
     border-radius: 4px;
-    padding: 4px 8px;
+    padding: 6px 8px;
     margin: 0;
     margin-bottom: 4px;
     display: inline-flex;
     transform: translateY(-10px);
     max-width: calc(30vw - 8em - 18px);
+    background: #4444ff33;
 }
 
 .message-info {

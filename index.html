@@ -57,8 +57,10 @@
                 <div id="chat">
                     <div id="chat-bodies"></div>
                     <div id="chat-input-container" class="mdc-elevation--z2">
-                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon" style="width: calc(100% - 18px);">
-                            <i class="material-icons mdc-text-field__icon mdc-ripple-surface mdc-ripple-surface--primary mdc-ripple-surface--unbounded" id="chat-input-button" tabindex="0" role="button">message</i>
+                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon"
+                            style="width: calc(100% - 18px);">
+                            <i class="material-icons mdc-text-field__icon mdc-ripple-surface mdc-ripple-surface--primary mdc-ripple-surface--unbounded"
+                                id="chat-input-button" tabindex="0" role="button">message</i>
                             <input class="mdc-text-field__input" id="chat-input">
                             <div class="mdc-notched-outline">
                                 <div class="mdc-notched-outline__leading"></div>
@@ -79,13 +81,15 @@
     <template id="chat-body-template">
         <div class="chat-body" v-bind:id="'chat-body-' + topic">
             <template v-for="message of messages">
-                <div style="--color-secondary: black; color: black;">
-                    <img v-bind:src="message.photoURL" class="profile-picture" alt="Profile Picture">
-                    <div class="message-body">{{message.message}}</div>
-                </div>
-                <div class="message-info">
-                    <span class="chat-username">{{message.displayName}}</span>
-                    <span class="message-info--time"> at {{message.time}}</span>
+                <div class="message">
+                    <div style="--color-secondary: black; color: black;">
+                        <img v-bind:src="message.photoURL" class="profile-picture" alt="Profile Picture">
+                        <div class="message-body mdc-ripple-surface">{{message.message}}</div>
+                    </div>
+                    <div class="message-info">
+                        <span class="chat-username">{{message.displayName}}</span>
+                        <span class="message-info--time"> at {{message.time}}</span>
+                    </div>
                 </div>
             </template>
         </div>
