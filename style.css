@@ -143,13 +143,9 @@ k-navbar, .k-navbar {
     width: 100%;
 }
 
-/*#chat-input-button {
-    border-radius: 500px;
-    pointer-events: all;
-    padding: 8px;
-    top: 6px;
-    right: 6px;
-}*/
+#chat-input-button:hover {
+    color: #4444ff!important;
+}
 
 #chat-input-container {
     bottom: 0;
@@ -179,7 +175,6 @@ k-navbar, .k-navbar {
 }
 
 .message-info {
-    color: var(--color-main);
     margin: 2px;
     margin-top: -16px;
     font-size: 0.8em;

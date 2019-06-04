@@ -80,18 +80,20 @@
 
     <template id="chat-body-template">
         <div class="chat-body" v-bind:id="'chat-body-' + topic">
-            <template v-for="message of messages">
-                <div class="message">
-                    <div style="--color-secondary: black; color: black;">
-                        <img v-bind:src="message.photoURL" class="profile-picture" alt="Profile Picture">
-                        <div class="message-body mdc-ripple-surface">{{message.message}}</div>
-                    </div>
-                    <div class="message-info">
-                        <span class="chat-username">{{message.displayName}}</span>
-                        <span class="message-info--time"> at {{message.time}}</span>
-                    </div>
-                </div>
-            </template>
+            <message-wrapper v-for="message of messages" v-bind:message="message" v-bind:key="message.key"></message-wrapper>
+        </div>
+    </template>
+
+    <template id="message-wrapper-template">
+        <div class="message">
+            <div style="--color-secondary: black; color: black;">
+                <img v-bind:src="message.photoURL" class="profile-picture" v-bind:alt="message.displayName" v-bind:title="message.displayName">
+                <div class="message-body mdc-ripple-surface" ref="messageBody">{{message.message}}</div>
+            </div>
+            <div class="message-info">
+                <span class="chat-username">{{message.displayName}}</span>
+                <span class="message-info--time"> at {{message.time}}</span>
+            </div>
         </div>
     </template>
 

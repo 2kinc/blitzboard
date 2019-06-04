@@ -428,9 +428,11 @@ var chatBodyComponent = Vue.component("chat-body", {
 
                 if (!vue.users[s.user]) {
                     vueThis.fetchUserAndPushMessage(s, s.user);
+                    return;
                 } else {
                     var mm = vueThis.composeMessageObject(s, vue.users[s.user]);
                     vueThis.messages.push(mm);
+                    return;
                 }
             });
             site.ref.child('topics').child(vueThis.topic).child('chat').limitToLast(1).on('child_added', function () {
@@ -446,14 +448,34 @@ var chatBodyComponent = Vue.component("chat-body", {
             });
         },
         composeMessageObject: function (s, u) {
-            var object = Object.assign(s, {
-                displayName: u.displayName,
-                photoURL: u.photoURL
-            });
-            return object;
+            if (s && u) {
+                var object = Object.assign(s, {
+                    displayName: u.displayName,
+                    photoURL: u.photoURL
+                });
+                return object;
+            }
         }
     }
 });
+
+var messageWrapperComponent = Vue.component('message-wrapper', {
+    template: '#message-wrapper-template',
+    props: {
+        message: Object
+    },
+    data: () => ({
+
+    }),
+    mounted() {
+        this.attachMDCStyles();
+    },
+    methods: {
+        attachMDCStyles: function () {
+            mdc.ripple.MDCRipple.attachTo(this.$refs.messageBody);
+        }
+    }
+})
 
 var postsBodyComponent = Vue.component("posts-body", {
     template: '#posts-body-template',
@@ -493,12 +515,14 @@ var postsBodyComponent = Vue.component("posts-body", {
                 vueThis.posts.push(mm);
             });
         },
-        composePostObject: function (s, user) {
-            var object = Object.assign(s, {
-                displayName: user.displayName,
-                photoURL: user.photoURL
-            });
-            return object;
+        composePostObject: function (s, u) {
+            if (s && u) {
+                var object = Object.assign(s, {
+                    displayName: u.displayName,
+                    photoURL: u.photoURL
+                });
+                return object;
+            }
         }
     },
 });
