@@ -358,10 +358,13 @@ function Site(ref) {
     this.elements.newPostTopics.change(function (e) {
         var topic = that.elements.newPostTopics.val().slice(2);
         if (topic != 'lect a topic') {
-            var span = document.createElement('span');
-            span.innerText = topic;
-            span.className = 'new-post-topic k-capsule';
-            that.elements.newPostTopicsWrapper.append(span);
+            var chip = document.createElement('div');
+            chip.className = 'mdc-chip';
+            var text = document.createElement('div');
+            text.className = 'mdc-chip__text';
+            text.innerText = topic;
+            chip.appendChild(text);
+            that.elements.newPostTopicsWrapper.append(chip);
             topics.push(topic);
             $('#option-' + topic).remove();
         }
