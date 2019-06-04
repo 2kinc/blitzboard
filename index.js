@@ -27,6 +27,26 @@ function Site(ref) {
         return;
     }
     this.currentTopic = 'home';
+    this.initializeTopicOption = function (topic) {
+        if (topic != 'home') {
+            var option = document.createElement('option');
+            option.innerText = '::' + topic;
+            option.id = 'option-' + topic;
+            that.elements.newPostTopics.append(option);
+        }
+    };
+    this.initializeTopicElements = function (topic) {
+        if (topic != 'home') {
+            var p = document.createElement('div');
+            p.className = 'topic-item';
+            if (topic == that.currentTopic)
+                p.classList.add('selected');
+            p.innerText = topic;
+            p.id = 'topic-' + topic;
+            that.elements.topics.append(p);
+            that.initializeTopicOption(topic);
+        }
+    };
     this.getMessageElement = function (ref) {
         var m = ref.val();
         var p = document.createElement('div');
@@ -61,7 +81,7 @@ function Site(ref) {
         wrapper.appendChild(imageAndMessageWrapper);
         wrapper.appendChild(messageinfo);
         return wrapper;
-    }
+    };
     function addTo(ref) {
         ref.once('value').then(function (snap) {
             var d = snap.val();
@@ -168,7 +188,7 @@ function Site(ref) {
         bottom.appendChild(comments);
         wrapper.appendChild(bottom);
         return wrapper;
-    }
+    };
     this.ref.once('value').then(function (snap) {
         that.data = snap.val();
         that.data.render = function () {
@@ -185,19 +205,7 @@ function Site(ref) {
             var ChatBody = Vue.extend(chatBodyComponent);
             var PostsBody = Vue.extend(postsBodyComponent);
             for (var topic in that.data.topics) {
-                if (topic != 'home') {
-                    var p = document.createElement('div');
-                    p.className = 'topic-item';
-                    if (topic == that.currentTopic)
-                        p.classList.add('selected');
-                    p.innerText = topic;
-                    p.id = 'topic-' + topic;
-                    var option = document.createElement('option');
-                    option.innerText = '::' + topic;
-                    option.id = 'option-' + topic;
-                    that.elements.topics.append(p);
-                    that.elements.newPostTopics.append(option);
-                }
+                that.initializeTopicElements(topic);
             }
             if (that.currentTopic == 'home') {
                 $('#topic-home').addClass('selected');
@@ -340,17 +348,7 @@ function Site(ref) {
             autofocus.setAttribute('autofocus', 'true');
             that.elements.newPostTopics.append(autofocus);
             for (var topic in that.data.topics) {
-                var p = document.createElement('div');
-                p.className = 'topic-item';
-                if (topic == that.currentTopic)
-                    p.classList.add('selected');
-                p.innerText = topic;
-                p.id = 'topic-' + topic;
-                var option = document.createElement('option');
-                option.innerText = '::' + topic;
-                option.id = 'option-' + topic;
-                that.elements.topics.append(p);
-                that.elements.newPostTopics.append(option);
+                that.initializeTopicElements(topic);
             }
         }
         that.elements.newPostMain.toggleClass('shown');
@@ -369,6 +367,7 @@ function Site(ref) {
             icon.role = 'button';
             icon.tabIndex = 0;
             icon.addEventListener('click', function () {
+                that.initializeTopicOption(topic);
                 topics.pop(topic);
             });
             chip.appendChild(text);
@@ -647,9 +646,9 @@ auth.onAuthStateChanged(function (user) {
         site.ref.child('users').once('value').then(function (snap) {
             if (snap.val() == null)
                 site.ref.child('users').child(auth.currentUser.uid).set(true);
-        })
+        });
     } else {
-        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
     }
 });
 

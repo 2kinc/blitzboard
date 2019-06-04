@@ -156,7 +156,9 @@
                 <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus()"
                     ref="minusButton">-1</button>
                 <span class="post-topics-wrapper">
-                    <span v-for="topic of post.topics" class="post-topic-item">{{topic}}</span>
+                    <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
+                        <div class="mdc-chip__text">{{topic}}</div>
+                    </span>
                 </span>
             </div>
         </div>

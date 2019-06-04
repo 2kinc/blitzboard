@@ -320,13 +320,8 @@ k-navbar, .k-navbar {
 }
 
 .post-topic-item {
-    padding: 2px 4px;
-    padding-top: 2px;
     background: var(--color-main);
-    border-radius: 8px;
     color: white;
-    text-align: center;
-    margin: 0 4px 0 4px;
 }
 
 .post-topics-wrapper {
