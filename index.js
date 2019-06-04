@@ -424,6 +424,12 @@ var vue = new Vue({
             for (const chip of chips) {
                 mdc.chips.MDCChip.attachTo(chip);
             }
+            const topAppBar = new mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
+            const drawer = new mdc.drawer.MDCDrawer.attachTo(document.querySelector('#drawer'));
+            topAppBar.setScrollTarget(document.querySelector('#content-body'));
+            topAppBar.listen('MDCTopAppBar:nav', () => {
+                drawer.open = (!drawer.open);
+            });
         }
     }
 });
