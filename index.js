@@ -306,7 +306,7 @@ function Site(ref) {
             var chat = {
                 message: that.elements.chatInput.val(),
                 user: auth.currentUser.uid,
-                time: d.toLocaleTimeString() + ' ' + d.toLocaleDateString()
+                time: d.getTime()
             };
             that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
             that.elements.chatInput.val('');
@@ -318,7 +318,7 @@ function Site(ref) {
             var chat = {
                 message: that.elements.chatInput.val(),
                 user: auth.currentUser.uid,
-                time: d.toLocaleTimeString() + ' ' + d.toLocaleDateString()
+                time: d.getTime()
             };
             that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
             that.elements.chatInput.val('');
@@ -487,14 +487,19 @@ var messageWrapperComponent = Vue.component('message-wrapper', {
 
     }),
     mounted() {
+        this.getTime();
         this.attachMDCStyles();
     },
     methods: {
+        getTime: function () {
+            var d = new Date(this.message.time);
+            this.message.time = d.toLocaleString();
+        },
         attachMDCStyles: function () {
             mdc.ripple.MDCRipple.attachTo(this.$refs.messageBody);
         }
     }
-})
+});
 
 var postsBodyComponent = Vue.component("posts-body", {
     template: '#posts-body-template',
@@ -586,7 +591,7 @@ var postWrapperComponent = Vue.component('post-wrapper', {
                     || url.indexOf("https://lh3.googleusercontent.com/") == 0
                     || url.indexOf("http://pbs.twimg.com/") == 0
                     || url.indexOf("data:image/") == 0) {
-                    vueThis.$el.style.background = 'no-repeat url(' + url + ') 50% / 100%';
+                    vueThis.post.imageURL = url;
                     vueThis.$el.classList.add('has-image');
                     return '';
                 }

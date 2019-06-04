@@ -49,7 +49,7 @@ body {
 }
 
 #main-content > * {
-    height: calc(100vh - 3em - 10px);
+    height: calc(100vh - 4em - 2px);
     display: inline-block;
 }
 
@@ -123,19 +123,17 @@ k-navbar, .k-navbar {
 
 #chat {
     position: absolute;
-    top: calc(3em + 10.5px);
     width: calc(30vw - 2em - 2px);
     padding: 0;
     transition: all 0.3s;
     background: var(--color-background);
+    border-top-right-radius: 16px;
+    border-right: none;
 }
 
 #chat-bodies {
-    width: 100%;
     padding: 16px;
-    margin-top: calc(-3em - 11px);
     height: calc(100vh - 10em - 14px);
-    max-height: calc(100vh - 10em - 14px);
     overflow: auto;
 }
 
@@ -171,7 +169,7 @@ k-navbar, .k-navbar {
     display: inline-flex;
     transform: translateY(-10px);
     max-width: calc(30vw - 8em - 18px);
-    background: #4444ff33;
+    background: #4444ff22;
 }
 
 .message-info {
@@ -187,16 +185,17 @@ k-navbar, .k-navbar {
 .profile-picture {
     display: inline-block;
     border-radius: 500px;
-    border: 2px var(--color-secondary) solid;
     margin-right: 4px;
-    height: 30px;
-    width: 30px;
+    height: 36px;
+    width: 36px;
 }
 
 #posts.expanded, #chat.expanded {
     width: calc(100vw - 14em);
     position: absolute;
     z-index: 10;
+    border-top-right-radius: 16px;
+    border-right: none;
 }
 
 .mdc-button {
@@ -257,7 +256,6 @@ k-navbar, .k-navbar {
     display: inline-block;
     padding: 16px;
     margin: 16px;
-    padding-bottom: calc(16px + 2em);
     background-color: white;
     background-size: cover;
     min-width: 200px;
@@ -267,6 +265,14 @@ k-navbar, .k-navbar {
     background-size: cover !important;
 }
 
+.post-wrapper .mdc-card__media {
+    display: none;
+}
+
+.post-wrapper.has-image .mdc-card__media {
+    display: block;
+}
+
 .post-wrapper.has-image .post-content-span, .post-wrapper.has-image .post-top {
     background: white;
     border-radius: 4px;
@@ -274,12 +280,15 @@ k-navbar, .k-navbar {
 
 .post-user {
     color: #00000066;
-    margin-left: 4px;
 }
 
 .posts-body {
     height: 100%;
     background: var(--color-background);
+}
+
+.post-img {
+    border-radius: 10px;
 }
 
 .post-title {
@@ -289,6 +298,9 @@ k-navbar, .k-navbar {
     overflow: hidden;
     font-size: 1.6em;
     font-weight: bold;
+    margin-top: 6px;
+    margin-bottom: -0.6em;
+    font-family: 'Product Sans', neue-haas-unica, 'Roboto', sans-serif;
 }
 
 .post-points {
@@ -307,12 +319,6 @@ k-navbar, .k-navbar {
     min-width: 1.6em;
     text-align: center;
     font-weight: bold;
-}
-
-.post-img {
-    vertical-align: top;
-    width: 100%;
-    opacity: 0;
 }
 
 .float-right {

@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Product+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Roboto">
     <link rel="stylesheet" href="https://use.typekit.net/lku7gbz.css">
@@ -21,7 +23,8 @@
         <header class="mdc-top-app-bar" id="navbar">
             <div class="mdc-top-app-bar__row">
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                    <button class="material-icons-outlined mdc-top-app-bar__navigation-icon mdc-ripple-surface">menu</button>
+                    <button
+                        class="material-icons-outlined mdc-top-app-bar__navigation-icon mdc-ripple-surface">menu</button>
                     <span class="mdc-top-app-bar__title" style="font-family: 'Product Sans', 'Roboto', sans-serif;">
                         Blitzboard <span id="blitzboard-title"></span>
                     </span>
@@ -64,9 +67,9 @@
                             <br>
                             <input type="file" name="Upload an image" class="inputfile" id="new-post-upload"
                                 accept=".jpg,.png,.bmp" />
-                            <label for="new-post-upload" class="mdc-chip"
-                                id="new-post-upload-label">
-                                <i class="material-icons-outlined mdc-chip__icon mdc-chip__icon--leading">cloud_upload</i>
+                            <label for="new-post-upload" class="mdc-chip" id="new-post-upload-label">
+                                <i
+                                    class="material-icons-outlined mdc-chip__icon mdc-chip__icon--leading">cloud_upload</i>
                                 <div class="mdc-chip__text">Upload an image?</div>
                             </label>
                             <br>
@@ -118,8 +121,8 @@
     <template id="message-wrapper-template">
         <div class="message">
             <div style="--color-secondary: black; color: black;">
-                <img v-bind:src="message.photoURL" class="profile-picture" v-bind:alt="message.displayName"
-                    v-bind:title="message.displayName">
+                <img v-bind:src="message.photoURL" class="profile-picture mdc-elevation--z1"
+                    v-bind:alt="message.displayName" v-bind:title="message.displayName">
                 <div class="message-body mdc-ripple-surface" ref="messageBody">{{message.message}}</div>
             </div>
             <div class="message-info">
@@ -139,7 +142,41 @@
     </template>
 
     <template id="post-wrapper-template">
-        <div class="post-wrapper mdc-layout-grid__cell mdc-card">
+        <div class="mdc-card post-wrapper mdc-layout-grid__cell">
+            <div class="mdc-card__primary-action" tabindex="0">
+                <div class="mdc-card__media mdc-card__media--16-9 post-img"
+                    v-bind:style="'background-image: url(&quot;' + post.imageURL + '&quot;);'">
+                </div>
+                <div class="mdc-card__primary">
+                    <h2 class="mdc-card__title mdc-typography mdc-typography--headline6 post-title">
+                        {{post.name}}
+                    </h2>
+                    <h3 class="mdc-card__subtitle mdc-typography mdc-typography--subtitle2 post-user">
+                        {{post.displayName}}
+                    </h3>
+                </div>
+                <div class="mdc-card__secondary mdc-typography mdc-typography--body2">
+                    {{post.content}}
+                </div>
+            </div>
+            <div class="mdc-card__actions">
+                <div class="mdc-card__action-buttons">
+                    <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
+                        <div class="mdc-chip__text">{{topic}}</div>
+                    </div>
+                    <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus()"
+                        ref="plusButton">+1</button>
+                    <span class="post-points">{{post.pluses + post.minuses}}</span>
+                    <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus()"
+                        ref="minusButton">-1</button>
+                </div>
+                <div class="mdc-card__action-icons">
+                    <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon--unbounded"
+                        title="More options" data-mdc-ripple-is-unbounded="true">more_vert</button>
+                </div>
+            </div>
+        </div>
+        <!--<div class="post-wrapper mdc-layout-grid__cell mdc-card">
             <div>
                 <span class="post-top">
                     <span class="post-title">{{post.name}}</span>
@@ -150,18 +187,17 @@
                 <span class="post-content-span">{{post.content}}</span>
             </div>
             <div class="post-bottom mdc-card__actions">
+                <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
+                    <div class="mdc-chip__text">{{topic}}</div>
+                </div>
+                <br>
                 <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus()"
                     ref="plusButton">+1</button>
                 <span class="post-points">{{post.pluses + post.minuses}}</span>
                 <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus()"
                     ref="minusButton">-1</button>
-                <span class="post-topics-wrapper">
-                    <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
-                        <div class="mdc-chip__text">{{topic}}</div>
-                    </span>
-                </span>
             </div>
-        </div>
+        </div>-->
     </template>
 
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
