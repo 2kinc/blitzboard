@@ -199,11 +199,16 @@ k-navbar, .k-navbar {
     z-index: 10;
 }
 
+.mdc-button {
+    font-weight: bold;
+}
+
 #new-post-wrapper {
     border-bottom: 2px var(--color-main) solid;
     box-shadow: 10px 0 8px 0 #00000088;
     padding: 6px 16px;
     padding-bottom: 14px;
+    padding-top: 20px;
 }
 
 #new-post-main {

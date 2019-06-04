@@ -354,7 +354,6 @@ function Site(ref) {
             }
         }
         that.elements.newPostMain.toggleClass('shown');
-        that.elements.newPostButton.toggleClass('k-rainbow');
     });
     this.elements.newPostTopics.change(function (e) {
         var topic = that.elements.newPostTopics.val().slice(2);
@@ -404,6 +403,10 @@ var vue = new Vue({
             const textFields = document.querySelectorAll('.mdc-text-field');
             for (const textField of textFields) {
                 mdc.textField.MDCTextField.attachTo(textField);
+            }
+            const selects = document.querySelectorAll('.mdc-select');
+            for (const select of selects) {
+                mdc.select.MDCSelect.attachTo(select);
             }
         }
     }

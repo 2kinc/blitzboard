@@ -39,16 +39,52 @@
                 <div id="posts">
                     <div id="new-post-wrapper">
                         <div id="new-post-main">
-                            <input name="Post title" type="text" class="k-input" id="new-post-name"
-                                placeholder="What are you going to talk about?"> <br>
-                            <textarea name="Post content" id="new-post-content" cols="60" rows="6" class="k-input"
-                                placeholder="What do you want to say in this post?"></textarea> <br>
+                            <div class="mdc-text-field mdc-text-field--outlined">
+                                <input class="mdc-text-field__input" id="new-post-name">
+                                <div class="mdc-notched-outline">
+                                    <div class="mdc-notched-outline__leading"></div>
+                                    <div class="mdc-notched-outline__notch">
+                                        <label class="mdc-floating-label">Title</label>
+                                    </div>
+                                    <div class="mdc-notched-outline__trailing"></div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="mdc-text-field mdc-text-field--textarea">
+                                <textarea id="new-post-content" class="mdc-text-field__input" rows="8"
+                                    cols="40"></textarea>
+                                <div class="mdc-notched-outline">
+                                    <div class="mdc-notched-outline__leading"></div>
+                                    <div class="mdc-notched-outline__notch">
+                                        <label for="new-post-content" class="mdc-floating-label">Content</label>
+                                    </div>
+                                    <div class="mdc-notched-outline__trailing"></div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
                             <input type="file" name="Upload an image" class="inputfile" id="new-post-upload"
                                 accept=".jpg,.png,.bmp" />
-                            <label for="new-post-upload" class="k-button" id="new-post-upload-label">Upload an image
-                                instead?</label> <br>
-                            Add topics for your post: <span id="new-post-topics-wrapper"></span>
-                            <select id="new-post-topics" class="k-input"></select> <br>
+                            <label for="new-post-upload" class="mdc-button mdc-button--outlined"
+                                id="new-post-upload-label">
+                                Upload an image?
+                            </label>
+                            <br>
+                            <br>
+                            Topics: <span id="new-post-topics-wrapper"></span>
+                            <br>
+                            <br>
+                            <div class="mdc-select">
+                                <i class="mdc-select__dropdown-icon"></i>
+                                <select class="mdc-select__native-control" id="new-post-topics">
+                                    <option disabled selected>Select a topic</option>
+                                </select>
+                                <label class="mdc-floating-label">Add topics</label>
+                                <div class="mdc-line-ripple"></div>
+                            </div>
+                            <br>
+                            <br>
                         </div>
                         <button class="mdc-button mdc-button--outlined" id="new-post-button">+ New Post</button>
                     </div>
@@ -80,14 +116,16 @@
 
     <template id="chat-body-template">
         <div class="chat-body" v-bind:id="'chat-body-' + topic">
-            <message-wrapper v-for="message of messages" v-bind:message="message" v-bind:key="message.key"></message-wrapper>
+            <message-wrapper v-for="message of messages" v-bind:message="message" v-bind:key="message.key">
+            </message-wrapper>
         </div>
     </template>
 
     <template id="message-wrapper-template">
         <div class="message">
             <div style="--color-secondary: black; color: black;">
-                <img v-bind:src="message.photoURL" class="profile-picture" v-bind:alt="message.displayName" v-bind:title="message.displayName">
+                <img v-bind:src="message.photoURL" class="profile-picture" v-bind:alt="message.displayName"
+                    v-bind:title="message.displayName">
                 <div class="message-body mdc-ripple-surface" ref="messageBody">{{message.message}}</div>
             </div>
             <div class="message-info">
