@@ -363,7 +363,17 @@ function Site(ref) {
             var text = document.createElement('div');
             text.className = 'mdc-chip__text';
             text.innerText = topic;
+            var icon = document.createElement('i');
+            icon.className = 'material-icons mdc-chip__icon mdc-chip__icon--trailing';
+            icon.innerText = 'cancel';
+            icon.role = 'button';
+            icon.tabIndex = 0;
+            icon.addEventListener('click', function () {
+                topics.pop(topic);
+            });
             chip.appendChild(text);
+            chip.appendChild(icon);
+            mdc.chips.MDCChip.attachTo(chip);
             that.elements.newPostTopicsWrapper.append(chip);
             topics.push(topic);
             $('#option-' + topic).remove();
@@ -399,9 +409,9 @@ var vue = new Vue({
     },
     methods: {
         attachMDCStyles: function () {
-            const rippleElements = document.querySelectorAll('.mdc-button, mdc-icon-button, #chat-input-button, .mdc-ripple-surface');
-            for (var rippleElement of rippleElements) {
-                mdc.ripple.MDCRipple.attachTo(rippleElement);
+            const buttons = document.querySelectorAll('.mdc-button, mdc-icon-button');
+            for (var button of buttons) {
+                mdc.ripple.MDCRipple.attachTo(button);
             }
             const textFields = document.querySelectorAll('.mdc-text-field');
             for (const textField of textFields) {
@@ -410,6 +420,10 @@ var vue = new Vue({
             const selects = document.querySelectorAll('.mdc-select');
             for (const select of selects) {
                 mdc.select.MDCSelect.attachTo(select);
+            }
+            const chips = document.querySelectorAll('.mdc-chip');
+            for (const chip of chips) {
+                mdc.chips.MDCChip.attachTo(chip);
             }
         }
     }

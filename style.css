@@ -217,6 +217,10 @@ k-navbar, .k-navbar {
     transition: all 0.3s;
 }
 
+#new-post-main > * {
+    margin: 8px;
+}
+
 #new-post-main.shown {
     max-height: 100%;
 }
