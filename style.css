@@ -318,10 +318,6 @@ k-navbar, .k-navbar {
     color: white;
 }
 
-.post-topics-wrapper {
-    margin-right: -10px;
-}
-
 ::-webkit-scrollbar {
     width: 16px;
     background: #4444ff33;

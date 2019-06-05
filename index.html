@@ -170,12 +170,14 @@
                 <div class="mdc-card__secondary mdc-typography mdc-typography--body2">
                     {{post.content}}
                 </div>
+                <div class="post-topics mdc-chip-set">
+                        <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
+                            <div class="mdc-chip__text">{{topic}}</div>
+                        </div>
+                    </div>
             </div>
             <div class="mdc-card__actions">
                 <div class="mdc-card__action-buttons">
-                    <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
-                        <div class="mdc-chip__text">{{topic}}</div>
-                    </div>
                     <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus()"
                         ref="plusButton">+1</button>
                     <span class="post-points">{{post.pluses + post.minuses}}</span>
@@ -188,28 +190,6 @@
                 </div>
             </div>
         </div>
-        <!--<div class="post-wrapper mdc-layout-grid__cell mdc-card">
-            <div>
-                <span class="post-top">
-                    <span class="post-title">{{post.name}}</span>
-                    <span class="post-user">{{post.displayName}}</span>
-                </span>
-            </div>
-            <div class="post-content">
-                <span class="post-content-span">{{post.content}}</span>
-            </div>
-            <div class="post-bottom mdc-card__actions">
-                <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
-                    <div class="mdc-chip__text">{{topic}}</div>
-                </div>
-                <br>
-                <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus()"
-                    ref="plusButton">+1</button>
-                <span class="post-points">{{post.pluses + post.minuses}}</span>
-                <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus()"
-                    ref="minusButton">-1</button>
-            </div>
-        </div>-->
     </template>
 
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
