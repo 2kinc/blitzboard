@@ -238,6 +238,8 @@ function Site(ref) {
             $('#posts-body-' + that.currentTopic).show();
             $('.topic-item').not('#topic-home').each(function () {
                 this.addEventListener('click', function () {
+                    drawer.open = false;
+                    that.elements.newPostButton.focus();
                     var topic = this.id.slice(6);
                     that.currentTopic = topic;
                     if (!document.querySelector('#chat-body-' + topic)) {
@@ -692,16 +694,14 @@ function handleFileForNewPost(e) {
 site.elements.newPostUpload.addEventListener('input', handleFileForNewPost);
 vue.attachMDCStyles();
 
-const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
-const drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
-const mainContentEl = document.querySelector('#content-body');
-const listEl = document.querySelector('.mdc-drawer .mdc-list');
-//listEl.addEventListener('click', () => {
-//    drawer.open = false;
-//});
+var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
+var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
+var mainContentEl = document.querySelector('#mdc-drawer-frame-content');
+var listEl = document.querySelector('.mdc-drawer .mdc-list');
 
-//topAppBar.listen('MDCTopAppBar:nav', () => {
-//    drawer.open = true;
-//});
-
+topAppBar.setScrollTarget(mainContentEl);
 document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
+
+document.body.addEventListener('MDCDrawer:closed', () => {
+    site.elements.newPostButton.focus();
+});
