@@ -246,7 +246,7 @@ k-navbar, .k-navbar {
     margin: 16px;
     background-color: white;
     background-size: cover;
-    min-width: 200px;
+    min-width: 280px;
 }
 
 .post-wrapper.has-image{
@@ -281,9 +281,6 @@ k-navbar, .k-navbar {
 
 .post-title {
     width: 30vw;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
     font-size: 1.6em;
     font-weight: bold;
     margin-top: 6px;
