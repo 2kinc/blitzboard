@@ -17,9 +17,12 @@ body {
     height: 100vh;
 }
 
-.mdc-drawer--dismissible {
-    height: calc(100% - 64px);
-    overflow-x: hidden;
+.mdc-drawer {
+    overflow-x: hidden!important;
+}
+
+.mdc-drawer__content {
+    overflow-x: hidden!important;
 }
 
 .mdc-list-item--selected {
@@ -42,11 +45,10 @@ body {
     padding-bottom: 40px;
 }
 
-#main-wrapper {
+#content-body {
     flex: auto;
     overflow: auto;
     position: relative;
-    z-index: 1000000;
     margin-top: calc(3em + 16px);
     border: 2px black solid;
     border-radius: 16px;
@@ -79,11 +81,6 @@ body {
     z-index: 100000000;
 }
 
-.topic-item::before {
-    content: '::';
-    opacity: 0.6;
-}
-
 #more-topics::before {
     content: 'Topics';
     display: block;
@@ -99,7 +96,6 @@ k-navbar, .k-navbar {
     box-shadow: 0 2px 8px #00000066;
     background: white;
     color: var(--color-main);
-    z-index: 100000000 !important;
 }
 
 #blitzboard-title {
@@ -187,7 +183,6 @@ k-navbar, .k-navbar {
 #posts.expanded, #chat.expanded {
     width: calc(100vw - 14em);
     position: absolute;
-    z-index: 10;
     border-top-right-radius: 16px;
     border-right: none;
 }

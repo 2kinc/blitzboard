@@ -251,19 +251,11 @@ function Site(ref) {
                     if (!document.querySelector('#posts-body-' + topic)) {
                         var newPostsBody = document.createElement('div');
                         newPostsBody.id = 'posts-body-' + topic;
-                        //newPostsBody.className = 'posts-body';
                         that.elements.postsBodies.append(newPostsBody);
                         var component = new PostsBody();
                         component.topic = topic;
                         component.dbref = that.ref.child('posts').orderByChild('pluses');
                         component.$mount('#' + newPostsBody.id);
-                        /*that.ref.child('posts').orderByChild('pluses').on('child_added', function (snap) {
-                            var post = snap.val();
-                            if (post.topics && post.topics.includes(topic)) {
-                                var postEl = that.getPostElement(snap);
-                                newPostsBody.insertBefore(postEl, newPostsBody.firstChild);
-                            }
-                        });*/
                     }
                     that.elements.posts.removeClass('expanded');
                     that.data.render();
@@ -405,6 +397,7 @@ var vue = new Vue({
     },
     mounted: function () {
         this.firebase = app;
+        this.attachMDCStyles();
     },
     methods: {
         attachMDCStyles: function () {
@@ -424,8 +417,17 @@ var vue = new Vue({
             for (const chip of chips) {
                 mdc.chips.MDCChip.attachTo(chip);
             }
-            const topAppBar = new mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
-            const drawer = new mdc.drawer.MDCDrawer.attachTo(document.querySelector('#drawer'));
+            const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
+            const drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
+            const mainContentEl = document.querySelector('#content-body');
+            const listEl = document.querySelector('.mdc-drawer .mdc-list');
+            // listEl.addEventListener('click', () => {
+            //     drawer.open = false;
+            // });
+            document.body.addEventListener('MDCDrawer:closed', () => {
+                mainContentEl.querySelector('input, button').focus();
+            });
+
             topAppBar.setScrollTarget(document.querySelector('#content-body'));
             topAppBar.listen('MDCTopAppBar:nav', () => {
                 drawer.open = !drawer.open;
@@ -703,5 +705,4 @@ function handleFileForNewPost(e) {
 }
 
 site.elements.newPostUpload.addEventListener('input', handleFileForNewPost);
-
 vue.attachMDCStyles();
