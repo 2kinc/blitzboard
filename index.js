@@ -417,21 +417,6 @@ var vue = new Vue({
             for (const chip of chips) {
                 mdc.chips.MDCChip.attachTo(chip);
             }
-            const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
-            const drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
-            const mainContentEl = document.querySelector('#content-body');
-            const listEl = document.querySelector('.mdc-drawer .mdc-list');
-            // listEl.addEventListener('click', () => {
-            //     drawer.open = false;
-            // });
-            document.body.addEventListener('MDCDrawer:closed', () => {
-                mainContentEl.querySelector('input, button').focus();
-            });
-
-            topAppBar.setScrollTarget(document.querySelector('#content-body'));
-            topAppBar.listen('MDCTopAppBar:nav', () => {
-                drawer.open = !drawer.open;
-            });
         }
     }
 });
@@ -706,3 +691,17 @@ function handleFileForNewPost(e) {
 
 site.elements.newPostUpload.addEventListener('input', handleFileForNewPost);
 vue.attachMDCStyles();
+
+const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
+const drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
+const mainContentEl = document.querySelector('#content-body');
+const listEl = document.querySelector('.mdc-drawer .mdc-list');
+//listEl.addEventListener('click', () => {
+//    drawer.open = false;
+//});
+
+//topAppBar.listen('MDCTopAppBar:nav', () => {
+//    drawer.open = true;
+//});
+
+document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
