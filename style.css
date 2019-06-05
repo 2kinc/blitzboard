@@ -61,7 +61,7 @@ body {
 }
 
 #main-content {
-    width: calc(100vw - 12em - 30px);
+    width: calc(100vw);
     height: calc(100vh - 3em - 10px);
     float: right;
 }
@@ -107,7 +107,7 @@ k-navbar, .k-navbar {
 }
 
 #posts {
-    width: calc(70% - 68px);
+    width: calc(70%);
     border-right: 2px var(--color-secondary) solid;
     transition: all 0.3s;
     background: var(--color-background);

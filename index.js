@@ -239,6 +239,7 @@ function Site(ref) {
             $('.topic-item').not('#topic-home').each(function () {
                 this.addEventListener('click', function () {
                     drawer.open = false;
+                    document.querySelector('.mdc-drawer').classList.add('mdc-drawer--closing');
                     that.elements.newPostButton.focus();
                     var topic = this.id.slice(6);
                     that.currentTopic = topic;
