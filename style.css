@@ -9,9 +9,20 @@ body {
     --mdc-theme-background: #cccccc;
     --mdc-theme-on-primary: white;
     --mdc-theme-on-surface: black;
-    font-family: neue-haas-unica, sans-serif;
+    font-family: 'Roboto', neue-haas-unica, sans-serif;
+    font-size: 16px;
     padding: 0;
     margin: 0;
+    display: flex;
+    height: 100vh;
+}
+
+.mdc-drawer--dismissible {
+
+}
+
+.mdc-list-item--selected {
+    color: #4444ff!important;
 }
 
 #topics {
@@ -27,13 +38,13 @@ body {
 }
 
 #navbar {
-    position: absolute;
-    top: 0;
     padding-bottom: 40px;
 }
 
-#content-body {
-    position: absolute;
+#main-wrapper {
+    flex: auto;
+    overflow: auto;
+    position: relative;
     z-index: 1000000;
     margin-top: calc(3em + 16px);
     border: 2px black solid;
@@ -163,7 +174,7 @@ k-navbar, .k-navbar {
 
 .message-body {
     border-radius: 4px;
-    padding: 6px 8px;
+    padding: 8px;
     margin: 0;
     margin-bottom: 4px;
     display: inline-flex;
@@ -174,7 +185,7 @@ k-navbar, .k-navbar {
 
 .message-info {
     margin: 2px;
-    margin-top: -16px;
+    margin-top: -10px;
     font-size: 0.8em;
 }
 

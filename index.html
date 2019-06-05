@@ -32,117 +32,119 @@
             </div>
         </header>
 
-        <aside id="drawer" class="mdc-drawer mdc-drawer--modal demo-drawer">
-            <nav class="mdc-drawer__drawer">
-                <nav class="mdc-drawer__content">
-                    <div id="icon-with-text-demo" class="mdc-list">
-                        <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
-                            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-                        </a>
-                        <a class="mdc-list-item demo-drawer-list-item" href="#">
-                            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-                        </a>
-                        <a class="mdc-list-item demo-drawer-list-item" href="#">
-                            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
-                        </a>
-                        <a class="mdc-list-item demo-drawer-list-item" href="#">
-                            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
-                        </a>
-                    </div>
+        <div id="main-wrapper">
+            <aside id="drawer" class="mdc-drawer mdc-drawer--dismissible demo-drawer">
+                <nav class="mdc-drawer__drawer">
+                    <nav class="mdc-drawer__content">
+                        <div id="icon-with-text-demo" class="mdc-list">
+                            <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
+                                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+                            </a>
+                            <a class="mdc-list-item demo-drawer-list-item" href="#">
+                                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+                            </a>
+                            <a class="mdc-list-item demo-drawer-list-item" href="#">
+                                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
+                            </a>
+                            <a class="mdc-list-item demo-drawer-list-item" href="#">
+                                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+                            </a>
+                        </div>
 
-                    <hr class="mdc-list-divider">
+                        <hr class="mdc-list-divider">
 
-                    <div class="mdc-list">
-                        <a class="mdc-list-item demo-drawer-list-item" href="#">
-                            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
-                        </a>
-                        <a class="mdc-list-item demo-drawer-list-item" href="#">
-                            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
-                        </a>
-                        <a class="mdc-list-item demo-drawer-list-item" href="#">
-                            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
-                        </a>
-                    </div>
+                        <div class="mdc-list">
+                            <a class="mdc-list-item demo-drawer-list-item" href="#">
+                                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
+                            </a>
+                            <a class="mdc-list-item demo-drawer-list-item" href="#">
+                                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
+                            </a>
+                            <a class="mdc-list-item demo-drawer-list-item" href="#">
+                                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
+                            </a>
+                        </div>
+                    </nav>
                 </nav>
-            </nav>
-        </aside>
+            </aside>
 
-        <div id="content-body">
-            <div id="topics">
-                <div id="topic-home" class="topic-item selected">home</div>
-                <div id="more-topics"></div>
-            </div>
+            <div id="content-body" class="mdc-drawer-app-content">
+                <div id="topics">
+                    <div id="topic-home" class="topic-item selected">home</div>
+                    <div id="more-topics"></div>
+                </div>
 
-            <div id="main-content">
-                <div id="posts">
-                    <div id="new-post-wrapper">
-                        <div id="new-post-main">
-                            <div class="mdc-text-field mdc-text-field--outlined">
-                                <input class="mdc-text-field__input" id="new-post-name">
+                <div id="main-content">
+                    <div id="posts">
+                        <div id="new-post-wrapper">
+                            <div id="new-post-main">
+                                <div class="mdc-text-field mdc-text-field--outlined">
+                                    <input class="mdc-text-field__input" id="new-post-name">
+                                    <div class="mdc-notched-outline">
+                                        <div class="mdc-notched-outline__leading"></div>
+                                        <div class="mdc-notched-outline__notch">
+                                            <label class="mdc-floating-label">Title</label>
+                                        </div>
+                                        <div class="mdc-notched-outline__trailing"></div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="mdc-text-field mdc-text-field--textarea">
+                                    <textarea id="new-post-content" class="mdc-text-field__input" rows="8"
+                                        cols="40"></textarea>
+                                    <div class="mdc-notched-outline">
+                                        <div class="mdc-notched-outline__leading"></div>
+                                        <div class="mdc-notched-outline__notch">
+                                            <label for="new-post-content" class="mdc-floating-label">Content</label>
+                                        </div>
+                                        <div class="mdc-notched-outline__trailing"></div>
+                                    </div>
+                                </div>
+                                <br>
+                                <input type="file" name="Upload an image" class="inputfile" id="new-post-upload"
+                                    accept=".jpg,.png,.bmp" />
+                                <label for="new-post-upload" class="mdc-chip" id="new-post-upload-label">
+                                    <i
+                                        class="material-icons-outlined mdc-chip__icon mdc-chip__icon--leading">cloud_upload</i>
+                                    <div class="mdc-chip__text">Upload an image?</div>
+                                </label>
+                                <br>
+                                <div id="new-post-topics-wrapper" class="mdc-chip-set">Topics: </div>
+                                <div class="mdc-select">
+                                    <i class="mdc-select__dropdown-icon"></i>
+                                    <select class="mdc-select__native-control" id="new-post-topics">
+                                        <option disabled selected>Select a topic</option>
+                                    </select>
+                                    <label class="mdc-floating-label">Add topics</label>
+                                    <div class="mdc-line-ripple"></div>
+                                </div>
+                            </div>
+                            <button class="mdc-button mdc-button--outlined" id="new-post-button">+ New Post</button>
+                        </div>
+                        <div id="posts-bodies"></div>
+                    </div>
+                    <div id="chat">
+                        <div id="chat-bodies"></div>
+                        <div id="chat-input-container" class="mdc-elevation--z2">
+                            <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon"
+                                style="width: calc(100% - 18px);">
+                                <i class="material-icons mdc-text-field__icon mdc-ripple-surface mdc-ripple-surface--primary mdc-ripple-surface--unbounded"
+                                    id="chat-input-button" tabindex="0" role="button">message</i>
+                                <input class="mdc-text-field__input" id="chat-input">
                                 <div class="mdc-notched-outline">
                                     <div class="mdc-notched-outline__leading"></div>
                                     <div class="mdc-notched-outline__notch">
-                                        <label class="mdc-floating-label">Title</label>
+                                        <label class="mdc-floating-label">Send a message</label>
                                     </div>
                                     <div class="mdc-notched-outline__trailing"></div>
                                 </div>
                             </div>
-                            <br>
-                            <div class="mdc-text-field mdc-text-field--textarea">
-                                <textarea id="new-post-content" class="mdc-text-field__input" rows="8"
-                                    cols="40"></textarea>
-                                <div class="mdc-notched-outline">
-                                    <div class="mdc-notched-outline__leading"></div>
-                                    <div class="mdc-notched-outline__notch">
-                                        <label for="new-post-content" class="mdc-floating-label">Content</label>
-                                    </div>
-                                    <div class="mdc-notched-outline__trailing"></div>
-                                </div>
-                            </div>
-                            <br>
-                            <input type="file" name="Upload an image" class="inputfile" id="new-post-upload"
-                                accept=".jpg,.png,.bmp" />
-                            <label for="new-post-upload" class="mdc-chip" id="new-post-upload-label">
-                                <i
-                                    class="material-icons-outlined mdc-chip__icon mdc-chip__icon--leading">cloud_upload</i>
-                                <div class="mdc-chip__text">Upload an image?</div>
-                            </label>
-                            <br>
-                            <div id="new-post-topics-wrapper" class="mdc-chip-set">Topics: </div>
-                            <div class="mdc-select">
-                                <i class="mdc-select__dropdown-icon"></i>
-                                <select class="mdc-select__native-control" id="new-post-topics">
-                                    <option disabled selected>Select a topic</option>
-                                </select>
-                                <label class="mdc-floating-label">Add topics</label>
-                                <div class="mdc-line-ripple"></div>
-                            </div>
-                        </div>
-                        <button class="mdc-button mdc-button--outlined" id="new-post-button">+ New Post</button>
-                    </div>
-                    <div id="posts-bodies"></div>
-                </div>
-                <div id="chat">
-                    <div id="chat-bodies"></div>
-                    <div id="chat-input-container" class="mdc-elevation--z2">
-                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon"
-                            style="width: calc(100% - 18px);">
-                            <i class="material-icons mdc-text-field__icon mdc-ripple-surface mdc-ripple-surface--primary mdc-ripple-surface--unbounded"
-                                id="chat-input-button" tabindex="0" role="button">message</i>
-                            <input class="mdc-text-field__input" id="chat-input">
-                            <div class="mdc-notched-outline">
-                                <div class="mdc-notched-outline__leading"></div>
-                                <div class="mdc-notched-outline__notch">
-                                    <label class="mdc-floating-label">Send a message</label>
-                                </div>
-                                <div class="mdc-notched-outline__trailing"></div>
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="loading">Loading...</div>
+                <div id="loading">Loading...</div>
+            </div>
         </div>
     </div>
 
