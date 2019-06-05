@@ -18,7 +18,8 @@ body {
 }
 
 .mdc-drawer--dismissible {
-
+    height: calc(100% - 64px);
+    overflow-x: hidden;
 }
 
 .mdc-list-item--selected {
@@ -51,6 +52,7 @@ body {
     border-radius: 16px;
     background: white;
     box-shadow: 0 -4px 40px #00000099;
+    width: calc(100vw - 4px);
 }
 
 #main-content {
@@ -77,28 +79,9 @@ body {
     z-index: 100000000;
 }
 
-.topic-item {
-    border-radius: 4px;
-    margin: 4px;
-    cursor: pointer;
-    height: calc(1em + 12px);
-    padding: 6px;
-}
-
 .topic-item::before {
     content: '::';
     opacity: 0.6;
-}
-
-.topic-item:hover {
-    background: var(--color-main);
-    color: white;
-    border: none;
-}
-
-.topic-item.selected {
-    background: var(--color-main);
-    color: white;
 }
 
 #more-topics::before {
@@ -125,7 +108,7 @@ k-navbar, .k-navbar {
 }
 
 #posts {
-    width: calc(70vw - 12em);
+    width: calc(70% - 68px);
     border-right: 2px var(--color-secondary) solid;
     transition: all 0.3s;
     background: var(--color-background);
@@ -134,7 +117,7 @@ k-navbar, .k-navbar {
 
 #chat {
     position: absolute;
-    width: calc(30vw - 2em - 2px);
+    width: 30%;
     padding: 0;
     transition: all 0.3s;
     background: var(--color-background);

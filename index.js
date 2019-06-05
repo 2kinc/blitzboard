@@ -37,13 +37,13 @@ function Site(ref) {
     };
     this.initializeTopicElements = function (topic) {
         if (topic != 'home') {
-            var p = document.createElement('div');
-            p.className = 'topic-item';
+            var item = document.createElement('li');
+            item.className = 'topic-item mdc-list-item';
             if (topic == that.currentTopic)
-                p.classList.add('selected');
-            p.innerText = topic;
-            p.id = 'topic-' + topic;
-            that.elements.topics.append(p);
+                item.classList.add('mdc-list-item--selected');
+            item.innerText = topic;
+            item.id = 'topic-' + topic;
+            that.elements.topics.append(item);
             that.initializeTopicOption(topic);
         }
     };
