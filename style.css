@@ -84,16 +84,6 @@ body {
     z-index: 100000000;
 }
 
-#more-topics::before {
-    content: 'Topics';
-    display: block;
-    margin: 10px;
-    margin-left: -16px;
-    margin-right: -16px;
-    padding: 4px 0;
-    text-align: center;
-}
-
 k-navbar, .k-navbar {
     border: none;
     box-shadow: 0 2px 8px #00000066;
@@ -104,6 +94,10 @@ k-navbar, .k-navbar {
 #blitzboard-title {
     position: absolute;
     left: 12em;
+}
+
+.mdc-drawer-scrim {
+    cursor: pointer;
 }
 
 #posts {

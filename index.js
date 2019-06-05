@@ -19,7 +19,8 @@ function Site(ref) {
         newPostTopics: $('#new-post-topics'),
         newPostUpload: document.querySelector('#new-post-upload'),
         newPostUploadLabel: $('#new-post-upload-label'),
-        newPostMain: $('#new-post-main')
+        newPostMain: $('#new-post-main'),
+        drawerTitle: $('#drawer-title')
     }
     this.ref = ref;
     this.data = {};
@@ -41,7 +42,7 @@ function Site(ref) {
             item.className = 'topic-item mdc-list-item';
             if (topic == that.currentTopic)
                 item.classList.add('mdc-list-item--selected');
-            item.innerText = topic;
+            item.innerText = '::' + topic;
             item.id = 'topic-' + topic;
             that.elements.topics.append(item);
             that.initializeTopicOption(topic);
@@ -194,6 +195,7 @@ function Site(ref) {
         that.data.render = function () {
             that.elements.topics.html('');
             that.elements.blitzboardTitle.text('::' + that.currentTopic + ' - ' + that.data.name);
+            that.elements.drawerTitle.text(that.data.name + ' - Blitzboard');
             that.elements.newPostTopics.html('');
             var autofocus = document.createElement('option');
             autofocus.innerText = 'Select a topic';
@@ -706,3 +708,7 @@ document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('cl
 document.body.addEventListener('MDCDrawer:closed', () => {
     site.elements.newPostButton.focus();
 });
+
+$('.mdc-drawer-scrim').click(() => {
+    $('#drawer').addClass('mdc-drawer--closing');
+})
