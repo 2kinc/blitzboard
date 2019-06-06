@@ -48,148 +48,6 @@ function Site(ref) {
             that.initializeTopicOption(topic);
         }
     };
-    this.getMessageElement = function (ref) {
-        var m = ref.val();
-        var p = document.createElement('div');
-        p.innerText = m.message;
-        p.className = 'message-body enlargable';
-        var messageinfo = document.createElement('div');
-        var user = {
-            displayName: 'Unknown'
-        };
-        database.ref('users/' + m.user).once('value').then(function (snap) {
-            user = snap.val();
-            var span = document.createElement('span');
-            span.innerText = user.displayName;
-            span.className = 'chat-username';
-            var span2 = document.createElement('span');
-            span2.innerText = ' at ' + m.time;
-            span2.className = 'message-info--time';
-            messageinfo.appendChild(span);
-            messageinfo.appendChild(span2);
-            image.src = user.photoURL;
-        }).catch(function (err) {
-            console.log(err);
-        });
-        messageinfo.className = 'message-info';
-        var image = document.createElement('img');
-        image.className = 'profile-picture';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'message';
-        var imageAndMessageWrapper = document.createElement('div');
-        imageAndMessageWrapper.appendChild(image);
-        imageAndMessageWrapper.appendChild(p);
-        wrapper.appendChild(imageAndMessageWrapper);
-        wrapper.appendChild(messageinfo);
-        return wrapper;
-    };
-    function addTo(ref) {
-        ref.once('value').then(function (snap) {
-            var d = snap.val();
-            ref.set(d + 1);
-            return d + 1;
-        });
-    }
-    this.getPostElement = function (ref) {
-        var p = ref.val();
-        if (!p.content || !p.user)
-            return document.createElement('div');
-        var wrapper = document.createElement('div');
-        wrapper.className = 'post-wrapper k-card';
-        var title = document.createElement('span');
-        title.className = 'post-title k-card-title';
-        title.innerText = p.name;
-        var topWrapper = document.createElement('div');
-        var topicsWrapper = document.createElement('span');
-        topicsWrapper.className = 'float-right post-topics-wrapper';
-        for (var topic in p.topics) {
-            if (topic != 'home') {
-                var span = document.createElement('span');
-                span.className = 'post-topic-item';
-                span.innerText = p.topics[topic];
-                topicsWrapper.appendChild(span);
-            }
-        }
-        topWrapper.appendChild(title);
-        topWrapper.appendChild(topicsWrapper);
-        var content = document.createElement('div');
-        content.className = 'post-content k-card-content';
-        content.innerText = p.content;
-        if (p.content.indexOf("https://firebasestorage.googleapis.com/") == 0
-            || p.content.indexOf("https://lh3.googleusercontent.com/") == 0
-            || p.content.indexOf("http://pbs.twimg.com/") == 0
-            || p.content.indexOf("data:image/") == 0) {
-            var imgElm = document.createElement("img");
-            // outer.className = 'post-img-container';
-            // outer.appendChild(imgElm);
-            // content.appendChild(outer);
-            content.insertBefore(imgElm, content.firstChild);
-            content.style.fontSize = '0.6em';
-        }
-        var bottom = document.createElement('div');
-        bottom.className = 'post-bottom k-card-bottom';
-        var plusButton = document.createElement('button');
-        plusButton.className = 'k-button plus-button';
-        plusButton.innerText = '+1';
-        plusButton.onclick = function () {
-            var votesRef = that.ref.child('users').child(auth.currentUser.uid).child('votes').child(that.ref.key).child(ref.key);
-            votesRef.once('value', function (snap) {
-                if (snap.val() != true) {
-                    addTo(ref.ref.child('pluses'));
-                    votesRef.set(true);
-                }
-            });
-        };
-        var minusButton = document.createElement('button');
-        minusButton.className = 'k-button minus-button';
-        minusButton.innerText = '-1';
-        minusButton.onclick = function () {
-            var votesRef = that.ref.child('users').child(auth.currentUser.uid).child('votes').child(that.ref.key).child(ref.key);
-            votesRef.once('value', function (snap) {
-                if (snap.val() != true) {
-                    addTo(ref.ref.child('minuses'));
-                    votesRef.set(true);
-                }
-            });
-        };
-        ref.ref.child('pluses').on('value', function (snap) {
-            var pluses = snap.val();
-            ref.ref.child('minuses').once('value').then(function (snap) {
-                var sum = pluses - snap.val();
-                points.innerText = sum;
-            })
-        });
-        ref.ref.child('minuses').on('value', function (snap) {
-            var minuses = snap.val();
-            ref.ref.child('pluses').once('value').then(function (snap) {
-                var sum = snap.val() - minuses;
-                points.innerText = sum;
-            });
-        });
-        var points = document.createElement('span');
-        points.className = 'post-points';
-        points.innerText = p.pluses - p.minuses;
-        bottom.appendChild(plusButton);
-        database.ref('users/' + p.user).once('value').then(function (snap) {
-            var user = snap.val();
-            title.innerText += ' - ' + user.displayName;
-        }).catch(function (err) {
-            console.log(err);
-        });
-        var comments = document.createElement('div');
-        ref.ref.child('comments').on('child_added', function (snap) {
-            var comment = that.getMessageElement(snap);
-            comments.appendChild(comment);
-        });
-        wrapper.appendChild(topWrapper);
-        wrapper.appendChild(content);
-        bottom.appendChild(plusButton);
-        bottom.appendChild(points);
-        bottom.appendChild(minusButton);
-        bottom.appendChild(comments);
-        wrapper.appendChild(bottom);
-        return wrapper;
-    };
     this.ref.once('value').then(function (snap) {
         that.data = snap.val();
         that.data.render = function () {
@@ -475,13 +333,13 @@ var chatBodyComponent = Vue.component("chat-body", {
         }
     },
     computed: {
-        sortedChat: function () {
+        sortedMessages: function () {
             function compare(a, b) {
                 if (new Date(a.time).getTime() > new Date(b.time).getTime()) {
-                    return -1;
+                    return 1;
                 }
                 if (new Date(a.time).getTime() < new Date(b.time).getTime()) {
-                    return 1;
+                    return -1;
                 }
                 return 0;
             }
@@ -502,6 +360,7 @@ var messageWrapperComponent = Vue.component('message-wrapper', {
     mounted() {
         this.getTime();
         this.attachMDCStyles();
+        this.scrollToEnd();
     },
     methods: {
         getTime: function () {
@@ -510,6 +369,10 @@ var messageWrapperComponent = Vue.component('message-wrapper', {
         },
         attachMDCStyles: function () {
             mdc.ripple.MDCRipple.attachTo(this.$refs.messageBody);
+        },
+        scrollToEnd: function () {
+            var container = document.querySelector('#chat-bodies');
+            container.scrollTop = container.scrollHeight;
         }
     }
 });
@@ -615,11 +478,12 @@ var postWrapperComponent = Vue.component('post-wrapper', {
             var vueThis = this;
             var votesRef = site.ref.child('users').child(auth.currentUser.uid).child('votes').child(site.ref.key).child(vueThis.dbref.key);
             votesRef.once('value', function (snap) {
-                if (!snap.val() || snap.val() === true) {
+                var vote = snap.val();
+                if (!vote || vote === true) {
                     vueThis.post.pluses++;
                     vueThis.dbref.child('pluses').set(vueThis.post.pluses);
                     votesRef.set(1);
-                } else if (snap.val() === -1) {
+                } else if (vote === (-1)) {
                     vueThis.post.pluses++;
                     vueThis.dbref.child('pluses').set(vueThis.post.pluses);
                     vueThis.post.minuses--;
@@ -632,11 +496,12 @@ var postWrapperComponent = Vue.component('post-wrapper', {
             var vueThis = this;
             var votesRef = site.ref.child('users').child(auth.currentUser.uid).child('votes').child(site.ref.key).child(vueThis.dbref.key);
             votesRef.once('value', function (snap) {
-                if (!snap.val() || snap.val() === true) {
+                var vote = snap.val();
+                if (!vote || vote === true) {
                     vueThis.post.minuses++;
                     vueThis.dbref.child('pluses').set(vueThis.post.minuses);
                     votesRef.set(-1);
-                } else if (snap.val() === 1) {
+                } else if (vote === 1) {
                     vueThis.post.minuses++;
                     vueThis.dbref.child('minuses').set(vueThis.post.minuses);
                     vueThis.post.pluses--;

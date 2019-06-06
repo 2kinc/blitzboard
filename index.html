@@ -125,7 +125,7 @@
 
     <template id="chat-body-template">
         <div class="chat-body" v-bind:id="'chat-body-' + topic">
-            <message-wrapper v-for="message of messages" v-bind:message="message" v-bind:key="message.key">
+            <message-wrapper v-for="message of sortedMessages" v-bind:message="message">
             </message-wrapper>
         </div>
     </template>

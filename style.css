@@ -58,6 +58,7 @@ body {
     box-shadow: 0 -4px 40px #00000099;
     width: calc(100vw - 4px);
     z-index: 2;
+    overflow-x: hidden;
 }
 
 #main-content {
@@ -122,6 +123,7 @@ k-navbar, .k-navbar {
     padding: 16px;
     height: calc(100vh - 10em - 14px);
     overflow: auto;
+    scroll-behavior: smooth;
 }
 
 #chat-input {
@@ -273,6 +275,7 @@ k-navbar, .k-navbar {
 .posts-body {
     height: 100%;
     background: var(--color-background);
+    overflow-x: hidden;
 }
 
 .post-img {
