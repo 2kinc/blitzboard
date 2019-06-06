@@ -473,6 +473,21 @@ var chatBodyComponent = Vue.component("chat-body", {
                 return object;
             }
         }
+    },
+    computed: {
+        sortedChat: function () {
+            function compare(a, b) {
+                if (new Date(a.time).getTime() > new Date(b.time).getTime()) {
+                    return -1;
+                }
+                if (new Date(a.time).getTime() < new Date(b.time).getTime()) {
+                    return 1;
+                }
+                return 0;
+            }
+
+            return this.messages.sort(compare);
+        }
     }
 });
 
