@@ -17,6 +17,11 @@ body {
     height: 100vh;
 }
 
+hr {
+    border-radius: 10px;
+    border-style: solid;
+}
+
 .mdc-drawer {
     overflow-x: hidden!important;
 }
@@ -123,7 +128,6 @@ k-navbar, .k-navbar {
     padding: 16px;
     height: calc(100vh - 10em - 14px);
     overflow: auto;
-    scroll-behavior: smooth;
 }
 
 #chat-input {

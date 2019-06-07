@@ -20,7 +20,10 @@ function Site(ref) {
         newPostUpload: document.querySelector('#new-post-upload'),
         newPostUploadLabel: $('#new-post-upload-label'),
         newPostMain: $('#new-post-main'),
-        drawerTitle: $('#drawer-title')
+        drawerTitle: $('#drawer-title'),
+        drawerSubtitle: $('#drawer-subtitle'),
+        blitzboardDescription: $('#blitzboard-description'),
+        memberCount: $('#member-count')
     }
     this.ref = ref;
     this.data = {};
@@ -53,7 +56,9 @@ function Site(ref) {
         that.data.render = function () {
             that.elements.topics.html('');
             that.elements.blitzboardTitle.text('::' + that.currentTopic + ' - ' + that.data.name);
-            that.elements.drawerTitle.text(that.data.name + ' - Blitzboard');
+            that.elements.drawerTitle.text(that.data.name);
+            that.elements.blitzboardDescription.text(that.data.description || 'This Blitzboard has no description.');
+            that.elements.memberCount.text(Object.keys(that.data.users).length + ' members');
             that.elements.newPostTopics.html('');
             var autofocus = document.createElement('option');
             autofocus.innerText = 'Select a topic';
