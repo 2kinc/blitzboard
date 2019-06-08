@@ -305,6 +305,7 @@ var chatBodyComponent = Vue.component("chat-body", {
             var vueThis = this;
             site.ref.child('topics').child(vueThis.topic).child('chat').on('child_added', function (snap) {
                 var s = snap.val();
+                s.time = new Date(s.time).toLocaleString();
 
                 if (!vue.users[s.user]) {
                     vueThis.fetchUserAndPushMessage(s, s.user);
