@@ -306,6 +306,7 @@ var chatBodyComponent = Vue.component("chat-body", {
             site.ref.child('topics').child(vueThis.topic).child('chat').on('child_added', function (snap) {
                 var s = snap.val();
                 s.time = new Date(s.time).toLocaleString();
+                s.id = snap.key;
 
                 if (!vue.users[s.user]) {
                     vueThis.fetchUserAndPushMessage(s, s.user);
@@ -364,15 +365,10 @@ var messageWrapperComponent = Vue.component('message-wrapper', {
 
     }),
     mounted() {
-        this.getTime();
         this.attachMDCStyles();
         this.scrollToEnd();
     },
     methods: {
-        getTime: function () {
-            var d = new Date(this.message.time);
-            this.message.time = d.toLocaleString();
-        },
         attachMDCStyles: function () {
             mdc.ripple.MDCRipple.attachTo(this.$refs.messageBody);
         },

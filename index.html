@@ -131,12 +131,12 @@
 
     <template id="chat-body-template">
         <div class="chat-body" v-bind:id="'chat-body-' + topic">
-            <message-wrapper v-for="message of sortedMessages" v-bind:message="message">
+            <message-wrapper v-for="message in sortedMessages" v-if="message" v-bind:key="message.id" v-bind:message="message">
             </message-wrapper>
         </div>
     </template>
 
-    <template id="message-wrapper-template">
+    <template id="message-wrapper-template" v-if="message">
         <div class="message">
             <div style="--color-secondary: black; color: black;">
                 <img v-bind:src="message.photoURL" class="profile-picture mdc-elevation--z1"
