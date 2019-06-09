@@ -88,6 +88,7 @@ hr {
     background: var(--color-background);
     padding: 100px 0;
     z-index: 100000000;
+    font-family: 'Product Sans', 'Roboto', neue-haas-unica, sans-serif;
 }
 
 k-navbar, .k-navbar {
@@ -252,10 +253,10 @@ k-navbar, .k-navbar {
     margin: 16px;
     background-color: white;
     background-size: cover;
-    min-width: 280px;
+    border: 1px black
 }
 
-.post-wrapper.has-image{
+.post-wrapper.has-image {
     background-size: cover !important;
 }
 
@@ -342,4 +343,25 @@ k-navbar, .k-navbar {
 ::selection {
     background: #4444ff66;
     border-radius: 4px;
+}
+
+.active-dot {
+    display: inline-block;
+    border-radius: 100px;
+    background: #4444ff;
+    width: 8px;
+    height: 8px;
+    padding: 0!important;
+    margin: 0;
+}
+
+.inactive-dot {
+    display: inline-block;
+    border-radius: 100px;
+    background: #4444ff;
+    width: 8px;
+    height: 8px;
+    padding: 0!important;
+    margin: 0;
+    opacity: 0.3;
 }

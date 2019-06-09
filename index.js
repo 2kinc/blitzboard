@@ -58,7 +58,7 @@ function Site(ref) {
             that.elements.blitzboardTitle.text('::' + that.currentTopic + ' - ' + that.data.name);
             that.elements.drawerTitle.text(that.data.name);
             that.elements.blitzboardDescription.text(that.data.description || 'This Blitzboard has no description.');
-            that.elements.memberCount.text(Object.keys(that.data.users).length + ' members');
+            //that.elements.memberCount.text(Object.keys(that.data.users).length + ' members');
             that.elements.newPostTopics.html('');
             var autofocus = document.createElement('option');
             autofocus.innerText = 'Select a topic';
@@ -261,10 +261,14 @@ function Blitzboard(id, name) {
 var vue = new Vue({
     el: '#app',
     data: {
-        users: {}
+        users: {},
+        members: []
     },
     mounted: function () {
         this.firebase = app;
+        if (site) {
+            this.dbref = site.ref;
+        }
         this.attachMDCStyles();
     },
     methods: {
@@ -285,6 +289,35 @@ var vue = new Vue({
             for (const chip of chips) {
                 mdc.chips.MDCChip.attachTo(chip);
             }
+        },
+        getMembers: function () {
+            var vueThis = this;
+            this.dbref.child('users').on('child_added', function (snap) {
+                var member = snap.val();
+                member.id = snap.key;
+                vueThis.members.push(member);
+            });
+            this.dbref.child('users').on('child_changed', function (snap) {
+                var member = snap.val();
+                member.id = snap.key;
+                var oldMember = vueThis.members.filter(filteredMember => filteredMember.id == member.id)[0];
+                vueThis.members[vueThis.members.indexOf(oldMember)] = member;
+            });
+        },
+        initializePresenceRef: function (userid) {
+            var amOnline = database.ref('.info/connected');
+            var userRef = this.dbref.child('users').child(userid).child('presence');
+            amOnline.on('value', function (snapshot) {
+                if (snapshot.val()) {
+                    userRef.onDisconnect().remove();
+                    userRef.set(true);
+                }
+            });
+        }
+    },
+    computed: {
+        onlineMembers: function () {
+            return this.members.filter(member => member.presence == true);
         }
     }
 });
@@ -524,6 +557,8 @@ var postWrapperComponent = Vue.component('post-wrapper', {
 /** Initialize MDC Web components. */
 
 var site = new Site(new Blitzboard('test', 'test.').ref);
+vue.dbref = site.ref;
+vue.getMembers();
 
 auth.onAuthStateChanged(function (user) {
     if (user) {
@@ -532,6 +567,7 @@ auth.onAuthStateChanged(function (user) {
             if (snap.val() == null)
                 site.ref.child('users').child(auth.currentUser.uid).set(true);
         });
+        vue.initializePresenceRef(auth.currentUser.uid);
     } else {
         auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
     }
@@ -593,4 +629,4 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 
 $('.mdc-drawer-scrim').click(() => {
     $('#drawer').addClass('mdc-drawer--closing');
-})
+});

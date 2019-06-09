@@ -26,7 +26,10 @@
                 <h6 class="mdc-drawer__subtitle" id="drawer-subtitle">
                     <span id="blitzboard-description"></span>
                     <hr>
-                    <span id="member-count"></span>
+                    <span class="inactive-dot"></span>
+                    <span id="member-count">{{members.length}} members</span>
+                    <span class="active-dot"></span>
+                    <span id="online-member-count">{{onlineMembers.length}} online</span>
                 </h6>
             </div>
             <div class="mdc-drawer__content">
@@ -160,7 +163,7 @@
     </template>
 
     <template id="post-wrapper-template">
-        <div class="mdc-card post-wrapper mdc-layout-grid__cell">
+        <div class="mdc-card post-wrapper mdc-layout-grid__cell mdc-layout-grid__cell--span-6 mdc-elevation--z3">
             <div class="mdc-card__primary-action" tabindex="0">
                 <div class="mdc-card__media mdc-card__media--16-9 post-img"
                     v-bind:style="'background-image: url(&quot;' + post.imageURL + '&quot;);'">
@@ -178,7 +181,7 @@
                 </div>
                 <div class="post-topics mdc-chip-set">
                         <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
-                            <div class="mdc-chip__text">{{topic}}</div>
+                            <div class="mdc-chip__text">::{{topic}}</div>
                         </div>
                     </div>
             </div>
