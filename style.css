@@ -32,6 +32,7 @@ hr {
 
 .mdc-list-item--selected {
     color: #4444ff!important;
+    font-weight: bold !important;
 }
 
 #topics {
@@ -361,10 +362,32 @@ k-navbar, .k-navbar {
 .inactive-dot {
     display: inline-block;
     border-radius: 100px;
-    background: #4444ff;
+    background: #bbbbff;
     width: 8px;
     height: 8px;
     padding: 0!important;
     margin: 0;
-    opacity: 0.3;
+}
+
+.member-status {
+    margin-right: 4px;
+    margin-left: 4px;
+    padding-bottom: 2px;
+}
+
+.member-status > div {
+    display: block;
+    position: relative;
+    left: 16px;
+    margin-top: -16px;
+    border: 2px white solid;
+}
+
+.member-picture {
+    height: 30px;
+    width: 30px;
+}
+
+.member-left {
+    margin-right: 6px;
 }

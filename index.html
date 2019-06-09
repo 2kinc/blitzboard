@@ -20,7 +20,7 @@
 
 <body>
     <div id="app">
-        <aside id="drawer" class="mdc-drawer mdc-drawer--modal">
+        <aside id="drawer" class="mdc-drawer mdc-drawer--modal mdc-typography">
             <div class="mdc-drawer__header">
                 <h3 class="mdc-drawer__title" id="drawer-title"></h3>
                 <h6 class="mdc-drawer__subtitle" id="drawer-subtitle">
@@ -39,6 +39,22 @@
                     <div id="more-topics">
 
                     </div>
+                    <div class="mdc-list-divider"></div>
+                    <h6 class="mdc-list-group__subheader">Members</h6>
+                    <template v-for="member of sortedMembers">
+                        <li class="member-wrapper mdc-list-item">
+                            <div class="member-left">
+                                <img v-bind:src="member.photoURL" class="profile-picture member-picture" />
+
+                                <div class="member-status">
+                                    <div class="active-dot" v-if="member.presence == true"></div>
+                                    <div class="inactive-dot" v-if="!member.presence"></div>
+                                </div>
+                            </div>
+
+                            <div class="member-name">{{member.displayName}}</div>
+                        </li>
+                    </template>
                 </nav>
             </div>
         </aside>
@@ -134,7 +150,8 @@
 
     <template id="chat-body-template">
         <div class="chat-body" v-bind:id="'chat-body-' + topic">
-            <message-wrapper v-for="message in sortedMessages" v-if="message" v-bind:key="message.id" v-bind:message="message">
+            <message-wrapper v-for="message in sortedMessages" v-if="message" v-bind:key="message.id"
+                v-bind:message="message">
             </message-wrapper>
         </div>
     </template>
@@ -180,10 +197,10 @@
                     {{post.content}}
                 </div>
                 <div class="post-topics mdc-chip-set">
-                        <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
-                            <div class="mdc-chip__text">::{{topic}}</div>
-                        </div>
+                    <div v-for="topic of post.topics" class="mdc-chip post-topic-item">
+                        <div class="mdc-chip__text">::{{topic}}</div>
                     </div>
+                </div>
             </div>
             <div class="mdc-card__actions">
                 <div class="mdc-card__action-buttons">

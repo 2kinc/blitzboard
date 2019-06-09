@@ -295,13 +295,16 @@ var vue = new Vue({
             this.dbref.child('users').on('child_added', function (snap) {
                 var member = snap.val();
                 member.id = snap.key;
-                vueThis.members.push(member);
+                database.ref('users/' + member.id).once('value').then(function (snap) {
+                    member = Object.assign(member, snap.val());
+                    vueThis.members.push(member);
+                });
             });
             this.dbref.child('users').on('child_changed', function (snap) {
                 var member = snap.val();
                 member.id = snap.key;
-                var oldMember = vueThis.members.filter(filteredMember => filteredMember.id == member.id)[0];
-                vueThis.members[vueThis.members.indexOf(oldMember)] = member;
+                var index = vueThis.members.indexOf(vueThis.members.filter(filteredMember => filteredMember.id == member.id)[0]);
+                vueThis.members.splice(index, 1, member);
             });
         },
         initializePresenceRef: function (userid) {
@@ -318,6 +321,20 @@ var vue = new Vue({
     computed: {
         onlineMembers: function () {
             return this.members.filter(member => member.presence == true);
+        },
+        sortedMembers: function () {
+            var sort = function (a, b) {
+                if (a.presence && !b.presence)
+                    return -1;
+                if (!a.presence && b.presence)
+                    return 1;
+                if (a.displayName.toLowerCase() < b.displayName.toLowerCase())
+                    return -1;
+                if (a.displayName.toLowerCase() > b.displayName.toLowerCase())
+                    return 1;
+                return 0;
+            }
+            return this.members.sort(sort);
         }
     }
 });
