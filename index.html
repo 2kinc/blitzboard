@@ -22,9 +22,9 @@
     <div id="app">
         <aside id="drawer" class="mdc-drawer mdc-drawer--modal mdc-typography">
             <div class="mdc-drawer__header">
-                <h3 class="mdc-drawer__title" id="drawer-title"></h3>
+                <h3 class="mdc-drawer__title" id="drawer-title">{{name}}</h3>
                 <h6 class="mdc-drawer__subtitle" id="drawer-subtitle">
-                    <span id="blitzboard-description"></span>
+                    <span id="blitzboard-description">{{description}}</span>
                     <hr>
                     <span class="inactive-dot"></span>
                     <span id="member-count">{{members.length}} members</span>
@@ -36,8 +36,10 @@
                 <nav class="mdc-list">
                     <div class="mdc-list-divider"></div>
                     <h6 class="mdc-list-group__subheader">Topics</h6>
-                    <div id="more-topics">
-
+                    <div id="topics">
+                        <template v-for="topic of topics" v-if="topic != 'home'">
+                            <li class="topic-item mdc-list-item" v-bind:class="{'mdc-list-item--selected': currentTopic == topic}" v-on:click="goToTopic(topic)">:: {{topic}}</li>
+                        </template>
                     </div>
                     <div class="mdc-list-divider"></div>
                     <h6 class="mdc-list-group__subheader">Members</h6>
@@ -67,14 +69,14 @@
                         <button
                             class="material-icons-outlined mdc-top-app-bar__navigation-icon mdc-ripple-surface">menu</button>
                         <span class="mdc-top-app-bar__title" style="font-family: 'Product Sans', 'Roboto', sans-serif;">
-                            Blitzboard <span id="blitzboard-title"></span>
+                            Blitzboard <span id="blitzboard-title">::{{currentTopic}} - {{name}}</span>
                         </span>
                     </section>
                 </div>
             </header>
             <div id="content-body" class="mdc-drawer-app-content">
                 <div id="main-content">
-                    <div id="posts">
+                    <div id="posts" ref="posts">
                         <div id="new-post-wrapper">
                             <div id="new-post-main">
                                 <div class="mdc-text-field mdc-text-field--outlined">
@@ -120,10 +122,10 @@
                             </div>
                             <button class="mdc-button mdc-button--outlined" id="new-post-button">+ New Post</button>
                         </div>
-                        <div id="posts-bodies"></div>
+                        <div id="posts-bodies" ref="postsBodies"></div>
                     </div>
                     <div id="chat">
-                        <div id="chat-bodies"></div>
+                        <div id="chat-bodies" ref="chatBodies"></div>
                         <div id="chat-input-container" class="mdc-elevation--z2">
                             <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon"
                                 style="width: calc(100% - 18px);">
@@ -147,8 +149,7 @@
         </div>
     </div>
 
-
-    <template id="chat-body-template">
+    <template id="chat-body-template" v-if="parentVue.currentTopic == topic">
         <div class="chat-body" v-bind:id="'chat-body-' + topic">
             <message-wrapper v-for="message in sortedMessages" v-if="message" v-bind:key="message.id"
                 v-bind:message="message">
@@ -171,7 +172,7 @@
     </template>
 
     <template id="posts-body-template">
-        <div class="posts-body mdc-layout-grid" v-bind:id="'posts-body-' + topic">
+        <div class="posts-body mdc-layout-grid" v-bind:id="'posts-body-' + topic" v-if="parentVue.currentTopic == topic">
             <div class="mdc-layout-grid__inner">
                 <post-wrapper v-for="post of posts" v-bind:post="post" v-bind:dbref="dbref.ref.child(post.id)"
                     v-bind:key="post.key"></post-wrapper>

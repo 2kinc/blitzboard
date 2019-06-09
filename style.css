@@ -35,18 +35,6 @@ hr {
     font-weight: bold !important;
 }
 
-#topics {
-    color: var(--color-main);
-    width: calc(12em - 6px);
-    height: 100%;
-    margin: 0;
-    padding: 16px;
-    display: inline-block;
-    border-right: 2px var(--color-secondary) solid;
-    border: none;
-    box-shadow: 0 0 10px 0 #00000066;
-}
-
 #navbar {
     padding-bottom: 40px;
     z-index: 1!important;
@@ -82,7 +70,6 @@ hr {
     width: 100vw;
     height: 100vh;
     position: absolute;
-    top: calc(1.5em + 10px);
     left: 0;
     text-align: center;
     font-size: 2em;
@@ -90,6 +77,7 @@ hr {
     padding: 100px 0;
     z-index: 100000000;
     font-family: 'Product Sans', 'Roboto', neue-haas-unica, sans-serif;
+    overflow: hidden !important;
 }
 
 k-navbar, .k-navbar {
@@ -165,14 +153,15 @@ k-navbar, .k-navbar {
     display: inline-flex;
     transform: translateY(-10px);
     max-width: calc(30vw - 8em - 18px);
-    background: #4444ff22;
     user-select: text;
+    border: 1px black solid;
 }
 
 .message-info {
     margin: 2px;
     margin-top: -10px;
     font-size: 0.8em;
+    color: #4444ff;
 }
 
 .message-info--time {
@@ -196,7 +185,7 @@ k-navbar, .k-navbar {
 }
 
 .mdc-button {
-    font-weight: bold;
+    font-family: 'Product Sans', 'Roboto', neue-haas-unica, sans-serif;
 }
 
 #new-post-wrapper {
@@ -257,7 +246,8 @@ k-navbar, .k-navbar {
     margin: 16px;
     background-color: white;
     background-size: cover;
-    border: 1px black
+    border: 1px black solid;
+    box-shadow: none;
 }
 
 .post-wrapper.has-image {
@@ -315,7 +305,6 @@ k-navbar, .k-navbar {
     padding-top: 2px;
     min-width: 1.6em;
     text-align: center;
-    font-weight: bold;
 }
 
 .float-right {
