@@ -216,6 +216,8 @@ var auth = app.auth();
 var storage = app.storage();
 var blitzboardRef = database.ref('blitzboard');
 
+const baseURL = 'https://2kinc.me/blitzboard';
+
 function Blitzboard(id, name) {
     var that = this;
     this.id = id;
@@ -590,6 +592,17 @@ var postWrapperComponent = Vue.component('post-wrapper', {
             });
         }
     }
+});
+
+var router = new VueRouter({
+    mode: 'history',
+    routes: [
+        {
+            name: 'post',
+            path: '/:id',
+            component: postWrapperComponent
+        }
+    ]
 });
 
 /** Initialize MDC Web components. */
