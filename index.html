@@ -1,68 +1,80 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Blitzboard!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
-    <title>BlitzBoard</title>
-    <meta name="description" content="Blitzboard: Team management, and more.">
-    <style>
+
+<head>
+  <meta charset="utf-8">
+  <title>Blitzboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+  <title>Blitzboard - By 2K inc.</title>
+  <meta name="description" content="Blitzboard: Team management, and more.">
+  <style>
     @font-face {
       font-family: "Product Sans";
       src: url("ProductSans-Regular.woff") format('woff');
     }
+
     body {
-      --mdc-theme-primary:#4444ff;
-      font-family:'Roboto', sans-serif;
-      padding:0;
-      margin:0;
+      --mdc-theme-primary: #4444ff;
+      font-family: 'Roboto', sans-serif;
+      padding: 0;
+      margin: 0;
     }
-    .productsans {font-family: 'Product Sans', 'Roboto', sans-serif;}
+
+    .productsans {
+      font-family: 'Product Sans', 'Roboto', sans-serif;
+    }
+
     #hero {
-      padding-top:80px;
-      padding-bottom:15px;
+      padding-top: 80px;
+      padding-bottom: 15px;
       text-align: center;
-      width:100%;
-      color:white;
-      background:var(--mdc-theme-primary,#4444ff);
+      width: 100%;
+      color: white;
+      background: var(--mdc-theme-primary, #4444ff);
     }
+
     .mdc-top-app-bar__title img {
-      height:50px;
-      width:50px;
-      margin-top:8px;
+      height: 50px;
+      width: 50px;
+      margin-top: 8px;
     }
-    </style>
-  </head>
-  <body>
-    <header class="mdc-top-app-bar mdc-top-app-bar--fixed mdc-elevation--z4" style="position:fixed;top:0;left:0;">
-      <div class="mdc-top-app-bar__row">
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <button class="material-icons mdc-top-app-bar__navigation-icon" id="menu">menu</button>
-          <span class="mdc-top-app-bar__title productsans"><img src="favicon.png" width=50></span>
-        </section>
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-          <button class="mdc-button mdc-button--raised" style="color:white;" data-mdc-auto-init="MDCRipple"><i class="material-icons mdc-button__icon">account_circle</i>Sign in</button>
-        </section>
-      </div>
-    </header>
-    <div id="hero" class="mdc-theme--on-primary">
-      <span>
-        <img src="favicon.png" width=150>
-        <div class='mdc-typography--headline3 productsans'>Blitzboard!</div>
-      </span>
-      <p>A team management site! Easily be able to manage assignments given to your employees!</p>
-      <a href="https://2kinc.me/blitzboard/b" data-mdc-auto-init="MDCRipple" class="mdc-button mdc-button--raised">Link to fake BlitzBoard</a>
+  </style>
+</head>
+
+<body>
+  <header class="mdc-top-app-bar mdc-top-app-bar--fixed mdc-elevation--z4" style="position:fixed;top:0;left:0;">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <button class="material-icons mdc-top-app-bar__navigation-icon" id="menu">menu</button>
+        <span class="mdc-top-app-bar__title productsans"><img src="favicon.png"></span>
+      </section>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+        <button class="mdc-button mdc-button--raised" style="color:white;" data-mdc-auto-init="MDCRipple"><i
+            class="material-icons mdc-button__icon">account_circle</i>Sign in</button>
+      </section>
     </div>
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-    <script type="text/javascript">
-      mdc.autoInit();
-      var menuripl = mdc.ripple.MDCRipple.attachTo(document.querySelector('#menu'));
-      menuripl.unbounded = true;
-    </script>
-  </body>
+  </header>
+  <div id="hero" class="mdc-theme--on-primary">
+    <span>
+      <img src="favicon.png" width="250">
+      <div class='mdc-typography--headline3 productsans'>Blitzboard</div>
+    </span>
+    <p>A team management site! Easily be able to manage assignments given to your employees!</p>
+    <a href="https://2kinc.me/blitzboard/b" data-mdc-auto-init="MDCRipple" class="mdc-button mdc-button--raised">Link to
+      fake BlitzBoard</a>
+  </div>
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  <script type="text/javascript">
+    mdc.autoInit();
+    var menuripl = mdc.ripple.MDCRipple.attachTo(document.querySelector('#menu'));
+    menuripl.unbounded = true;
+  </script>
+</body>
+
 </html>

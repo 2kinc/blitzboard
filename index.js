@@ -138,7 +138,7 @@ function Site(ref) {
                 user: auth.currentUser.uid,
                 time: d.getTime()
             };
-            that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
+            that.ref.child('topics').child(vue.currentTopic).child('chat').push().set(chat);
             that.elements.chatInput.val('');
         }
     });
@@ -150,7 +150,7 @@ function Site(ref) {
                 user: auth.currentUser.uid,
                 time: d.getTime()
             };
-            that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
+            that.ref.child('topics').child(vue.currentTopic).child('chat').push().set(chat);
             that.elements.chatInput.val('');
         }
     });
