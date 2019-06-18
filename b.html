@@ -78,9 +78,9 @@
                 <div id="main-content">
                     <div id="posts" ref="posts">
                         <div id="new-post-wrapper">
-                            <div id="new-post-main">
+                            <div id="new-post-main" v-bind:class="{shown: readyToPushPost}">
                                 <div class="mdc-text-field mdc-text-field--outlined">
-                                    <input class="mdc-text-field__input" id="new-post-name">
+                                    <input class="mdc-text-field__input" id="new-post-name" v-model="postForm.name">
                                     <div class="mdc-notched-outline">
                                         <div class="mdc-notched-outline__leading"></div>
                                         <div class="mdc-notched-outline__notch">
@@ -92,7 +92,7 @@
                                 <br>
                                 <div class="mdc-text-field mdc-text-field--textarea">
                                     <textarea id="new-post-content" class="mdc-text-field__input" rows="8"
-                                        cols="40"></textarea>
+                                        cols="40" v-model="postForm.content"></textarea>
                                     <div class="mdc-notched-outline">
                                         <div class="mdc-notched-outline__leading"></div>
                                         <div class="mdc-notched-outline__notch">
@@ -115,12 +115,15 @@
                                     <i class="mdc-select__dropdown-icon"></i>
                                     <select class="mdc-select__native-control" id="new-post-topics">
                                         <option disabled selected>Select a topic</option>
+                                        <template v-for="availableTopic of availableTopics">
+                                            <option>::{{availableTopic}}</option>
+                                        </template>
                                     </select>
                                     <label class="mdc-floating-label">Add topics</label>
                                     <div class="mdc-line-ripple"></div>
                                 </div>
                             </div>
-                            <button class="mdc-button mdc-button--outlined" id="new-post-button">+ New Post</button>
+                            <button class="mdc-button mdc-button--outlined" id="new-post-button" v-on:click="pushPost" ref="newPostButton">+ New Post</button>
                         </div>
                         <div id="posts-bodies" ref="postsBodies"></div>
                     </div>
@@ -130,8 +133,8 @@
                             <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon"
                                 style="width: calc(100% - 18px);">
                                 <i class="material-icons mdc-text-field__icon mdc-ripple-surface mdc-ripple-surface--primary mdc-ripple-surface--unbounded"
-                                    id="chat-input-button" tabindex="0" role="button">message</i>
-                                <input class="mdc-text-field__input" id="chat-input">
+                                    id="chat-input-button" tabindex="0" role="button" v-on:click="pushChatMessage">message</i>
+                                <input class="mdc-text-field__input" id="chat-input" v-model="chatMessage" v-on:keyup="pushChatMessage">
                                 <div class="mdc-notched-outline">
                                     <div class="mdc-notched-outline__leading"></div>
                                     <div class="mdc-notched-outline__notch">

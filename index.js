@@ -138,7 +138,7 @@ function Site(ref) {
                 user: auth.currentUser.uid,
                 time: d.getTime()
             };
-            that.ref.child('topics').child(vue.currentTopic).child('chat').push().set(chat);
+            that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
             that.elements.chatInput.val('');
         }
     });
@@ -150,39 +150,39 @@ function Site(ref) {
                 user: auth.currentUser.uid,
                 time: d.getTime()
             };
-            that.ref.child('topics').child(vue.currentTopic).child('chat').push().set(chat);
+            that.ref.child('topics').child(that.currentTopic).child('chat').push().set(chat);
             that.elements.chatInput.val('');
         }
     });
     var topics = [];
-    this.elements.newPostButton.click(function () {
-        if (that.elements.newPostMain.hasClass('shown')) {
-            if (that.elements.newPostName.val() == '')
-                that.elements.newPostName.val('[untitled post]')
-            var post = {
-                name: that.elements.newPostName.val(),
-                content: that.elements.newPostContent.val(),
-                topics: topics,
-                pluses: 0,
-                minuses: 0,
-                user: auth.currentUser.uid
-            };
-            that.ref.child('posts').push().set(post);
-            that.elements.newPostName.val('');
-            that.elements.newPostContent.val('');
-            that.elements.newPostTopicsWrapper.text('');
-            topics = [];
-            that.elements.newPostTopics.text('');
-            var autofocus = document.createElement('option');
-            autofocus.innerText = 'Select a topic';
-            autofocus.setAttribute('autofocus', 'true');
-            that.elements.newPostTopics.append(autofocus);
-            for (var topic in that.data.topics) {
-                that.initializeTopicElements(topic);
-            }
-        }
-        that.elements.newPostMain.toggleClass('shown');
-    });
+    // this.elements.newPostButton.click(function () {
+    //     if (that.elements.newPostMain.hasClass('shown')) {
+    //         if (that.elements.newPostName.val() == '')
+    //             that.elements.newPostName.val('[untitled post]')
+    //         var post = {
+    //             name: that.elements.newPostName.val(),
+    //             content: that.elements.newPostContent.val(),
+    //             topics: topics,
+    //             pluses: 0,
+    //             minuses: 0,
+    //             user: auth.currentUser.uid
+    //         };
+    //         that.ref.child('posts').push().set(post);
+    //         that.elements.newPostName.val('');
+    //         that.elements.newPostContent.val('');
+    //         that.elements.newPostTopicsWrapper.text('');
+    //         topics = [];
+    //         that.elements.newPostTopics.text('');
+    //         var autofocus = document.createElement('option');
+    //         autofocus.innerText = 'Select a topic';
+    //         autofocus.setAttribute('autofocus', 'true');
+    //         that.elements.newPostTopics.append(autofocus);
+    //         for (var topic in that.data.topics) {
+    //             that.initializeTopicElements(topic);
+    //         }
+    //     }
+    //     that.elements.newPostMain.toggleClass('shown');
+    // });
     this.elements.newPostTopics.change(function (e) {
         var topic = that.elements.newPostTopics.val().slice(2);
         if (topic != 'lect a topic') {
@@ -238,7 +238,17 @@ var vue = new Vue({
         topics: [],
         currentTopic: 'home',
         name: 'Blitzboard',
-        description: 'This Blitzboard has no description.'
+        description: 'This Blitzboard has no description.',
+        postForm: {
+            topics: [],
+            name: '[untitled post]',
+            content: '',
+            user: null,
+            pluses: 0,
+            minuses: 0
+        },
+        chatMessage: '',
+        readyToPushPost: false
     },
     mounted: function () {
         this.firebase = app;
@@ -337,6 +347,41 @@ var vue = new Vue({
                 component.$mount('#' + newPostsBody.id);
             }
             this.$refs.posts.classList.remove('expanded');
+        },
+        pushPost: function () {
+            if (this.readyToPushPost) {
+                this.postForm.user = auth.currentUser.uid;
+                this.dbref.child('posts').push().set(this.postForm);
+                this.readyToPushPost = false;
+            } else {
+                this.readyToPushPost = true;
+            }
+        },
+        pushChatMessage: function (e) {
+            if (e.type == 'keyup') {
+                var key = e.key.toLowerCase();
+                if (key == 'enter' && this.chatMessage.length < 150 && auth.currentUser && this.chatMessage != '') {
+                    var d = new Date();
+                    var chat = {
+                        message: this.chatMessage,
+                        user: auth.currentUser.uid,
+                        time: d.getTime()
+                    };
+                    this.dbref.child('topics').child(this.currentTopic).child('chat').push().set(chat);
+                    this.set('chatMessage', '');
+                }
+            } else {
+                if (this.chatMesage.length < 150 && auth.currentUser && this.chatMessage != '') {
+                    var d = new Date();
+                    var chat = {
+                        message: this.chatMessage,
+                        user: auth.currentUser.uid,
+                        time: d.getTime()
+                    };
+                    this.dbref.child('topics').child(this.currentTopic).child('chat').push().set(chat);
+                    this.set('chatMessage', '');
+                }
+            }
         }
     },
     computed: {
@@ -356,6 +401,16 @@ var vue = new Vue({
                 return 0;
             }
             return this.members.sort(sort);
+        },
+        availableTopics: function () {
+            var vueThis = this;
+            var array = [];
+            this.topics.forEach(function (topic) {
+                if (vueThis.postForm.topics.includes(topic))
+                    return;
+                array.push(topic);
+            });
+            return array;
         }
     }
 });
@@ -664,7 +719,7 @@ function handleFileForNewPost(e) {
         });
 }
 
-site.elements.newPostUpload.addEventListener('input', handleFileForNewPost);
+//site.elements.newPostUpload.addEventListener('input', handleFileForNewPost);
 vue.attachMDCStyles();
 
 var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
