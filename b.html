@@ -88,6 +88,9 @@
                                         <div class="mdc-notched-outline__trailing"></div>
                                     </div>
                                 </div>
+                                <button id="cancel-post-button" v-on:click="closePost" class="mdc-button mdc-button--outlined mdc-ripple-upgraded" style="float:right;">
+                                  ✕ Close
+                                </button>
                                 <br>
                                 <div class="mdc-text-field mdc-text-field--textarea">
                                     <textarea id="new-post-content" class="mdc-text-field__input" rows="8"
@@ -104,8 +107,7 @@
                                 <input type="file" name="Upload an image" class="inputfile" id="new-post-upload"
                                     accept=".jpg,.png,.bmp" />
                                 <label for="new-post-upload" class="mdc-chip" id="new-post-upload-label">
-                                    <i
-                                        class="material-icons-outlined mdc-chip__icon mdc-chip__icon--leading">cloud_upload</i>
+                                    <i class="material-icons-outlined mdc-chip__icon mdc-chip__icon--leading">cloud_upload</i>
                                     <div class="mdc-chip__text">Upload an image?</div>
                                 </label>
                                 <br>
@@ -122,7 +124,7 @@
                                     <div class="mdc-line-ripple"></div>
                                 </div>
                             </div>
-                            <button class="mdc-button mdc-button--outlined" id="new-post-button" v-on:click="pushPost" ref="newPostButton">+ New Post</button>
+                            <button class="mdc-button mdc-button--outlined" id="new-post-button" v-on:click="pushPost" ref="newPostButton">＋ New Post</button>
                         </div>
                         <div id="posts-bodies" ref="postsBodies"></div>
                     </div>

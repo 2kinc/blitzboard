@@ -230,7 +230,7 @@ function Blitzboard(id, name) {
         that.ref.child('name').set(that.name);
     });
 }
-
+mdc.autoInit();
 var vue = new Vue({
     el: '#app',
     data: {
@@ -353,6 +353,9 @@ var vue = new Vue({
                 component.$mount('#' + newPostsBody.id);
             }
             this.$refs.posts.classList.remove('expanded');
+        },
+        closePost: function() {
+          this.readyToPushPost = false;
         },
         pushPost: function () {
             if (this.readyToPushPost) {
