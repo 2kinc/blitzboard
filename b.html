@@ -47,7 +47,6 @@
                         <li class="member-wrapper mdc-list-item">
                             <div class="member-left">
                                 <img v-bind:src="member.photoURL" class="profile-picture member-picture" />
-
                                 <div class="member-status">
                                     <div class="active-dot" v-if="member.presence == true"></div>
                                     <div class="inactive-dot" v-if="!member.presence"></div>
@@ -69,7 +68,7 @@
                         <button
                             class="material-icons-outlined mdc-top-app-bar__navigation-icon mdc-ripple-surface">menu</button>
                         <span class="mdc-top-app-bar__title" style="font-family: 'Product Sans', 'Roboto', sans-serif;">
-                            Blitzboard <span id="blitzboard-title">::{{currentTopic}} - {{name}}</span>
+                            BlitzBoard! <span id="blitzboard-title">::{{currentTopic}} - {{name}}</span>
                         </span>
                     </section>
                 </div>
@@ -110,14 +109,14 @@
                                     <div class="mdc-chip__text">Upload an image?</div>
                                 </label>
                                 <br>
-                                <div id="new-post-topics-wrapper" class="mdc-chip-set">Topics: </div>
+                                <br>
+                                <div>Topics:</div>
+                                <div id="new-post-topics-wrapper" class="mdc-chip-set"></div>
                                 <div class="mdc-select">
                                     <i class="mdc-select__dropdown-icon"></i>
                                     <select class="mdc-select__native-control" id="new-post-topics">
-                                        <option disabled selected>Select a topic</option>
-                                        <template v-for="availableTopic of availableTopics">
-                                            <option>::{{availableTopic}}</option>
-                                        </template>
+                                        <option selected>Select a topic</option>
+                                        <option v-for="topic of availableTopics" v-bind:id="'option-' + topic">:: {{topic}}</option>
                                     </select>
                                     <label class="mdc-floating-label">Add topics</label>
                                     <div class="mdc-line-ripple"></div>
@@ -213,10 +212,6 @@
                     <span class="post-points">{{post.pluses + post.minuses}}</span>
                     <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus()"
                         ref="minusButton">-1</button>
-                </div>
-                <div class="mdc-card__action-icons">
-                    <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon--unbounded"
-                        title="More options" data-mdc-ripple-is-unbounded="true">more_vert</button>
                 </div>
             </div>
         </div>

@@ -55,11 +55,11 @@ function Site(ref) {
         that.data = snap.val();
         that.data.render = function () {
             //that.elements.memberCount.text(Object.keys(that.data.users).length + ' members');
-            that.elements.newPostTopics.html('');
-            var autofocus = document.createElement('option');
-            autofocus.innerText = 'Select a topic';
-            autofocus.setAttribute('autofocus', 'true');
-            that.elements.newPostTopics.append(autofocus);
+            //that.elements.newPostTopics.html('');
+            //var autofocus = document.createElement('option');
+            //autofocus.innerText = 'Select a topic';
+            //autofocus.setAttribute('autofocus', 'true');
+            //that.elements.newPostTopics.append(autofocus);
             $('.topic-item').each(function () {
                 this.classList.remove('selected');
             });
@@ -185,7 +185,7 @@ function Site(ref) {
     // });
     this.elements.newPostTopics.change(function (e) {
         var topic = that.elements.newPostTopics.val().slice(2);
-        if (topic != 'lect a topic') {
+        if (topic != 'Select a topic') {
             var chip = document.createElement('div');
             chip.className = 'mdc-chip';
             var text = document.createElement('div');
@@ -205,7 +205,8 @@ function Site(ref) {
             mdc.chips.MDCChip.attachTo(chip);
             that.elements.newPostTopicsWrapper.append(chip);
             topics.push(topic);
-            $('#option-' + topic).remove();
+            console.log('#option-' + topic.trim())
+            $('#option-' + topic.trim()).remove();
         }
     });
 };
@@ -247,6 +248,7 @@ var vue = new Vue({
             pluses: 0,
             minuses: 0
         },
+        availableTopics: [],
         chatMessage: '',
         readyToPushPost: false
     },
@@ -297,6 +299,10 @@ var vue = new Vue({
             var vueThis = this;
             this.dbref.child('topics').on('child_added', function (snap) {
                 vueThis.topics.push(snap.key);
+                if (snap.key != 'home') {
+                  vueThis.postForm.topics.push(snap.key);
+                  vueThis.availableTopics.push(snap.key);
+                }
             });
         },
         getBlitzboardInfo: function () {
