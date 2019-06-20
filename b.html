@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Product+Sans">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Roboto">
     <link rel="stylesheet" href="https://use.typekit.net/lku7gbz.css">
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
@@ -38,7 +35,7 @@
                     <h6 class="mdc-list-group__subheader">Topics</h6>
                     <div id="topics">
                         <template v-for="topic of topics" v-if="topic != 'home'">
-                            <li class="topic-item mdc-list-item" v-bind:class="{'mdc-list-item--selected': currentTopic == topic}" v-on:click="goToTopic(topic)">:: {{topic}}</li>
+                            <li class="topic-item mdc-list-item" v-bind:class="{'mdc-list-item--selected': currentTopic == topic}" v-on:click="goToTopic(topic)">::{{topic}}</li>
                         </template>
                     </div>
                     <div class="mdc-list-divider"></div>
@@ -118,7 +115,7 @@
                                     <i class="mdc-select__dropdown-icon"></i>
                                     <select class="mdc-select__native-control" id="new-post-topics">
                                         <option selected>Select a topic</option>
-                                        <option v-for="topic of availableTopics" v-bind:id="'option-' + topic">:: {{topic}}</option>
+                                        <option v-for="topic of availableTopics" v-bind:id="'option-' + topic">::{{topic}}</option>
                                     </select>
                                     <label class="mdc-floating-label">Add topics</label>
                                     <div class="mdc-line-ripple"></div>

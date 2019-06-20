@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Product Sans';
+  src: url('ProductSans-Regular.woff') format('woff');
+}
+
 body {
     --color-main: #4444ff;
     --color-secondary: #111;
@@ -78,7 +83,7 @@ hr {
     background: var(--color-background);
     padding: 100px 0;
     z-index: 100000000;
-    font-family: 'Product Sans', 'Roboto', neue-haas-unica, sans-serif;
+      font-family: 'Product Sans', 'Roboto', neue-haas-unica, sans-serif;
     overflow: hidden !important;
 }
 
