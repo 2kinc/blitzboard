@@ -673,7 +673,7 @@ var router = new VueRouter({
 });
 /** Initialize MDC Web components. */
 
-var site = new Site(new Blitzboard('testtwo', 'testtwo.').ref);
+var site = new Site(new Blitzboard('test', 'test.').ref);
 router.push(site.ref.key);
 vue.dbref = site.ref;
 vue.getAllData();
