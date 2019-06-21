@@ -332,6 +332,7 @@ var vue = new Vue({
         goToTopic: function (topic) {
             var ChatBody = Vue.extend(chatBodyComponent);
             var PostsBody = Vue.extend(postsBodyComponent);
+            router.push('/b/' + topic);
             drawer.open = false;
             document.querySelector('.mdc-drawer').classList.add('mdc-drawer--closing');
             this.currentTopic = topic;
@@ -411,7 +412,7 @@ var vue = new Vue({
             }
             return this.members.sort(sort);
         },
-        availableTopics: function () {
+        availableTopicsMethod: function () {
             var vueThis = this;
             var array = [];
             this.topics.forEach(function (topic) {
@@ -668,10 +669,11 @@ var router = new VueRouter({
         }
     ]
 });
-
+var name = '';
 /** Initialize MDC Web components. */
 
 var site = new Site(new Blitzboard('test', 'test.').ref);
+site.ref.once('value',d=>name=d.key);
 vue.dbref = site.ref;
 vue.getAllData();
 vue.attachMDCStyles();

@@ -71,16 +71,16 @@
         <div class="mdc-layout-grid__inner">
           <div class="mdc-layout-grid__cell">
             <div class="mdc-card">
-              <div class="mdc-card__primary-action"style="color:#4444ff;height:152px;text-align:center;justify-content:center;max-height:200px;padding:16px;">
+              <div class="mdc-card__primary-action"style="color:#4444ff;height:202px;text-align:center;justify-content:center;max-height:200px;padding:16px;">
                 <div class="mdc-typography--subtitle2"><i class="mdc-button--icon material-icons">add</i><div>New BlitzBoard</div></div>
               </div>
             </div>
           </div>
-          <div class="mdc-layout-grid__cell">
+          <div class="mdc-layout-grid__cell" v-for="blitz of blitzboards">
             <div class="mdc-card">
-              <div class="mdc-card__primary-action"style="height:100px;max-height:200px;padding:16px;">
-                <div class="mdc-typography--headline5">Title</div><br>
-                <div class="mdc-typography--body2">Description</div>
+              <div class="mdc-card__primary-action"style="height:150px;max-height:200px;padding:16px;">
+                <div class="mdc-typography--headline5">{{blitz.name}}</div><br>
+                <div class="mdc-typography--body2">{{blitz.description}}</div>
               </div>
               <div class="mdc-card__actions">
                 <div class="mdc-card__action-icons">
@@ -119,12 +119,22 @@
       var app = firebase;
       var auth = app.auth();
       var blitzboardRef = app.database().ref('blitzboard');
-      var blitzboards;
-      var vue = new Vue({
-        el:'#mainapp',
-        data:{
-          d:'d'
+      var blitzboards = [];
+      blitzboardRef.once('value',function(d) {
+	       d = d.val();
+	        blitzboards = d;
+        }).then(function(){for (var blitz in blitzboards) {
+	         containsuser = false;
+        if(blitzboards[blitz].users[auth.currentUser.uid]==undefined) {
+          delete blitzboards[blitz];
         }
+      }}).then(function() {
+        var vue = new Vue({
+          el:'#mainapp',
+          data: {
+            blitzboards:blitzboards
+          }
+        });
       });
     </script>
   </body>
