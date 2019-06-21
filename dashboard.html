@@ -29,10 +29,49 @@
       #drawer {
         top:0;
       }
+      .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {color:#4444ff!important;}
     </style>
   </head>
   <body>
     <div id="mainapp">
+      <div class="mdc-dialog" id="newblitzboarddialog">
+        <div class="mdc-dialog__container">
+          <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="my-dialog-title">New BlitzBoard!</h2>
+            <div class="mdc-dialog__content" id="my-dialog-content"><br>
+              <div class="mdc-text-field mdc-text-field--outlined">
+                <input type="text" id="newblitzname" class="mdc-text-field__input">
+                <div class="mdc-notched-outline">
+                  <div class="mdc-notched-outline__leading"></div>
+                  <div class="mdc-notched-outline__notch">
+                    <label for="newblitzname" class="mdc-floating-label">Name</label>
+                  </div>
+                  <div class="mdc-notched-outline__trailing"></div>
+                </div>
+              </div><br><br>
+              <div class="mdc-text-field mdc-text-field--outlined">
+                <input type="text" id="newblitzdescription" class="mdc-text-field__input" style="width:400px;">
+                <div class="mdc-notched-outline">
+                  <div class="mdc-notched-outline__leading"></div>
+                  <div class="mdc-notched-outline__notch">
+                    <label for="newblitzname" class="mdc-floating-label">Description</label>
+                  </div>
+                  <div class="mdc-notched-outline__trailing"></div>
+                </div>
+              </div>
+            </div>
+            <footer class="mdc-dialog__actions">
+              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                <span class="mdc-button__label">Cancel</span>
+              </button>
+              <button type="button" id="submitnewblitz" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+                <span class="mdc-button__label">Let's Go!</span>
+              </button>
+            </footer>
+          </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+      </div>
       <aside class="mdc-drawer mdc-drawer--modal" id="drawer">
         <div class="mdc-drawer__header" style="padding-top:8px;">
           <h3 class="mdc-drawer__title productsans">Dashboard</h3>
@@ -61,7 +100,7 @@
                   </div>
               </section>
               <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-                  <button class="mdc-icon-button material-icons" id="notifications" style="color:white;">
+                  <button class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon" id="notifications" style="color:white;">
                     notifications
                   </button>
               </section>
@@ -70,8 +109,8 @@
       <div class="mdc-layout-grid">
         <div class="mdc-layout-grid__inner">
           <div class="mdc-layout-grid__cell">
-            <div class="mdc-card">
-              <div class="mdc-card__primary-action"style="color:#4444ff;height:202px;text-align:center;justify-content:center;max-height:200px;padding:16px;">
+            <div class="mdc-card" id="newblitzboard">
+              <div data-mdc-auto-init="MDCRipple" class="mdc-card__primary-action"style="color:#4444ff;height:202px;text-align:center;justify-content:center;max-height:200px;padding:16px;">
                 <div class="mdc-typography--subtitle2"><i class="mdc-button--icon material-icons">add</i><div>New BlitzBoard</div></div>
               </div>
             </div>
@@ -97,16 +136,6 @@
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
-      mdc.autoInit();
-      var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
-      document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
-      document.querySelector('.mdc-drawer-scrim').addEventListener('click', () => {
-        document.querySelector('#drawer').classList.add('mdc-drawer--closing');
-      });
-      var r1 = new mdc.ripple.MDCRipple(document.querySelector('#notifications'));
-      r1.unbounded = true;
-      var r2 = new mdc.ripple.MDCRipple(document.querySelector('#menu'));
-      r2.unbounded = true;
       var config = {
           apiKey: "AIzaSyADD6YWKrzibRMwJNi1FwUR0jcR0GitZPI",
           authDomain: "k-inc-232222.firebaseapp.com",
@@ -128,13 +157,28 @@
         if(blitzboards[blitz].users[auth.currentUser.uid]==undefined) {
           delete blitzboards[blitz];
         }
-      }}).then(function() {
+      }}).then(()=> {
         var vue = new Vue({
           el:'#mainapp',
           data: {
             blitzboards:blitzboards
           }
         });
+        var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
+        document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
+        document.querySelector('.mdc-drawer-scrim').addEventListener('click', () => {
+          document.querySelector('#drawer').classList.add('mdc-drawer--closing');
+        });
+        var r1 = new mdc.ripple.MDCRipple(document.querySelector('#notifications'));
+        r1.unbounded = true;
+        var r2 = new mdc.ripple.MDCRipple(document.querySelector('#menu'));
+        r2.unbounded = true;
+        mdc.ripple.MDCRipple.attachTo(document.querySelector('#newblitzboard .mdc-card__primary-action'));
+        var newblitzboarddialog = new mdc.dialog.MDCDialog(document.querySelector('#newblitzboarddialog'));
+        document.querySelector('#newblitzboard').addEventListener('click', function() {
+          newblitzboarddialog.open();
+        });
+        document.querySelectorAll('.mdc-text-field').forEach(function(i){mdc.textField.MDCTextField.attachTo(i)});
       });
     </script>
   </body>
