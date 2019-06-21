@@ -658,17 +658,13 @@ var postWrapperComponent = Vue.component('post-wrapper', {
         }
     }
 });
-
-var router = new VueRouter({
-    routes: [{
-        name: 'post',
-        path: '/:blitzid',
-        children: [{
-            path: ':topic'
-        }],
-        component: postWrapperComponent
-    }]
-});
+var routes = [{
+    name: 'post',
+    path: '/:blitzid',
+    children: [{path:':topic'}],
+    component: postWrapperComponent
+}]
+var router = new VueRouter({routes});
 /** Initialize MDC Web components. */
 
 var site = new Site(new Blitzboard('test', 'test.').ref);
