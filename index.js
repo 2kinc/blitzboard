@@ -664,7 +664,10 @@ var router = new VueRouter({
     routes: [
         {
             name: 'post',
-            path: '/:id',
+            path: '/blitzboard/b/:blitzid/',
+            children:[
+              {path: ':topic'}
+            ],
             component: postWrapperComponent
         }
     ]
