@@ -332,7 +332,7 @@ var vue = new Vue({
         goToTopic: function (topic) {
             var ChatBody = Vue.extend(chatBodyComponent);
             var PostsBody = Vue.extend(postsBodyComponent);
-            router.push('/b/' + topic);
+            router.push('/blitzboard/b/' + topic);
             drawer.open = false;
             document.querySelector('.mdc-drawer').classList.add('mdc-drawer--closing');
             this.currentTopic = topic;
