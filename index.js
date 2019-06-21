@@ -332,7 +332,7 @@ var vue = new Vue({
         goToTopic: function (topic) {
             var ChatBody = Vue.extend(chatBodyComponent);
             var PostsBody = Vue.extend(postsBodyComponent);
-            router.push('/blitzboard/b/' + this.dbref.key + '/' + topic);
+            router.push(this.dbref.key + '/' + topic);
             drawer.open = false;
             document.querySelector('.mdc-drawer').classList.add('mdc-drawer--closing');
             this.currentTopic = topic;
@@ -660,11 +660,10 @@ var postWrapperComponent = Vue.component('post-wrapper', {
 });
 
 var router = new VueRouter({
-    mode: 'history',
     routes: [
         {
             name: 'post',
-            path: '/blitzboard/b/:blitzid/',
+            path: '/:blitzid',
             children:[
               {path: ':topic'}
             ],
@@ -674,8 +673,8 @@ var router = new VueRouter({
 });
 /** Initialize MDC Web components. */
 
-var site = new Site(new Blitzboard('test', 'test.').ref);
-router.push('/blitzboard/b/' + site.ref.key);
+var site = new Site(new Blitzboard('testtwo', 'testtwo.').ref);
+router.push(site.ref.key);
 vue.dbref = site.ref;
 vue.getAllData();
 vue.attachMDCStyles();
