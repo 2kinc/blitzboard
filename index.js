@@ -667,7 +667,7 @@ var routes = [{
 var router = new VueRouter({routes});
 /** Initialize MDC Web components. */
 
-var site = new Site(new Blitzboard('test', 'test.').ref);
+var site = new Site(new Blitzboard('-LhvWQ5PkHbBR0gHkDfH', '-LhvWQ5PkHbBR0gHkDfH.').ref);
 router.push('/' + site.ref.key);
 vue.dbref = site.ref;
 vue.getAllData();
