@@ -663,7 +663,7 @@ var routes = [{
     path: '/:blitzid',
     children: [{path:':topic'}],
     component: postWrapperComponent
-}]
+}];
 var router = new VueRouter({routes});
 /** Initialize MDC Web components. */
 
