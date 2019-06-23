@@ -656,18 +656,7 @@ var postWrapperComponent = Vue.component('post-wrapper', {
         }
     }
 });
-var routes = [{
-    name: 'post',
-    path: '/:blitzid',
-    children: [{path:':topic'}],
-    component: postWrapperComponent
-}];
-var router = new VueRouter({routes});
-var params = window.location.href.split('#')[1].split('/').filter(String);
-var site = new Site(new Blitzboard(params[0], params[0] + '.', params[1]));
-vue.dbref = site.ref;
-vue.getAllData();
-vue.attachMDCStyles();
+
 var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
 var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
 var mainContentEl = document.querySelector('#mdc-drawer-frame-content');
@@ -676,16 +665,37 @@ topAppBar.setScrollTarget(mainContentEl);
 document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
 document.body.addEventListener('MDCDrawer:closed',()=>site.elements.newPostButton.focus());
 $('.mdc-drawer-scrim').click(()=>$('#drawer').addClass('mdc-drawer--closing'));
+
+var routes = [{
+    name: 'post',
+    path: '/:blitzid',
+    children: [{path:':topic'}],
+    component: postWrapperComponent
+}];
+var router = new VueRouter({routes});
+var params = window.location.href.split('#')[1].split('/').filter(String);
+
+var blitzboard = new Blitzboard(params[0], params[0] + '.', params[1]);
+var site = new Site(blitzboard);
+vue.dbref = blitzboard.ref;
+vue.currentTopic = blitzboard.currentTopic;
+
+vue.getAllData();
+if (vue.currentTopic) {
+    vue.goToTopic(vue.currentTopic);
+}
+vue.attachMDCStyles();
+
 auth.onAuthStateChanged(function(user) {
     if (user) {
-        site.ref.child('users').once('value').then(function(snap) {
+        vue.dbref.child('users').once('value').then(function(snap) {
             if (snap.val() == null)
-                site.ref.child('users').child(auth.currentUser.uid).set(true);
+                vue.dbref.child('users').child(auth.currentUser.uid).set(true);
         });
         vue.initializePresenceRef(auth.currentUser.uid);
     } else auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
-
 });
+
 var inputs = document.querySelectorAll('.inputfile');
 Array.prototype.forEach.call(inputs, function(input) {
     var label = input.nextElementSibling,
