@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <title>Dashboard</title>
+    <title>Dashboard | Blitzboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
@@ -11,239 +12,275 @@
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
     <style media="screen">
-      @font-face {
-          font-family: "Product Sans";
-          src: url("ProductSans-Regular.woff") format('woff');
-      }
-      body {
-        --mdc-theme-primary:#4444ff;
-        padding-top:80px;
-        font-family:'Roboto', sans-serif;
-      }
-      img {
-        user-select:none;
-      }
-      .productsans {
-        font-family:'Product Sans', 'Roboto', sans-serif;
-      }
-      #drawer {
-        top:0;
-      }
-      #loading {
-        width: 100vw;
-        height: 100vh;
-        position: absolute;
-        left: 0;
-        text-align: center;
-        font-size: 2em;
-        padding: 100px 0;
-        z-index: 100000000;
-        overflow: hidden !important;
-      }
-      [v-cloak] {display:none}
-      .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {color:#4444ff!important;}
+        @font-face {
+            font-family: "Product Sans";
+            src: url("ProductSans-Regular.woff") format('woff');
+        }
+
+        body {
+            --mdc-theme-primary: #4444ff;
+            padding-top: 80px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        img {
+            user-select: none;
+        }
+
+        .productsans {
+            font-family: 'Product Sans', 'Roboto', sans-serif;
+        }
+
+        #drawer {
+            top: 0;
+        }
+
+        #loading {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            left: 0;
+            text-align: center;
+            font-size: 2em;
+            padding: 100px 0;
+            z-index: 100000000;
+            overflow: hidden !important;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+            color: #4444ff !important;
+        }
+
+        #newblitzboard {
+            border: 1px black solid;
+            border-radius: 8px;
+        }
+
+        .blitzboard-card {
+            border-radius: 8px;
+        }
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="app">
-      <div class="mdc-dialog" id="newblitzboarddialog">
-        <div class="mdc-dialog__container">
-          <div class="mdc-dialog__surface">
-            <h2 class="mdc-dialog__title" id="my-dialog-title">New BlitzBoard!</h2>
-            <div class="mdc-dialog__content" id="my-dialog-content"><br>
-                <div class="mdc-text-field mdc-text-field--outlined">
-                  <input type="text" v-model="newblitzboardform.name" id="newblitzname" class="mdc-text-field__input">
-                  <div class="mdc-notched-outline">
-                    <div class="mdc-notched-outline__leading"></div>
-                    <div class="mdc-notched-outline__notch">
-                      <label for="newblitzname" class="mdc-floating-label">Name</label>
+        <div class="mdc-dialog" id="newblitzboarddialog">
+            <div class="mdc-dialog__container">
+                <div class="mdc-dialog__surface">
+                    <h2 class="mdc-dialog__title" id="my-dialog-title">New Blitzboard</h2>
+                    <div class="mdc-dialog__content" id="my-dialog-content"><br>
+                        <div class="mdc-text-field mdc-text-field--outlined">
+                            <input type="text" v-model="newBlitzboardForm.name" id="newblitzname"
+                                class="mdc-text-field__input">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="newblitzname" class="mdc-floating-label">Name</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div><br><br>
+                        <div class="mdc-text-field mdc-text-field--outlined">
+                            <input type="text" v-model="newBlitzboardForm.description" id="newblitzdescription"
+                                class="mdc-text-field__input" style="width:400px;">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="newblitzdescription" class="mdc-floating-label">Description</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="mdc-typography--body2">Topics:</div>
+                        <div class="mdc-chip-set">
+                            <div class="mdc-chip" v-for="(topic,key) in newBlitzboardForm.topics" v-if="key != 'home'">
+                                <div class="mdc-chip__text">{{key}}</div>
+                                <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0"
+                                    v-on:click="deleteTopic(key)" role="button">cancel</i>
+                            </div>
+                        </div>
+                        <div class="mdc-text-field mdc-text-field--outlined">
+                            <input type="text" id="newblitztopics" v-model="addtopicvalue"
+                                v-on:keyup.13="newTopic(addtopicvalue)" class="mdc-text-field__input"
+                                style="width:400px;">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="newblitzdescription" class="mdc-floating-label">Add Topic</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mdc-notched-outline__trailing"></div>
-                  </div>
-                </div><br><br>
-                <div class="mdc-text-field mdc-text-field--outlined">
-                  <input type="text" v-model="newblitzboardform.description" id="newblitzdescription" class="mdc-text-field__input" style="width:400px;">
-                  <div class="mdc-notched-outline">
-                    <div class="mdc-notched-outline__leading"></div>
-                    <div class="mdc-notched-outline__notch">
-                      <label for="newblitzdescription" class="mdc-floating-label">Description</label>
+                    <footer class="mdc-dialog__actions">
+                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                            <span class="mdc-button__label">Cancel</span>
+                        </button>
+                        <button type="button" v-on:click="pushnewBlitzboardForm" id="submitnewblitz"
+                            class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+                            <span class="mdc-button__label">Let's Go!</span>
+                        </button>
+                    </footer>
+                </div>
+            </div>
+            <div class="mdc-dialog__scrim"></div>
+        </div>
+        <aside class="mdc-drawer mdc-drawer--modal" id="drawer">
+            <div class="mdc-drawer__header" style="padding-top:8px;">
+                <h3 class="mdc-drawer__title productsans">Dashboard</h3>
+            </div>
+            <div class="mdc-drawer__content">
+                <nav class="mdc-list">
+                    <a class="mdc-list-item" aria-current="page">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_circle</i>
+                        <span class="mdc-list-item__text">Profile</span>
+                    </a>
+                    <a class="mdc-list-item" aria-current="page">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">assignment</i>
+                        <span class="mdc-list-item__text">Assignments</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+        <div class="mdc-drawer-scrim"></div>
+        <header class="mdc-top-app-bar mdc-top-app-bar--fixed mdc-elevation--z4" style="position:fixed;top:0;left:0;">
+            <div class="mdc-top-app-bar__row">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                    <button data-mdc-auto-init="MDCRipple" class="material-icons mdc-top-app-bar__navigation-icon"
+                        id="menu">menu</button>
+                    <div class="mdc-top-app-bar__title productsans" style="display:flex;">
+                        <img src="favicon.png" style="height: 50px;width: 50px;margin-top: 8px;">
+                        <span class="productsans" style="line-height:65px;padding-left:10px;">Dashboard</span>
                     </div>
-                    <div class="mdc-notched-outline__trailing"></div>
-                  </div>
-                </div>
-                <br>
-                <br>
-                <div class="mdc-typography--body2">Topics:</div>
-                <div class="mdc-chip-set">
-                  <div class="mdc-chip" v-for="(topic,key) in newblitzboardform.topics" v-if="key != 'home'">
-                    <div class="mdc-chip__text">{{key}}</div>
-                    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" v-on:click="deletetopic(key)" role="button">cancel</i>
-                  </div>
-                </div>
-                <div class="mdc-text-field mdc-text-field--outlined">
-                  <input type="text" id="newblitztopics" v-model="addtopicvalue" v-on:keyup.13="newtopic(addtopicvalue)" class="mdc-text-field__input" style="width:400px;">
-                  <div class="mdc-notched-outline">
-                    <div class="mdc-notched-outline__leading"></div>
-                    <div class="mdc-notched-outline__notch">
-                      <label for="newblitzdescription" class="mdc-floating-label">Add Topic</label>
+                </section>
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                    <button data-mdc-auto-init="MDCRipple"
+                        class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon" id="notifications"
+                        style="color:white;">
+                        notifications
+                    </button>
+                </section>
+            </div>
+        </header>
+        <div class="mdc-layout-grid" v-cloak>
+            <div class="mdc-layout-grid__inner">
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3">
+                    <div class="mdc-card mdc-elevation--z0" id="newblitzboard">
+                        <div data-mdc-auto-init="MDCRipple" class="mdc-card__primary-action"
+                            style="color:#4444ff;height:202px;text-align:center;justify-content:center;max-height:200px;padding:16px;">
+                            <div class="mdc-typography--subtitle2"><i class="mdc-button--icon material-icons">add</i>
+                                <div>New Blitzboard</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mdc-notched-outline__trailing"></div>
-                  </div>
                 </div>
-              </div>
-              <footer class="mdc-dialog__actions">
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
-                  <span class="mdc-button__label">Cancel</span>
-                </button>
-                <button type="button" v-on:click="pushnewblitzboardform" id="submitnewblitz" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
-                  <span class="mdc-button__label">Let's Go!</span>
-                </button>
-              </footer>
-            </div>
-          </div>
-        <div class="mdc-dialog__scrim"></div>
-      </div>
-      <aside class="mdc-drawer mdc-drawer--modal" id="drawer">
-        <div class="mdc-drawer__header" style="padding-top:8px;">
-          <h3 class="mdc-drawer__title productsans">Dashboard</h3>
-        </div>
-        <div class="mdc-drawer__content">
-          <nav class="mdc-list">
-            <a class="mdc-list-item" aria-current="page">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">account_circle</i>
-              <span class="mdc-list-item__text">Profile</span>
-            </a>
-            <a class="mdc-list-item" aria-current="page">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">assignment</i>
-              <span class="mdc-list-item__text">Assignments</span>
-            </a>
-          </nav>
-        </div>
-      </aside>
-      <div class="mdc-drawer-scrim"></div>
-      <header class="mdc-top-app-bar mdc-top-app-bar--fixed mdc-elevation--z4" style="position:fixed;top:0;left:0;">
-          <div class="mdc-top-app-bar__row">
-              <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                  <button data-mdc-auto-init="MDCRipple" class="material-icons mdc-top-app-bar__navigation-icon" id="menu">menu</button>
-                  <div class="mdc-top-app-bar__title productsans" style="display:flex;">
-                    <img src="favicon.png" style="height: 50px;width: 50px;margin-top: 8px;">
-                    <span class="productsans" style="line-height:65px;padding-left:10px;">Dashboard</span>
-                  </div>
-              </section>
-              <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-                  <button data-mdc-auto-init="MDCRipple" class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon" id="notifications" style="color:white;">
-                    notifications
-                  </button>
-              </section>
-          </div>
-      </header>
-      <div class="mdc-layout-grid" v-cloak>
-        <div class="mdc-layout-grid__inner">
-          <div class="mdc-layout-grid__cell">
-            <div class="mdc-card" id="newblitzboard">
-              <div data-mdc-auto-init="MDCRipple" class="mdc-card__primary-action"style="color:#4444ff;height:202px;text-align:center;justify-content:center;max-height:200px;padding:16px;">
-                <div class="mdc-typography--subtitle2"><i class="mdc-button--icon material-icons">add</i><div>New BlitzBoard</div></div>
-              </div>
-            </div>
-          </div>
-          <div class="mdc-layout-grid__cell" v-for="(blitz,id) in blitzboards">
-            <div class="mdc-card">
-              <a v-bind:href="'/blitzboard/b#/'+id" class="mdc-card__primary-action" data-mdc-auto-init="MDCRipple" style="height:150px;max-height:200px;padding:16px;">
-                <div class="mdc-typography--headline4 productsans">{{blitz.name}}</div><br>
-                <div class="mdc-typography--subtitle3">{{blitz.description}}</div>
-              </a>
-              <div class="mdc-card__actions">
-                <div class="mdc-card__action-icons">
-                  <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>
+                <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3" v-for="(blitz,id) in blitzboards">
+                    <div class="mdc-card mdc-elevation--z2 blitzboard-card">
+                        <a v-bind:href="'/blitzboard/b#/'+id" class="mdc-card__primary-action"
+                            data-mdc-auto-init="MDCRipple" style="height:150px;max-height:200px;padding:16px;">
+                            <div class="mdc-typography--headline4 productsans">{{blitz.name}}</div><br>
+                            <div class="mdc-typography--subtitle3">{{blitz.description}}</div>
+                        </a>
+                        <div class="mdc-card__actions">
+                            <div class="mdc-card__action-icons">
+                                <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
+                                    title="More options">more_vert</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
     <!--Scripts-->
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
-      var config = {
-          apiKey: "AIzaSyADD6YWKrzibRMwJNi1FwUR0jcR0GitZPI",
-          authDomain: "k-inc-232222.firebaseapp.com",
-          databaseURL: "https://k-inc-232222.firebaseio.com",
-          projectId: "k-inc-232222",
-          storageBucket: "k-inc-232222.appspot.com",
-          messagingSenderId: "827804821456"
-      };
-      firebase.initializeApp(config);
-      var app = firebase;
-      var auth = app.auth();
-      var blitzboardRef = app.database().ref('blitzboard');
-      var blitzboards = [];
-      var newblitzboardform;
-      auth.onAuthStateChanged(function(user) {
-          if (user) newblitzboardform = new BlitzBoardForm();
-          else auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+        var config = {
+            apiKey: "AIzaSyADD6YWKrzibRMwJNi1FwUR0jcR0GitZPI",
+            authDomain: "k-inc-232222.firebaseapp.com",
+            databaseURL: "https://k-inc-232222.firebaseio.com",
+            projectId: "k-inc-232222",
+            storageBucket: "k-inc-232222.appspot.com",
+            messagingSenderId: "827804821456"
+        };
+        firebase.initializeApp(config);
+        var app = firebase;
+        var auth = app.auth();
+        var blitzboardRef = app.database().ref('blitzboard');
+        var blitzboards = [];
+        var newBlitzboardForm;
+        auth.onAuthStateChanged(function (user) {
+            if (user) newBlitzboardForm = new BlitzboardForm();
+            else auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
 
-      });
-      var vue;
-      function BlitzBoardForm() {
-        this.name = 'Untitled BlitzBoard';
-        this.description = 'This blitzboard has no description.';
-        this.posts = {posts:true};
-        this.users = {};
-        this.users[auth.currentUser.uid] = {user:true,votes:{}};
-        this.topics = {home:{chat:{},topic:true}};
-      };
-      var users = {};
-      app.database().ref('users').once('value',d=>users=d.val());
-      blitzboardRef.once('value', function(d) {
-          blitzboards = d.val();
-      }).then(function() {
-          for (var blitz in blitzboards) {
-              containsuser = false;
-              if (blitzboards[blitz].users[auth.currentUser.uid] == undefined) {
-                  delete blitzboards[blitz];
-              }
-          }
-      }).then(() => {
-          vue = new Vue({
-              el: '#app',
-              data: {
-                  blitzboards,
-                  newblitzboardform,
-                  users,
-                  addtopicvalue:''
-              },
-              methods: {
-                pushnewblitzboardform: function() {
-                  var thing = blitzboardRef.push(this.newblitzboardform);
-                  window.location.href = "/blitzboard/b#/" + thing.key;
+        });
+        var vue;
+        function BlitzboardForm() {
+            this.name = 'Untitled BlitzBoard';
+            this.description = 'This blitzboard has no description.';
+            this.posts = { posts: true };
+            this.users = {};
+            this.users[auth.currentUser.uid] = { user: true, votes: {} };
+            this.topics = { home: { chat: {}, topic: true } };
+        };
+        var users = {};
+        app.database().ref('users').once('value', d => users = d.val());
+        blitzboardRef.once('value', function (d) {
+            blitzboards = d.val();
+        }).then(function () {
+            for (var blitz in blitzboards) {
+                containsuser = false;
+                if (blitzboards[blitz].users[auth.currentUser.uid] == undefined) {
+                    delete blitzboards[blitz];
+                }
+            }
+        }).then(() => {
+            vue = new Vue({
+                el: '#app',
+                data: {
+                    blitzboards,
+                    newBlitzboardForm,
+                    users,
+                    addtopicvalue: ''
                 },
-                newtopic: function(topic) {
-                  this.$set(this.newblitzboardform.topics, topic, {chat:{},topic:true})
-                },
-                deletetopic:function(topic) {
-                  this.$delete(this.newblitzboardform.topics, topic)
-                },
-              }
-          });
-          var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
-          document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
-          document.querySelector('.mdc-drawer-scrim').addEventListener('click', () => {
-              document.querySelector('#drawer').classList.add('mdc-drawer--closing');
-          });
-          mdc.autoInit();
-          document.querySelector('#notifications').MDCRipple.unbounded = true;
-          document.querySelector('#menu').MDCRipple.unbounded = true;
-          var newblitzboarddialog = new mdc.dialog.MDCDialog(document.querySelector('#newblitzboarddialog'));
-          document.querySelector('#newblitzboard').addEventListener('click', function() {
-              newblitzboarddialog.open();
-          });
-          document.querySelectorAll('.mdc-text-field').forEach(function(i) {
-              mdc.textField.MDCTextField.attachTo(i)
-          });
-      });
+                methods: {
+                    pushnewBlitzboardForm: function () {
+                        var thing = blitzboardRef.push(this.newBlitzboardForm);
+                        window.location.href = "/blitzboard/b#/" + thing.key;
+                    },
+                    newTopic: function (topic) {
+                        this.$set(this.newBlitzboardForm.topics, topic, { chat: {}, topic: true })
+                    },
+                    deleteTopic: function (topic) {
+                        this.$delete(this.newBlitzboardForm.topics, topic)
+                    },
+                }
+            });
+            var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
+            document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
+            document.querySelector('.mdc-drawer-scrim').addEventListener('click', () => {
+                document.querySelector('#drawer').classList.add('mdc-drawer--closing');
+            });
+            mdc.autoInit();
+            document.querySelector('#notifications').MDCRipple.unbounded = true;
+            document.querySelector('#menu').MDCRipple.unbounded = true;
+            var newblitzboarddialog = new mdc.dialog.MDCDialog(document.querySelector('#newblitzboarddialog'));
+            document.querySelector('#newblitzboard').addEventListener('click', function () {
+                newblitzboarddialog.open();
+            });
+            document.querySelectorAll('.mdc-text-field').forEach(function (i) {
+                mdc.textField.MDCTextField.attachTo(i)
+            });
+        });
     </script>
-  </body>
+</body>
+
 </html>
