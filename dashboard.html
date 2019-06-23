@@ -33,7 +33,7 @@
     </style>
   </head>
   <body>
-    <div id="mainapp">
+    <div id="app">
       <div class="mdc-dialog" id="newblitzboarddialog">
         <div class="mdc-dialog__container">
           <div class="mdc-dialog__surface">
@@ -115,12 +115,12 @@
               </div>
             </div>
           </div>
-          <div class="mdc-layout-grid__cell" v-for="blitz of blitzboards">
+          <div class="mdc-layout-grid__cell" v-for="(blitz,id) in blitzboards">
             <div class="mdc-card">
-              <div class="mdc-card__primary-action" data-mdc-auto-init="MDCRipple" style="height:150px;max-height:200px;padding:16px;">
+              <a v-bind:href="'/b#/'+id" class="mdc-card__primary-action" data-mdc-auto-init="MDCRipple" style="height:150px;max-height:200px;padding:16px;">
                 <div class="mdc-typography--headline4 productsans">{{blitz.name}}</div><br>
                 <div class="mdc-typography--subtitle3">{{blitz.description}}</div>
-              </div>
+              </a>
               <div class="mdc-card__actions">
                 <div class="mdc-card__action-icons">
                   <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>
@@ -150,8 +150,7 @@
       var blitzboardRef = app.database().ref('blitzboard');
       var blitzboards = [];
       blitzboardRef.once('value', function(d) {
-          d = d.val();
-          blitzboards = d;
+          blitzboards = d.val();
       }).then(function() {
           for (var blitz in blitzboards) {
               containsuser = false;
@@ -161,9 +160,13 @@
           }
       }).then(() => {
           var vue = new Vue({
-              el: '#mainapp',
+              el: '#app',
               data: {
-                  blitzboards: blitzboards
+                  blitzboards: blitzboards,
+                  index:0
+              },
+              methods: {
+                getKey: function() {},
               }
           });
           var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));

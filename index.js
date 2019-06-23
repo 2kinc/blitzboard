@@ -1,4 +1,5 @@
-function Site(ref) {
+function Site(bb) {
+    var ref = bb.ref;
     var that = this;
     this.elements = {
         blitzboardTitle: $('#blitzboard-title'),
@@ -30,7 +31,7 @@ function Site(ref) {
     if (!this.ref) {
         return;
     }
-    this.currentTopic = 'home';
+    this.currentTopic = bb.currentTopic;
     this.initializeTopicOption = function(topic) {
         if (topic != 'home') {
             var option = document.createElement('option');
@@ -219,10 +220,11 @@ var blitzboardRef = database.ref('blitzboard');
 
 const baseURL = 'https://2kinc.me/blitzboard';
 
-function Blitzboard(id, name) {
+function Blitzboard(id, name, currentTopic) {
     var that = this;
     this.id = id;
     this.name = name;
+    this.currentTopic = currentTopic;
     this.ref = database.ref('blitzboard/' + this.id);
     this.ref.once('value').then(function(snap) {
         if (snap.val())
@@ -665,12 +667,19 @@ var routes = [{
     component: postWrapperComponent
 }];
 var router = new VueRouter({routes});
-/** Initialize MDC Web components. */
-
-var site = new Site(new Blitzboard('-LhvWQ5PkHbBR0gHkDfH', '-LhvWQ5PkHbBR0gHkDfH.').ref);
-router.push('/' + site.ref.key);
+var params = window.location.href.split('#')[1].split('/').filter(String);
+var site = new Site(new Blitzboard(params[0], params[0] + '.', params[1]));
 vue.dbref = site.ref;
 vue.getAllData();
+vue.attachMDCStyles();
+var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
+var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
+var mainContentEl = document.querySelector('#mdc-drawer-frame-content');
+var listEl = document.querySelector('.mdc-drawer .mdc-list');
+topAppBar.setScrollTarget(mainContentEl);
+document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
+document.body.addEventListener('MDCDrawer:closed',()=>site.elements.newPostButton.focus());
+$('.mdc-drawer-scrim').click(()=>$('#drawer').addClass('mdc-drawer--closing'));
 auth.onAuthStateChanged(function(user) {
     if (user) {
         site.ref.child('users').once('value').then(function(snap) {
@@ -721,18 +730,3 @@ function handleFileForNewPost(e) {
 }
 
 //site.elements.newPostUpload.addEventListener('input', handleFileForNewPost);
-vue.attachMDCStyles();
-var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.querySelector('#navbar'));
-var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
-var mainContentEl = document.querySelector('#mdc-drawer-frame-content');
-var listEl = document.querySelector('.mdc-drawer .mdc-list');
-topAppBar.setScrollTarget(mainContentEl);
-document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
-
-document.body.addEventListener('MDCDrawer:closed', () => {
-    site.elements.newPostButton.focus();
-});
-
-$('.mdc-drawer-scrim').click(() => {
-    $('#drawer').addClass('mdc-drawer--closing');
-});
