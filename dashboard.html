@@ -117,7 +117,7 @@
           </div>
           <div class="mdc-layout-grid__cell" v-for="(blitz,id) in blitzboards">
             <div class="mdc-card">
-              <a v-bind:href="'/b#/'+id" class="mdc-card__primary-action" data-mdc-auto-init="MDCRipple" style="height:150px;max-height:200px;padding:16px;">
+              <a v-bind:href="'/blitzboard/b#/'+id" class="mdc-card__primary-action" data-mdc-auto-init="MDCRipple" style="height:150px;max-height:200px;padding:16px;">
                 <div class="mdc-typography--headline4 productsans">{{blitz.name}}</div><br>
                 <div class="mdc-typography--subtitle3">{{blitz.description}}</div>
               </a>
