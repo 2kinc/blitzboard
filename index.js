@@ -256,17 +256,13 @@ var vue = new Vue({
     },
     mounted: function() {
         this.firebase = app;
-        if (site) {
-            this.dbref = site.ref;
-        }
+        if (site) this.dbref = site.ref;
         this.attachMDCStyles();
     },
     methods: {
         attachMDCStyles: function() {
             const ripples = document.querySelectorAll('.mdc-button, mdc-icon-button, mdc-list-item');
-            for (var ripple of ripples) {
-                mdc.ripple.MDCRipple.attachTo(ripple);
-            }
+            for (var ripple of ripples) mdc.ripple.MDCRipple.attachTo(ripple);
             const textFields = document.querySelectorAll('.mdc-text-field');
             for (const textField of textFields) {
                 mdc.textField.MDCTextField.attachTo(textField);

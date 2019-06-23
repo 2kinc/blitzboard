@@ -29,6 +29,18 @@
       #drawer {
         top:0;
       }
+      #loading {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        left: 0;
+        text-align: center;
+        font-size: 2em;
+        padding: 100px 0;
+        z-index: 100000000;
+        overflow: hidden !important;
+      }
+      [v-cloak] {display:none}
       .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {color:#4444ff!important;}
     </style>
   </head>
@@ -39,37 +51,56 @@
           <div class="mdc-dialog__surface">
             <h2 class="mdc-dialog__title" id="my-dialog-title">New BlitzBoard!</h2>
             <div class="mdc-dialog__content" id="my-dialog-content"><br>
-              <div class="mdc-text-field mdc-text-field--outlined">
-                <input type="text" id="newblitzname" class="mdc-text-field__input">
-                <div class="mdc-notched-outline">
-                  <div class="mdc-notched-outline__leading"></div>
-                  <div class="mdc-notched-outline__notch">
-                    <label for="newblitzname" class="mdc-floating-label">Name</label>
+                <div class="mdc-text-field mdc-text-field--outlined">
+                  <input type="text" v-model="newblitzboardform.name" id="newblitzname" class="mdc-text-field__input">
+                  <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                      <label for="newblitzname" class="mdc-floating-label">Name</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
                   </div>
-                  <div class="mdc-notched-outline__trailing"></div>
+                </div><br><br>
+                <div class="mdc-text-field mdc-text-field--outlined">
+                  <input type="text" v-model="newblitzboardform.description" id="newblitzdescription" class="mdc-text-field__input" style="width:400px;">
+                  <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                      <label for="newblitzdescription" class="mdc-floating-label">Description</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                  </div>
                 </div>
-              </div><br><br>
-              <div class="mdc-text-field mdc-text-field--outlined">
-                <input type="text" id="newblitzdescription" class="mdc-text-field__input" style="width:400px;">
-                <div class="mdc-notched-outline">
-                  <div class="mdc-notched-outline__leading"></div>
-                  <div class="mdc-notched-outline__notch">
-                    <label for="newblitzname" class="mdc-floating-label">Description</label>
+                <br>
+                <br>
+                <div class="mdc-typography--body2">Topics:</div>
+                <div class="mdc-chip-set">
+                  <div class="mdc-chip" v-for="(topic,key) in newblitzboardform.topics" v-if="key != 'home'">
+                    <div class="mdc-chip__text">{{key}}</div>
+                    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" v-on:click="deletetopic(key)" role="button">cancel</i>
                   </div>
-                  <div class="mdc-notched-outline__trailing"></div>
+                </div>
+                <div class="mdc-text-field mdc-text-field--outlined">
+                  <input type="text" id="newblitztopics" v-model="addtopicvalue" v-on:keyup.13="newtopic(addtopicvalue)" class="mdc-text-field__input" style="width:400px;">
+                  <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                      <label for="newblitzdescription" class="mdc-floating-label">Add Topic</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                  </div>
                 </div>
               </div>
+              <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                  <span class="mdc-button__label">Cancel</span>
+                </button>
+                <button type="button" v-on:click="pushnewblitzboardform" id="submitnewblitz" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+                  <span class="mdc-button__label">Let's Go!</span>
+                </button>
+              </footer>
             </div>
-            <footer class="mdc-dialog__actions">
-              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
-                <span class="mdc-button__label">Cancel</span>
-              </button>
-              <button type="button" id="submitnewblitz" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
-                <span class="mdc-button__label">Let's Go!</span>
-              </button>
-            </footer>
           </div>
-        </div>
         <div class="mdc-dialog__scrim"></div>
       </div>
       <aside class="mdc-drawer mdc-drawer--modal" id="drawer">
@@ -106,7 +137,7 @@
               </section>
           </div>
       </header>
-      <div class="mdc-layout-grid">
+      <div class="mdc-layout-grid" v-cloak>
         <div class="mdc-layout-grid__inner">
           <div class="mdc-layout-grid__cell">
             <div class="mdc-card" id="newblitzboard">
@@ -149,6 +180,23 @@
       var auth = app.auth();
       var blitzboardRef = app.database().ref('blitzboard');
       var blitzboards = [];
+      var newblitzboardform;
+      auth.onAuthStateChanged(function(user) {
+          if (user) newblitzboardform = new BlitzBoardForm();
+          else auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+
+      });
+      var vue;
+      function BlitzBoardForm() {
+        this.name = 'Untitled BlitzBoard';
+        this.description = 'This blitzboard has no description.';
+        this.posts = {posts:true};
+        this.users = {};
+        this.users[auth.currentUser.uid] = {user:true,votes:{}};
+        this.topics = {home:{chat:{},topic:true}};
+      };
+      var users = {};
+      app.database().ref('users').once('value',d=>users=d.val());
       blitzboardRef.once('value', function(d) {
           blitzboards = d.val();
       }).then(function() {
@@ -159,14 +207,25 @@
               }
           }
       }).then(() => {
-          var vue = new Vue({
+          vue = new Vue({
               el: '#app',
               data: {
-                  blitzboards: blitzboards,
-                  index:0
+                  blitzboards,
+                  newblitzboardform,
+                  users,
+                  addtopicvalue:''
               },
               methods: {
-                getKey: function() {},
+                pushnewblitzboardform: function() {
+                  var thing = blitzboardRef.push(this.newblitzboardform);
+                  window.location.href = "/blitzboard/b#/" + thing.key;
+                },
+                newtopic: function(topic) {
+                  this.$set(this.newblitzboardform.topics, topic, {chat:{},topic:true})
+                },
+                deletetopic:function(topic) {
+                  this.$delete(this.newblitzboardform.topics, topic)
+                },
               }
           });
           var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
