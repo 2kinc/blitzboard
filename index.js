@@ -675,7 +675,7 @@ var routes = [{
 var router = new VueRouter({routes});
 var params = window.location.href.split('#')[1].split('/').filter(String);
 
-var blitzboard = new Blitzboard(params[0], params[0] + '.', params[1]);
+var blitzboard = new Blitzboard(params[0], params[0] + '.', (params[1] || 'home'));
 var site = new Site(blitzboard);
 vue.dbref = blitzboard.ref;
 vue.currentTopic = blitzboard.currentTopic;
