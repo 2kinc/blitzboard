@@ -387,7 +387,7 @@ var vue = new Vue({
                         time: d.getTime()
                     };
                     this.dbref.child('topics').child(this.currentTopic).child('chat').push().set(chat);
-                    this.set('chatMessage', '');
+                    this.$set('chatMessage', '');
                 }
             }
         }
