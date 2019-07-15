@@ -133,7 +133,7 @@
                                 style="width: calc(100% - 18px);">
                                 <i class="material-icons mdc-text-field__icon mdc-ripple-surface mdc-ripple-surface--primary mdc-ripple-surface--unbounded"
                                     id="chat-input-button" tabindex="0" role="button" v-on:click="pushChatMessage">message</i>
-                                <input class="mdc-text-field__input" id="chat-input" v-model="chatMessage" v-on:keyup="pushChatMessage">
+                                <input class="mdc-text-field__input" id="chat-input" v-model="chatMessage" v-on:keyup.enter="pushChatMessage">
                                 <div class="mdc-notched-outline">
                                     <div class="mdc-notched-outline__leading"></div>
                                     <div class="mdc-notched-outline__notch">
@@ -151,8 +151,8 @@
         </div>
     </div>
 
-    <template id="chat-body-template" v-if="parentVue.currentTopic == topic">
-        <div class="chat-body" v-bind:id="'chat-body-' + topic">
+    <template id="chat-body-template">
+        <div class="chat-body" v-bind:id="'chat-body-' + topic" v-if="parentVue.currentTopic == topic">
             <message-wrapper v-for="message in sortedMessages" v-if="message" v-bind:key="message.id"
                 v-bind:message="message">
             </message-wrapper>
