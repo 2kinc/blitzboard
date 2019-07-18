@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Roboto">
     <link rel="stylesheet" href="https://use.typekit.net/lku7gbz.css">
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
@@ -36,7 +38,9 @@
                     <h6 class="mdc-list-group__subheader">Topics</h6>
                     <div id="topics">
                         <template v-for="topic of topics" v-if="topic != 'home'">
-                            <li class="topic-item mdc-list-item" v-bind:class="{'mdc-list-item--selected': currentTopic == topic}" v-on:click="goToTopic(topic)">::{{topic}}</li>
+                            <li class="topic-item mdc-list-item"
+                                v-bind:class="{'mdc-list-item--selected': currentTopic == topic}"
+                                v-on:click="goToTopic(topic)">::{{topic}}</li>
                         </template>
                     </div>
                     <div class="mdc-list-divider"></div>
@@ -86,13 +90,14 @@
                                         <div class="mdc-notched-outline__trailing"></div>
                                     </div>
                                 </div>
-                                <button id="cancel-post-button" v-on:click="closePost" class="mdc-button mdc-button--outlined mdc-ripple-upgraded" style="float:right;">
-                                  ✕ Close
+                                <button id="cancel-post-button" v-on:click="closePost"
+                                    class="mdc-button mdc-button--outlined mdc-ripple-upgraded" style="float:right;">
+                                    ✕ Close
                                 </button>
                                 <br>
                                 <div class="mdc-text-field mdc-text-field--textarea">
-                                    <textarea id="new-post-content" class="mdc-text-field__input" rows="8"
-                                        cols="40" v-model="postForm.content"></textarea>
+                                    <textarea id="new-post-content" class="mdc-text-field__input" rows="8" cols="40"
+                                        v-model="postForm.content"></textarea>
                                     <div class="mdc-notched-outline">
                                         <div class="mdc-notched-outline__leading"></div>
                                         <div class="mdc-notched-outline__notch">
@@ -102,10 +107,11 @@
                                     </div>
                                 </div>
                                 <br>
-                                <input type="file" name="Upload an image" class="inputfile" id="new-post-upload" ref="newPostUpload"
-                                    accept=".jpg,.png,.bmp" />
+                                <input type="file" name="Upload an image" class="inputfile" id="new-post-upload"
+                                    ref="newPostUpload" accept=".jpg,.png,.bmp" />
                                 <label for="new-post-upload" class="mdc-chip" id="new-post-upload-label">
-                                    <i class="material-icons-outlined mdc-chip__icon mdc-chip__icon--leading">cloud_upload</i>
+                                    <i
+                                        class="material-icons-outlined mdc-chip__icon mdc-chip__icon--leading">cloud_upload</i>
                                     <div class="mdc-chip__text">Upload an image?</div>
                                 </label>
                                 <br>
@@ -116,24 +122,24 @@
                                     <i class="mdc-select__dropdown-icon"></i>
                                     <select class="mdc-select__native-control" id="new-post-topics">
                                         <option selected>Select a topic</option>
-                                        <option v-for="topic of availableTopics" v-bind:id="'option-' + topic">::{{topic}}</option>
+                                        <option v-for="topic of availableTopics" v-bind:id="'option-' + topic">
+                                            ::{{topic}}</option>
                                     </select>
                                     <label class="mdc-floating-label">Add topics</label>
                                     <div class="mdc-line-ripple"></div>
                                 </div>
                             </div>
-                            <button class="mdc-button mdc-button--outlined" id="new-post-button" v-on:click="pushPost" ref="newPostButton">＋ New Post</button>
+                            <button class="mdc-button mdc-button--outlined" id="new-post-button" v-on:click="pushPost"
+                                ref="newPostButton">＋ New Post</button>
                         </div>
                         <div id="posts-bodies" ref="postsBodies"></div>
                     </div>
                     <div id="chat">
                         <div id="chat-bodies" ref="chatBodies"></div>
                         <div id="chat-input-container" class="mdc-elevation--z2">
-                            <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon"
-                                style="width: calc(100% - 18px);">
-                                <i class="material-icons mdc-text-field__icon mdc-ripple-surface mdc-ripple-surface--primary mdc-ripple-surface--unbounded"
-                                    id="chat-input-button" tabindex="0" role="button" v-on:click="pushChatMessage">message</i>
-                                <input class="mdc-text-field__input" id="chat-input" v-model="chatMessage" v-on:keyup.enter="pushChatMessage">
+                            <div class="mdc-text-field mdc-text-field--outlined" id="chat-textfield">
+                                <input class="mdc-text-field__input" id="chat-input" v-model="chatMessage"
+                                    v-on:keyup.enter="pushChatMessage">
                                 <div class="mdc-notched-outline">
                                     <div class="mdc-notched-outline__leading"></div>
                                     <div class="mdc-notched-outline__notch">
@@ -142,6 +148,8 @@
                                     <div class="mdc-notched-outline__trailing"></div>
                                 </div>
                             </div>
+
+                            <button class="mdc-icon-button material-icons" id="chat-input-button" v-on:click="pushChatMessage">message</button>
                         </div>
                     </div>
                 </div>
@@ -174,7 +182,8 @@
     </template>
 
     <template id="posts-body-template">
-        <div class="posts-body mdc-layout-grid" v-bind:id="'posts-body-' + topic" v-if="parentVue.currentTopic == topic">
+        <div class="posts-body mdc-layout-grid" v-bind:id="'posts-body-' + topic"
+            v-if="parentVue.currentTopic == topic">
             <div class="mdc-layout-grid__inner">
                 <post-wrapper v-for="post of posts" v-bind:post="post" v-bind:dbref="dbref.ref.child(post.id)"
                     v-bind:key="post.key"></post-wrapper>
@@ -207,11 +216,11 @@
             </div>
             <div class="mdc-card__actions">
                 <div class="mdc-card__action-buttons">
-                    <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus"
-                        ref="plusButton">+1</button>
+                    <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus" ref="plusButton"
+                        v-bind:class="{selected: vote === 1}">+1</button>
                     <span class="post-points">{{post.pluses - post.minuses}}</span>
-                    <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus"
-                        ref="minusButton">-1</button>
+                    <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus" ref="minusButton"
+                        v-bind:class="{selected: vote === 0}">-1</button>
                 </div>
             </div>
         </div>

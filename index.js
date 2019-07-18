@@ -47,8 +47,13 @@ var vue = new Vue({
     },
     methods: {
         attachMDCStyles: function () {
-            const ripples = document.querySelectorAll('.mdc-button, mdc-icon-button, mdc-list-item');
-            for (var ripple of ripples) mdc.ripple.MDCRipple.attachTo(ripple);
+            const ripples = document.querySelectorAll('.mdc-button, .mdc-icon-button, .mdc-list-item');
+            for (var ripple of ripples){
+                var mdcripple = new mdc.ripple.MDCRipple(ripple);
+                if (ripple.classList.contains("mdc-icon-button")){
+                    mdcripple.unbounded = true;
+                }
+            }
             const textFields = document.querySelectorAll('.mdc-text-field');
             for (const textField of textFields) {
                 mdc.textField.MDCTextField.attachTo(textField);
@@ -358,7 +363,7 @@ var postWrapperComponent = Vue.component('post-wrapper', {
         }
     },
     data: () => ({
-
+        vote: null
     }),
 
     mounted() {
@@ -374,6 +379,10 @@ var postWrapperComponent = Vue.component('post-wrapper', {
             });
             this.dbref.child('minuses').on('value', function (snap) {
                 vueThis.post.minuses = snap.val();
+            });
+            var votesRef = vue.dbref.child('users').child(auth.currentUser.uid).child('votes').child(this.dbref.key);
+            votesRef.on('value', function (snap) {
+                vueThis.vote = snap.val();
             });
             var urlRegex = /(https?:\/\/[^\s]+)/g;
             this.post.content = this.post.content.replace(urlRegex, function (url) {
