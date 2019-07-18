@@ -66,7 +66,7 @@
                         <button
                             class="material-icons-outlined mdc-top-app-bar__navigation-icon mdc-ripple-surface">menu</button>
                         <span class="mdc-top-app-bar__title" style="font-family: 'Product Sans', 'Roboto', sans-serif;">
-                            BlitzBoard! <span id="blitzboard-title">::{{currentTopic}} - {{name}}</span>
+                            Blitzboard <span id="blitzboard-title">::{{currentTopic}} - {{name}}</span>
                         </span>
                     </section>
                 </div>
@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <input type="file" name="Upload an image" class="inputfile" id="new-post-upload"
+                                <input type="file" name="Upload an image" class="inputfile" id="new-post-upload" ref="newPostUpload"
                                     accept=".jpg,.png,.bmp" />
                                 <label for="new-post-upload" class="mdc-chip" id="new-post-upload-label">
                                     <i class="material-icons-outlined mdc-chip__icon mdc-chip__icon--leading">cloud_upload</i>
@@ -146,7 +146,7 @@
                     </div>
                 </div>
 
-                <div id="loading">Loading...</div>
+                <div id="loading" v-if="!loaded">Loading...</div>
             </div>
         </div>
     </div>
@@ -207,10 +207,10 @@
             </div>
             <div class="mdc-card__actions">
                 <div class="mdc-card__action-buttons">
-                    <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus()"
+                    <button class="plus-button mdc-button mdc-button--outlined" v-on:click="addPlus"
                         ref="plusButton">+1</button>
-                    <span class="post-points">{{post.pluses + post.minuses}}</span>
-                    <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus()"
+                    <span class="post-points">{{post.pluses - post.minuses}}</span>
+                    <button class="minus-button mdc-button mdc-button--outlined" v-on:click="addMinus"
                         ref="minusButton">-1</button>
                 </div>
             </div>

@@ -1,113 +1,3 @@
-function Site(bb) {
-    var ref = bb.ref;
-    var that = this;
-    this.elements = {
-        blitzboardTitle: $('#blitzboard-title'),
-        topics: $('#more-topics'),
-        mainContent: $('#main-content'),
-        posts: $('#posts'),
-        postsBodies: $('#posts-bodies'),
-        chat: $('#chat'),
-        chatInput: $('#chat-input'),
-        chatInputButton: $('#chat-input-button'),
-        chatBodies: $('#chat-bodies'),
-        loading: $('#loading'),
-        newPostWrapper: $('#new-post-wrapper'),
-        newPostButton: $('#new-post-button'),
-        newPostName: $('#new-post-name'),
-        newPostContent: $('#new-post-content'),
-        newPostTopicsWrapper: $('#new-post-topics-wrapper'),
-        newPostTopics: $('#new-post-topics'),
-        newPostUpload: document.querySelector('#new-post-upload'),
-        newPostUploadLabel: $('#new-post-upload-label'),
-        newPostMain: $('#new-post-main'),
-        drawerTitle: $('#drawer-title'),
-        drawerSubtitle: $('#drawer-subtitle'),
-        blitzboardDescription: $('#blitzboard-description'),
-        memberCount: $('#member-count')
-    }
-    this.ref = ref;
-    this.data = {};
-    if (!this.ref) {
-        return;
-    }
-    this.currentTopic = bb.currentTopic;
-    this.initializeTopicOption = function (topic) {
-        if (topic != 'home') {
-            var option = document.createElement('option');
-            option.innerText = '::' + topic;
-            option.id = 'option-' + topic;
-            that.elements.newPostTopics.append(option);
-        }
-    };
-    this.initializeTopicElements = function (topic) {
-        if (topic != 'home') {
-            var item = document.createElement('li');
-            item.className = 'topic-item mdc-list-item';
-            if (topic == that.currentTopic)
-                item.classList.add('mdc-list-item--selected');
-            item.innerText = '::' + topic;
-            item.id = 'topic-' + topic;
-            that.elements.topics.append(item);
-            that.initializeTopicOption(topic);
-        }
-    };
-    this.ref.once('value').then(function (snap) {
-        that.data = snap.val();
-        that.data.render = function () {
-            $('.topic-item').each(function () {
-                this.classList.remove('selected');
-            });
-            $('#topic-home').click(function () {
-                if (!document.querySelector('#posts-body-home')) {
-                    var newPostsBody = document.createElement('div');
-                    newPostsBody.id = 'posts-body-' + topic;
-                    that.elements.postsBodies.append(newPostsBody);
-                    var component = new PostsBody();
-                    component.topic = topic;
-                    component.dbref = that.ref.child('posts').orderByChild('pluses');
-                    component.$mount('#' + newPostsBody.id);
-                }
-                that.elements.posts.addClass('expanded');
-                that.currentTopic = 'home';
-                that.data.render();
-            })
-            that.elements.chatBodies.scrollTop(that.elements.chatBodies.height());
-            that.elements.loading.hide();
-        };
-        that.data.render();
-        $('#home-topic').addClass('selected');
-    }).catch(function (err) {
-        document.body.innerHTML = 'Sorry, a database error occured. (' + err + ').';
-    });
-    this.elements.newPostTopics.change(function (e) {
-        var topic = that.elements.newPostTopics.val().slice(2);
-        if (topic != 'Select a topic') {
-            var chip = document.createElement('div');
-            chip.className = 'mdc-chip';
-            var text = document.createElement('div');
-            text.className = 'mdc-chip__text';
-            text.innerText = topic;
-            var icon = document.createElement('i');
-            icon.className = 'material-icons mdc-chip__icon mdc-chip__icon--trailing';
-            icon.innerText = 'cancel';
-            icon.role = 'button';
-            icon.tabIndex = 0;
-            icon.addEventListener('click', function () {
-                that.initializeTopicOption(topic);
-                topics.pop(topic);
-            });
-            chip.appendChild(text);
-            chip.appendChild(icon);
-            mdc.chips.MDCChip.attachTo(chip);
-            that.elements.newPostTopicsWrapper.append(chip);
-            topics.push(topic);
-            console.log('#option-' + topic.trim())
-            $('#option-' + topic.trim()).remove();
-        }
-    });
-};
-
 var app = firebase;
 var database = app.database();
 var auth = app.auth();
@@ -132,6 +22,7 @@ mdc.autoInit();
 var vue = new Vue({
     el: '#app',
     data: {
+        loaded: false,
         users: {},
         members: [],
         topics: [],
@@ -152,7 +43,6 @@ var vue = new Vue({
     },
     mounted: function () {
         this.firebase = app;
-        if (site) this.dbref = site.ref;
         this.attachMDCStyles();
     },
     methods: {
@@ -227,7 +117,7 @@ var vue = new Vue({
         goToTopic: function (topic) {
             var ChatBody = Vue.extend(chatBodyComponent);
             var PostsBody = Vue.extend(postsBodyComponent);
-            router.push('/' + this.dbref.key + '/' + topic);
+            router.push('/' + this.dbref.key + '/::' + topic);
             drawer.open = false;
             document.querySelector('.mdc-drawer').classList.add('mdc-drawer--closing');
             this.currentTopic = topic;
@@ -321,7 +211,7 @@ var chatBodyComponent = Vue.component("chat-body", {
     methods: {
         getMessages: function () {
             var vueThis = this;
-            site.ref.child('topics').child(vueThis.topic).child('chat').on('child_added', function (snap) {
+            vue.dbref.child('topics').child(vueThis.topic).child('chat').on('child_added', function (snap) {
                 var s = snap.val();
                 s.time = new Date(s.time).toLocaleString();
                 s.id = snap.key;
@@ -335,7 +225,7 @@ var chatBodyComponent = Vue.component("chat-body", {
                     return;
                 }
             });
-            site.ref.child('topics').child(vueThis.topic).child('chat').limitToLast(1).on('child_added', function () {
+            vue.dbref.child('topics').child(vueThis.topic).child('chat').limitToLast(1).on('child_added', function () {
                 vue.attachMDCStyles();
             });
         },
@@ -500,37 +390,47 @@ var postWrapperComponent = Vue.component('post-wrapper', {
         },
         addPlus: function () {
             var vueThis = this;
-            var votesRef = site.ref.child('users').child(auth.currentUser.uid).child('votes').child(site.ref.key).child(vueThis.dbref.key);
+            var votesRef = vue.dbref.child('users').child(auth.currentUser.uid).child('votes').child(this.dbref.key);
+            //ref: "blitzboard_id/your_uid/votes/post_id"
             votesRef.once('value', function (snap) {
                 var vote = snap.val();
-                if (!vote || vote === true) {
+                if (vote === null || vote === undefined || vote === true) { //not voted yet
                     vueThis.post.pluses++;
                     vueThis.dbref.child('pluses').set(vueThis.post.pluses);
                     votesRef.set(1);
-                } else if (vote === (-1)) {
+                } else if (vote === 0) { //previously voted down
                     vueThis.post.pluses++;
                     vueThis.dbref.child('pluses').set(vueThis.post.pluses);
                     vueThis.post.minuses--;
                     vueThis.dbref.child('minuses').set(vueThis.post.minuses);
                     votesRef.set(1);
+                } else if (vote === 1) { //previously voted up, user wants to undo vote
+                    vueThis.post.pluses--;
+                    vueThis.dbref.child('pluses').set(vueThis.post.pluses);
+                    votesRef.set(null);
                 }
             });
         },
         addMinus: function () {
             var vueThis = this;
-            var votesRef = site.ref.child('users').child(auth.currentUser.uid).child('votes').child(site.ref.key).child(vueThis.dbref.key);
+            var votesRef = vue.dbref.child('users').child(auth.currentUser.uid).child('votes').child(this.dbref.key);
+            //ref: "blitzboard_id/your_uid/votes/post_id"
             votesRef.once('value', function (snap) {
                 var vote = snap.val();
-                if (!vote || vote === true) {
+                if (vote === null || vote === undefined || vote === true) { //not voted yet
                     vueThis.post.minuses++;
                     vueThis.dbref.child('pluses').set(vueThis.post.minuses);
-                    votesRef.set(-1);
-                } else if (vote === 1) {
+                    votesRef.set(0);
+                } else if (vote === 1) { //previously voted up
                     vueThis.post.minuses++;
                     vueThis.dbref.child('minuses').set(vueThis.post.minuses);
                     vueThis.post.pluses--;
                     vueThis.dbref.child('pluses').set(vueThis.post.pluses);
-                    votesRef.set(-1);
+                    votesRef.set(0);
+                } else if (vote === 0) { //previously voted down, user wants to undo vote
+                    vueThis.post.minuses--;
+                    vueThis.dbref.child('minuses').set(vueThis.post.minuses);
+                    votesRef.set(null);
                 }
             });
         },
@@ -549,7 +449,7 @@ var mainContentEl = document.querySelector('#mdc-drawer-frame-content');
 var listEl = document.querySelector('.mdc-drawer .mdc-list');
 topAppBar.setScrollTarget(mainContentEl);
 document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
-document.body.addEventListener('MDCDrawer:closed', () => site.elements.newPostButton.focus());
+document.body.addEventListener('MDCDrawer:closed', () => vue.$refs.newPostButton.focus());
 $('.mdc-drawer-scrim').click(() => $('#drawer').addClass('mdc-drawer--closing'));
 
 var routes = [{
@@ -558,11 +458,11 @@ var routes = [{
     children: [{ path: ':topic' }],
     component: postWrapperComponent
 }];
+
 var router = new VueRouter({ routes });
 var params = window.location.href.split('#')[1].split('/').filter(String);
 
-var blitzboard = new Blitzboard(params[0], params[0] + '.', params[1]);
-var site = new Site(blitzboard);
+var blitzboard = new Blitzboard(params[0], params[0] + '.', params[1].slice(2));
 vue.dbref = blitzboard.ref;
 vue.currentTopic = blitzboard.currentTopic;
 
@@ -571,6 +471,8 @@ if (vue.currentTopic) {
     vue.goToTopic(vue.currentTopic);
 }
 vue.attachMDCStyles();
+
+vue.loaded = true;
 
 auth.onAuthStateChanged(function (user) {
     if (user) {
@@ -602,7 +504,7 @@ Array.prototype.forEach.call(inputs, function (input) {
 });
 
 function handleFileForNewPost(e) {
-    var file = site.elements.newPostUpload.files[0]; //the file
+    var file = vue.$refs.newPostUpload.files[0]; //the file
     var storageRef = storage.ref('blitzboard_uploads'); //where the files live
     var uploadRef = storageRef.child(file.name); //the file that we are uploading
     var uploadTask = uploadRef.put(file)
@@ -611,7 +513,7 @@ function handleFileForNewPost(e) {
         })
 
         .then(downloadURL => {
-            site.elements.newPostContent.val(downloadURL);
+            vue.postForm.content = downloadURL;
             return downloadURL;
         })
 

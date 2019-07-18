@@ -39,10 +39,8 @@
             background: var(--mdc-theme-primary, #4444ff);
         }
 
-        .mdc-top-app-bar__title img {
-            height: 50px;
-            width: 50px;
-            margin-top: 8px;
+        .mdc-top-app-bar__title {
+            margin-left: -12px;
         }
 
         ::-webkit-scrollbar {
@@ -61,6 +59,18 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #4444ff;
         }
+
+        #sign-in {
+            transition: all 0.3s;
+        }
+
+        #sign-in:hover {
+            color: #4444ff!important;
+            background: white;
+            box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0,0,0,.12);
+        }
+
+
     </style>
 </head>
 
@@ -69,10 +79,11 @@
         <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                 <button class="material-icons mdc-top-app-bar__navigation-icon" id="menu">menu</button>
-                <span class="mdc-top-app-bar__title productsans"><img src="favicon.png"></span>
+                <img src="favicon.png" width="50">
+                <span class="mdc-top-app-bar__title productsans">Blitzboard</span>
             </section>
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-                <button class="mdc-button mdc-button--raised" style="color:white;" data-mdc-auto-init="MDCRipple"><i
+                <button id="sign-in" class="mdc-button mdc-button--outlined" style="color:white; border-color: white;" data-mdc-auto-init="MDCRipple"><i
                         class="material-icons mdc-button__icon">account_circle</i>Sign in</button>
             </section>
         </div>
@@ -80,9 +91,9 @@
     <div id="hero" class="mdc-theme--on-primary">
         <span>
             <img src="favicon.png" width=567>
-            <div class='mdc-typography--headline3 productsans'>BlitzBoard!</div>
+            <div class='mdc-typography--headline3 productsans'>Blitzboard</div>
         </span>
-        <p>A team management site! Easily be able to manage assignments given to your employees!</p>
+        <p>Team management, chat, and discussion made easy for everyone.</p>
         <a href="dashboard" data-mdc-auto-init="MDCRipple"
             class="mdc-button mdc-button--raised">Get started!</a>
     </div>
