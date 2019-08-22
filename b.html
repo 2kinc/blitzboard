@@ -15,11 +15,12 @@
     <link rel="stylesheet" href="https://2kinc.me/2kcomponents.css">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
-    <title>BlitzBoard</title>
+    <title>Blitzboard</title>
 </head>
 
 <body>
     <div id="app">
+
         <aside id="drawer" class="mdc-drawer mdc-drawer--modal mdc-typography">
             <div class="mdc-drawer__header">
                 <h3 class="mdc-drawer__title" id="drawer-title">{{name}}</h3>
@@ -157,6 +158,18 @@
                 <div id="loading" v-if="!loaded">Loading...</div>
             </div>
         </div>
+
+        <div id="welcome" ref="welcome">
+                <h1>Welcome <b>{{currentUser.displayName}}</b>!</h1>
+
+                <div id="welcome-info">
+                    <h1>{{name}}</h1>
+                    <h5>{{description}}</h2>
+                    <h3>{{members.length}} members ⋅ <span>{{onlineMembers.length}} online</span></h2>
+                </div>
+
+                <button class="mdc-button mdc-button--unelevated" id="join-blitzboard" v-on:click="joinBlitzboard">Join</button>
+            </div>
     </div>
 
     <template id="chat-body-template">

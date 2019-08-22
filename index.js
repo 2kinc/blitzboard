@@ -37,9 +37,11 @@ var vue = new Vue({
             pluses: 0,
             minuses: 0
         },
+        mydata: null,
         availableTopics: [],
         chatMessage: '',
-        readyToPushPost: false
+        readyToPushPost: false,
+        currentUser: {}
     },
     mounted: function () {
         this.firebase = app;
@@ -48,9 +50,9 @@ var vue = new Vue({
     methods: {
         attachMDCStyles: function () {
             const ripples = document.querySelectorAll('.mdc-button, .mdc-icon-button, .mdc-list-item');
-            for (var ripple of ripples){
+            for (var ripple of ripples) {
                 var mdcripple = new mdc.ripple.MDCRipple(ripple);
-                if (ripple.classList.contains("mdc-icon-button")){
+                if (ripple.classList.contains("mdc-icon-button")) {
                     mdcripple.unbounded = true;
                 }
             }
@@ -102,6 +104,17 @@ var vue = new Vue({
             });
             this.dbref.child('description').on('value', function (snap) {
                 vueThis.description = snap.val();
+            });
+        },
+        getMyRolesAndData: function () {
+            var vueThis = this;
+            ref = database.ref('users/' + this.currentUser.uid + '/blitzboards/' + this.dbref.key);
+            ref.on('value', function (snap) {
+                var data = snap.val();
+                vueThis.mydata = data;
+                if (data == null) {
+                    vueThis.$refs.welcome.style.display = "block";
+                }
             });
         },
         getAllData: function () {
@@ -167,6 +180,13 @@ var vue = new Vue({
                 };
                 this.dbref.child('topics').child(this.currentTopic).child('chat').push().set(chat);
                 this.chatMessage = "";
+            }
+        },
+        joinBlitzboard: function () {
+            if (this.currentUser && this.mydata == null) {
+                ref = database.ref('users/' + this.currentUser.uid + '/blitzboards/' + this.dbref.key);
+                ref.set(true);
+                this.$refs.welcome.style.display = 'none';
             }
         }
     },
@@ -487,9 +507,11 @@ auth.onAuthStateChanged(function (user) {
     if (user) {
         vue.dbref.child('users').once('value').then(function (snap) {
             if (snap.val() == null)
-                vue.dbref.child('users').child(auth.currentUser.uid).set(true);
+                vue.dbref.child('users').child(user.uid).set(true);
         });
-        vue.initializePresenceRef(auth.currentUser.uid);
+        vue.getMyRolesAndData();
+        vue.currentUser = user;
+        vue.initializePresenceRef(user.uid);
     } else auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
 });
 

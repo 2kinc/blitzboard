@@ -214,12 +214,65 @@
         firebase.initializeApp(config);
         var app = firebase;
         var auth = app.auth();
-        var blitzboardRef = app.database().ref('blitzboard');
+        var db = app.database();
+        var blitzboardRef = db.ref('blitzboard');
         var blitzboards = [];
         var newBlitzboardForm;
         auth.onAuthStateChanged(function (user) {
-            if (user) newBlitzboardForm = new BlitzboardForm();
-            else auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+            if (user) {
+                newBlitzboardForm = new BlitzboardForm()
+                var yourBlitzboardsRef = db.ref('users/' + user.uid + "/blitzboards");
+                yourBlitzboardsRef.once('value', function (d) {
+                    blitzboards = d.val();
+                }).then(function () {
+                    for (var blitz in blitzboards) {
+                        containsuser = false;
+                        if (blitzboards[blitz].users[auth.currentUser.uid] == undefined) {
+                            delete blitzboards[blitz];
+                        }
+                    }
+                }).then(() => {
+                    vue = new Vue({
+                        el: '#app',
+                        data: {
+                            blitzboards,
+                            newBlitzboardForm,
+                            addtopicvalue: ''
+                        },
+                        methods: {
+                            pushnewBlitzboardForm: function () {
+                                var thing = blitzboardRef.push(this.newBlitzboardForm);
+                                window.location.href = "/blitzboard/b#/" + thing.key;
+                            },
+                            newTopic: function (topic) {
+                                this.$set(this.newBlitzboardForm.topics, topic, { chat: {}, topic: true })
+                            },
+                            deleteTopic: function (topic) {
+                                this.$delete(this.newBlitzboardForm.topics, topic)
+                            },
+                        }
+                    });
+                    var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
+                    document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
+                    document.querySelector('.mdc-drawer-scrim').addEventListener('click', () => {
+                        document.querySelector('#drawer').classList.add('mdc-drawer--closing');
+                    });
+                    mdc.autoInit();
+                    document.querySelector('#notifications').MDCRipple.unbounded = true;
+                    document.querySelector('#menu').MDCRipple.unbounded = true;
+                    var newblitzboarddialog = new mdc.dialog.MDCDialog(document.querySelector('#newblitzboarddialog'));
+                    document.querySelector('#newblitzboard').addEventListener('click', function () {
+                        newblitzboarddialog.open();
+                    });
+                    document.querySelectorAll('.mdc-text-field').forEach(function (i) {
+                        mdc.textField.MDCTextField.attachTo(i)
+                    });
+                });
+            }
+            else {
+                auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+            }
+
 
         });
         var vue;
@@ -231,55 +284,6 @@
             this.users[auth.currentUser.uid] = { user: true, votes: {} };
             this.topics = { home: { chat: {}, topic: true } };
         };
-        var users = {};
-        app.database().ref('users').once('value', d => users = d.val());
-        blitzboardRef.once('value', function (d) {
-            blitzboards = d.val();
-        }).then(function () {
-            for (var blitz in blitzboards) {
-                containsuser = false;
-                if (blitzboards[blitz].users[auth.currentUser.uid] == undefined) {
-                    delete blitzboards[blitz];
-                }
-            }
-        }).then(() => {
-            vue = new Vue({
-                el: '#app',
-                data: {
-                    blitzboards,
-                    newBlitzboardForm,
-                    users,
-                    addtopicvalue: ''
-                },
-                methods: {
-                    pushnewBlitzboardForm: function () {
-                        var thing = blitzboardRef.push(this.newBlitzboardForm);
-                        window.location.href = "/blitzboard/b#/" + thing.key;
-                    },
-                    newTopic: function (topic) {
-                        this.$set(this.newBlitzboardForm.topics, topic, { chat: {}, topic: true })
-                    },
-                    deleteTopic: function (topic) {
-                        this.$delete(this.newBlitzboardForm.topics, topic)
-                    },
-                }
-            });
-            var drawer = new mdc.drawer.MDCDrawer(document.querySelector('#drawer'));
-            document.querySelector('.mdc-top-app-bar__navigation-icon').addEventListener('click', () => drawer.open = true);
-            document.querySelector('.mdc-drawer-scrim').addEventListener('click', () => {
-                document.querySelector('#drawer').classList.add('mdc-drawer--closing');
-            });
-            mdc.autoInit();
-            document.querySelector('#notifications').MDCRipple.unbounded = true;
-            document.querySelector('#menu').MDCRipple.unbounded = true;
-            var newblitzboarddialog = new mdc.dialog.MDCDialog(document.querySelector('#newblitzboarddialog'));
-            document.querySelector('#newblitzboard').addEventListener('click', function () {
-                newblitzboarddialog.open();
-            });
-            document.querySelectorAll('.mdc-text-field').forEach(function (i) {
-                mdc.textField.MDCTextField.attachTo(i)
-            });
-        });
     </script>
 </body>
 

@@ -419,3 +419,62 @@ k-navbar, .k-navbar {
 .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__trailing {
     border-radius: 0 32px 32px 0;
 }
+
+#welcome {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    color: black;
+    z-index: 10;
+    padding-top: 20vh;
+    display: none;
+}
+
+#welcome > h1 {
+    font-size: 300%;
+    font-family: 'Product Sans';
+    font-weight: initial;
+    width: 100%;
+    text-align: center;
+}
+
+#welcome-info {
+    border: 1px grey solid;
+    border-radius: 6px;
+    display: block;
+    padding: 16px;
+    line-height: 30%;
+    width: 40vw;
+    margin: auto;
+    margin-top: 48px;
+}
+
+#welcome-info h1 {
+    font-family: 'Product Sans';
+    font-size: 150%;
+}
+
+#welcome-info h3 {
+    font-family: 'Product Sans';
+    font-size: 90%;
+    font-weight: initial;
+}
+
+#welcome-info > h3 > span {
+    color: #4444ff;
+}
+
+#welcome-info h5 {
+    color: #616161;
+    font-weight: initial;
+}
+
+#join-blitzboard {
+    display: block;
+    margin: auto;
+    margin-top: 64px;
+    text-transform: initial;
+}
