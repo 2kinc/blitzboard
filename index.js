@@ -108,11 +108,10 @@ var vue = new Vue({
         },
         getMyRolesAndData: function () {
             var vueThis = this;
-            ref = database.ref('users/' + this.currentUser.uid + '/blitzboards/' + this.dbref.key);
+            var ref = database.ref('users/' + this.currentUser.uid + '/blitzboards/' + this.dbref.key);
             ref.on('value', function (snap) {
-                var data = snap.val();
-                vueThis.mydata = data;
-                if (data == null) {
+                vueThis.mydata = snap.val();
+                if (!snap.val()) {
                     vueThis.$refs.welcome.style.display = "block";
                 }
             });
@@ -184,9 +183,9 @@ var vue = new Vue({
         },
         joinBlitzboard: function () {
             if (this.currentUser && this.mydata == null) {
-                ref = database.ref('users/' + this.currentUser.uid + '/blitzboards/' + this.dbref.key);
-                ref.set(true);
                 this.$refs.welcome.style.display = 'none';
+                var ref = database.ref('users/' + this.currentUser.uid + '/blitzboards/' + this.dbref.key);
+                ref.set(true);
             }
         }
     },
